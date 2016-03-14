@@ -19,7 +19,7 @@ public class HelloWorld {
 
 And then there is the `MANIFEST.MF` that goes into the jar file together with the result of the compilation (the class file):
 
-```
+```properties
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: HelloWorld

@@ -40,7 +40,7 @@ If you simply add this class to your project, you'll get an error indicator, bec
 
 The OSGi framework doesn't search through your bundle for a class that implements the `BundleActivator` interface. Rather, it must be made known to the framework by an additional entry in the `MANIFEST.MF`:
 
-```
+```properties
 Bundle-Activator: io.github.mnl.osgiGettingStarted.simpleBundle.Activator
 ```
 
@@ -72,7 +72,7 @@ java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
 
 So, is there no `BundleActivator` in the runtime environment after all? Yes, there is. It's just that the OSGi runtime doesn't freely allow a bundle to use everything that is available in the environment, not even it is something as obvious as a framework interface. If a bundle wants to use an interface or class from the runtime environment, it must declare this desire with an `Import` statement in the manifest. The complete manifest of our Simple Bundle must hence include such a statement as well:
 
-```
+```properties
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: HelloWorld
