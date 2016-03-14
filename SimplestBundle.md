@@ -57,3 +57,5 @@ So here it is, your first OSGi bundle. Its entry looks a bit different from the 
 ```
 
 Despite having an active bundle, nothing happens. This is not really surprising. First, we haven't provided any code aside from the empty class definition. Second, the class hasn't been referenced in the manifest (actually, the class is completely irrelevant for building this bundle, but introducing a bundle without a component base would have been a bit irritating). Obviously, we need something similar to the method "`static void main(...)`" in an application's startup class. We need a method that is invoked to get our component started. This issue will be covered in the next part.
+
+Meanwhile &mdash; as it doesn't do anything useful anyway &mdash; you can remove the simplest bundle again. Type "`felix:uninstall 5`". When you re-list the bundles, you'll find that it is gone.
