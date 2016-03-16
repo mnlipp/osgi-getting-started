@@ -1,3 +1,9 @@
+gems:
+  - jekyll-seo-tag
+
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+
+description:
+  A tutorial that shows JavaSE developers how to get started with OSGi.
