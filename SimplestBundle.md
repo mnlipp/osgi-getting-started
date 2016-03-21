@@ -56,6 +56,10 @@ So here it is, your first OSGi bundle. Its entry looks a bit different from the 
     5|Active     |    1|HelloWorld (1.0.0)|1.0.0
 ```
 
-Despite having an active bundle, nothing happens. This is not really surprising. First, we haven't provided any code aside from the empty class definition. Second, the class hasn't been referenced in the manifest (actually, the class is completely irrelevant for building this bundle, but introducing a bundle without a component base would have been a bit irritating). Obviously, we need something similar to the method "`static void main(...)`" in an application's startup class. We need a method that is invoked to get our component started. This issue will be covered in the next part.
+Despite having an active bundle, nothing happens. This is not really surprising. First, we haven't provided any code aside from the empty class definition. Second, the class hasn't been referenced in the manifest (actually, the class is completely irrelevant for building this bundle, but introducing a bundle without a component base would have been a bit irritating)[^LB]. Obviously, if we want code to be executed, we need something similar to the method "`static void main(...)`" in an application's startup class. This issue will be covered in the next part.
 
 Meanwhile &mdash; as it doesn't do anything useful anyway &mdash; you can remove the simplest bundle again. Type "`felix:uninstall 5`". When you re-list the bundles, you'll find that it is gone.
+
+---
+
+[^LB]: OSGi bundles *can* be "passive" components, i.e. contain just some classes and do nothing when started. This kind of bundles can be used to make libraries of code available to other bundles. However, such bundles must include `Export-Package` entry in `MANIFEST-MF` in order to make the classes from a package available to other bundles.
