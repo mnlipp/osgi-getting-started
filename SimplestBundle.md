@@ -30,7 +30,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 
 That's where the magic is. The "`Bundle-...`" entries (that you usually don't find in a `MANIFEST.MF`) make the jar file with that manifest an OSGi bundle. `Bundle-ManifestVersion` and `Bundle-SymbolicName` are mandatory entries. `Bundle-RequiredExecutionEnvironment` is actually deprecated, but must still be supported by framework implementations and is easier to use than the newer alternative. It's not really needed for our example, but you should add it if you rely on specific Java features to be available.
 
-Now pack the `class` file and `MANIFEST.MF` into a jar file. If you're using Eclipse, you can simply double click on the `jar-export.jardesc` that I have provided with the project. The content of the resulting jar file looks like this:
+Now pack the `class` file and `MANIFEST.MF` into a jar file. If you're using Eclipse, you can simply double click on the `jar-export.jardesc` that I have provided with the project. You can also execute a `gradle build`. The content of the resulting jar file looks like this:
 
 ```
 META-INF/MANIFEST.MF
