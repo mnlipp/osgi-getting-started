@@ -7,3 +7,6 @@ kramdown:
 
 description:
   A tutorial that shows JavaSE developers how to get started with OSGi.
+
+sass:
+    style: compressed  
