@@ -5,13 +5,35 @@ title: Shift in Perspective
 
 # Shift in Perspective
 
-When presenting their software, OSGi framework providers tend to focus -- not surprisingly -- on the capabilities of the product. Among those is the possibility to deploy components dynamically from a console. We've used this capability throughout this introduction to get our component running in various development stages. This might have left the impression that an OSGi framework is a heavyweight -- or at least light heavyweight -- container.
+When presenting their software, OSGi framework providers tend to focus -- not surprisingly -- on the capabilities of the product. Among those is the possibility to deploy components dynamically from a console. We've used this capability throughout this introduction to test our component in various development stages. This might have left the impression that an OSGi framework is a heavyweight -- or at least light heavyweight -- container, which is not true.
 
 A more appropriate perspective on the OSGi framework focuses on the aspect that it is a framework: an environment providing some generic functionality to facilitate the development of software (see the [more exhaustive explanation](https://en.wikipedia.org/wiki/Software_framework) on Wikipedia). A characteristic of frameworks (contrary to libraries) is that they implement the startup code. The user-written code is invoked by the framework in a framework dependent way.
 
-The capability to deploy components (bundles) dynamically is part of the OSGi core framework, providing a console isn't. A minimal application using the OSGi framework consists of the framework implementation and at least one bundle. Contrary to some other frameworks, OSGi doesn't provide the ``main`` method. In order to get things started, a minimal application must implement a ``main`` that creates an instance of the framework, installs the bundle and starts the framework (which activates the bundle in turn). You can find a sample main in the OSGi Core specification, Chapter "Life  Cycle Layer", section "Frameworks" ([downloadable](https://www.osgi.org/developer/downloads/release-6/) from the OSGi web site).
+The capability to deploy components (bundles) dynamically is a generic functionality of the OSGi core framework, providing a console isn't. A minimal application using the OSGi framework therefore consists of the framework implementation and at least one bundle. Contrary to some other frameworks, OSGi doesn't provide the ``main`` method. In order to get things started, a minimal application must implement a ``main`` that creates an instance of [the framework](https://osgi.org/javadoc/r6/core/org/osgi/framework/launch/Framework.html), installs the bundle and starts the framework (which activates the installed bundle in turn). You can find a sample ``main`` in the OSGi Core specification, Chapter "Life  Cycle Layer", section "Frameworks" ([downloadable](https://www.osgi.org/developer/downloads/release-6/) from the OSGi web site).
 
-To ease this task, Bndtools provides the capability to assemble an application that consists of a framework, your chosen bundle(s), and some application startup code (though not a minimal version). 
+To simplify this task, Bndtools provides support for assembling such an application that consists of a framework, your chosen bundle(s), and some application startup code (though not a minimal version). Switch to the "Run" tab of the ``bnd.bnd`` graphical editor.
+
+![Bndtools Run tab](images/Bndtools-run.png){: width="700px" }
+
+Select the framework from the drop down box. We'll stick to using Felix here. The bundle under development is automatically added to the "Run bundles". At the top right you find a button "Export" (right of "Run OSGi" and "Debug OSGi"). 
+
+![Bndtools Export Button](images/Bndtools-Export-Button.png){: width="200px" }
+
+Use it to create the application. Test the created jar by running it with ``jar -jar your.jar``.
+
+Looking at the content of the created jar, we find something like this (empty directory entries removed):
+
+```
+  1133 Tue Mar 29 12:25:36 CEST 2016 META-INF/MANIFEST.MF
+  3994 Sun Jun 16 05:01:03 CEST 2097 aQute/launcher/pre/EmbeddedLauncher.class
+  4717 Mon Mar 28 15:24:14 CEST 2016 jar/SimpleBundle-bnd.jar
+147494 Wed Mar 16 18:00:28 CET 2016 jar/biz.aQute.launcher-3.1.0.jar
+677905 Sun Mar 13 20:38:12 CET 2016 jar/org.apache.felix.framework-5.2.0.jar
+  1583 Tue Mar 29 12:25:36 CEST 2016 launcher.properties
+    57 Tue Mar 29 12:25:36 CEST 2016 start
+    48 Tue Mar 29 12:25:36 CEST 2016 start.bat
+```
+
 
 *To be continued*
 
