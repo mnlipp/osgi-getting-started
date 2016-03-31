@@ -5,9 +5,9 @@ title: The container
 
 # The Container
 
-In the simplest case of component based development, the components are modules that are assembled using some static configuration, maybe with the possibility to add more modules dynamically at runtime. More advanced concepts introduce a container as execution environment and allow you to dynamically add or remove components at runtime.
+In the simplest case of component based development, the components are assembled using some static configuration. More advanced concepts introduce a container as execution environment and allow you to dynamically add or remove components at runtime.
 
-In OSGi terms, the container is provided by the OSGi framework and the components are the OSGi bundles. So in order to get started with OSGi, we need an OSGi framework. There are several implementations of OSGi frameworks available. Let's use [Apache Felix](http://felix.apache.org/) to get started, because I found that to be very intuitive and easy to use.
+In OSGi terms, the container is provided by the OSGi framework and the components are provided by OSGi bundles[^cm]. So in order to get started with OSGi, we need an OSGi framework. There are several implementations of OSGi frameworks available. Let's use [Apache Felix](http://felix.apache.org/) to get started, because I found that to be very intuitive and easy to use.
 
 I won't repeat things here that have already been well described by others. So simply go to the [Apache Felix Framework Usage Documentation](http://felix.apache.org/documentation/subprojects/apache-felix-framework/apache-felix-framework-usage-documentation.html) and follow it up to and including the section "Starting the framework". Make sure to only download the [Felix Framework Distribution](http://felix.apache.org/downloads.cgi#framework) and none of the subprojects (yet).
 
@@ -54,3 +54,7 @@ Tool = Bnd-2.1.0.20130426-122213
 ```
 
 Looks like there is a lot of information associated with a bundle and maybe that's why people consider bundles to be difficult to build. But most of that information is optional. In part 2, we'll see that it is really easy to build a (simple) bundle.
+
+---
+
+[^cm]: An OSGi bundle is actually only a module. It *can* be a component if it fulfills some additional constraints. However, as OSGi also provides support for components, OSGi is more often referred to as a component framework rather than a module framework. Chances are high that you are reading this with components in mind, so let's stick to that view for the first parts of this introduction.

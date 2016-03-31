@@ -7,7 +7,7 @@ title: Simplest Bundle
 
 I don't know if what we're going to build here is really the "simplest" possible bundle. But it is definitely very simple.
 
-Create a new Java project (yes, just Java, nothing fancy required here) or use the [existing sample project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimplestBundle) and import it in Eclipse. Then create a class that represents the component. Here's the class from the sample project:
+Create a new Java project (yes, just Java, nothing fancy required here) or use the [existing sample project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimplestBundle) and import it in Eclipse. Then create a class that represents the component in our bundle. Here's the class from the sample project:
 
 ```java
 package io.github.mnl.osgiGettingStarted.simplestBundle;
@@ -62,4 +62,4 @@ Meanwhile &mdash; as it doesn't do anything useful anyway &mdash; you can remove
 
 ---
 
-[^LB]: OSGi bundles *can* be "passive" components, i.e. contain just some classes and do nothing when started. This kind of bundles can be used to make libraries of code available to other bundles. However, such bundles must include `Export-Package` entry in `MANIFEST-MF` in order to make the classes from a package available to other bundles.
+[^LB]: At least if you stumbled upon OSGi while searching for a component framework. As mentioned before, OSGi bundles are actually just modules, they don't have to be (or contain) "active" components. Modules only contain some classes implementing an aspect of functionality (sometimes forming a generally usable library) and usually don't need to be started. Bundles that provide modules must have an `Export-Package` entry in `MANIFEST-MF` in order to make the classes from the module available to other bundles. We'll come back to that later.
