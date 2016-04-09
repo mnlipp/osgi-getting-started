@@ -50,7 +50,7 @@ You may have noticed already that it is possible to choose versions when adding 
 
 ![Choosing a version](images/Bndtools-version-dialog.png){: width="500px" }
 
-Clicking "Add" results in an extended entry in `MANIFEST.MF`[^rl]:
+Clicking "Add" and saving results in an extended `buildpath` entry in `bnd.bnd`[^ov] and an extended entry in the generated jar's `MANIFEST.MF`[^rl]:
 
 ```properties
 Import-Package: org.osgi.framework;version="[1.6,2)"
@@ -143,13 +143,46 @@ public class Activator implements BundleActivator {
 }
 ```
 
-Run this using a configuration that also includes the Felix console. When the application has started, list the bundles and start and stop the log service and our Hello World component in varying order. Look at and understand the start/stop messages from our component's activator.
-
-*To be continued*
+Run this using a configuration that also includes the Felix console. When the application has started, list the bundles and start and stop the log service and our Hello World component in varying order. Look at the output and understand the start/stop messages from our component's activator.
 
 ---
 
 [^mv]: Rule of thumb: get the latest versions of all libraries and hope that they provide backward compatibility for parts of the application built with older version, right? Well, often this works surprisingly well... 
+
+[^ov]: There's some Bndtools magic happening here. The entry in `bnd.bnd` reflects exactly
+    what you see in the GUI:
+    
+    ```
+    -buildpath: \
+	    osgi.residential,\
+	    osgi.core;version=4.3
+    ```
+    
+    When you try to build this using gradle, however, it fails with `error: type ServiceTracker does 
+    not take parameters`. The reason is that the OSGi libraries provided for version 4.3.0 have been 
+    compiled [with a special flag](http://blog.osgi.org/2012/10/43-companion-code-for-java-7.html) 
+    that allows generics to be used in pre-Java 5 JVMs. Starting with Java 7, this 
+    "trick" doesn't work anymore. Therefore the OSGi alliance has released jars built "in the
+    ordinary way" (compatible with Java 7 and beyond) as version 4.3.1. To complicate things a bit,
+    there is no 4.3.1 release of the jar with the "residential" subset of services. Only the
+    "companion" jar with the full set of services has been re-released.
+    
+    As the 4.3.1 versions aren't offered in the `bnd.bnd` GUI dialog, you have to change 
+    the version "manually" in the source view[^lv]:
+    
+    ```
+    -buildpath: \
+	    osgi.cmpn;version=4.3.1,\
+	    osgi.core;version=4.3.1
+    ```
+    
+    Using this configuration, the project builds both in Eclipse and "headless" using gradle.
+
+[^lv]: Alternatively, you can choose version 6.0.0 for both jars. So why bother?
+    The versions that you choose here result in a requirement for the runtime framework.
+    If you choose 6.0.0, you'll have to use a framework that 
+    [supports](https://en.wikipedia.org/wiki/OSGi_Specification_Implementations) this version
+    of the OSGi specification.
 
 [^rl]: Slightly simplified. If you have already added `osgi.residential` you actually see this:
 
