@@ -56,7 +56,7 @@ Clicking "Add" and saving results in an extended `buildpath` entry in `bnd.bnd`[
 Import-Package: org.osgi.framework;version="[1.6,2)"
 ```
 
-The "version interval" uses the notation known from mathematics: at least version 1.6, higher versions (1.x) are okay, but the version must be less than 2.0[^ug].
+The "version interval" uses the notation known from mathematics: at least version 1.6, higher versions (e.g. 1.6.1, 1.7) are okay, but the version must be less than 2.0[^ug].
 
 Now that we know how to easily run oder debug an OSGi application from Eclipse (using the "Run" or "Debug" buttons on the "Run" tab of the `bnd.bnd` editor), we can check the effect of our statement simply by setting a breakpoint after it. Do this and start the application in debug mode. You should get: 
 
@@ -79,7 +79,7 @@ When the program stops, have a look at the variable `logService`. If you're luck
 
 The method `getServiceReference` returns a service only if it is registered. If it is needed but not (yet) available, a listener can be added to the `BundleContext`. The listener is then informed about changes of service states. The details are a bit tricky. That's why OSGi includes a [ServiceTracker](https://osgi.org/javadoc/r6/core/index.html?org/osgi/framework/BundleContext.html) class, which simplifies things a bit.
 
-Usually, the availability of a log service is considered optional. If it's not there, your application can still run, you just don't get log entries. For this example, however, I'm going to model a mandatory dependency on the log service. Our component starts only if a log service is available. And it stops, when the log service becomes unavailable. The following code shows how this can be done.
+Usually, the availability of a log service is considered optional. If it's not there, your application can still run, you just don't get log entries. In this example, however, I'm going to model a mandatory dependency on the log service. Our component starts only if a log service is available. And it stops, when the log service becomes unavailable. The following code shows how this can be done.
 
 ```java
 public class Activator implements BundleActivator {
@@ -103,25 +103,42 @@ public class Activator implements BundleActivator {
                  * available now and that our component can be started. */
                 @Override
                 public LogService addingService(ServiceReference<LogService> reference) {
-                    logService = super.addingService(reference);
-                    System.out.println("Hello World started.");
-                    helloWorld = new HelloWorld();
-                    return logService;
+                    LogService result = super.addingService(reference);
+                    // Update the logService reference to whatever the ServiceTracker
+                    // considers "current" now.
+                    logService = getService();
+                    // The required service has become available, so we should 
+                    // start our service if it hasn't been started yet.
+                    if (helloWorld == null) {
+                        System.out.println("Hello World started.");
+                        helloWorld = new HelloWorld();
+                    }
+                    return result;
                 }
 
                 /** This method is invoked when a service is removed. Since we model
                  * a strong relationship between our component and the log service,
-                 * our component must be stopped, when the log service disappears.
-                 * Note that the service tracker remains open (active). When another
-                 * log service becomes available, our component will be restarted. */
+                 * our component must be stopped when there's no log service left.
+                 * Note that the service tracker remains open (active). When a log
+                 * service becomes available again, our component will be restarted. */
                 @Override
                 public void removedService(ServiceReference<LogService> reference,
                                            LogService service) {
+                    super.removedService(reference, service);
+                    // After removing this service, another version of the service
+                    // may have become the "current version".
+                    LogService nowCurrent = getService();
+                    if (nowCurrent != null) {
+                        logService = nowCurrent;
+                        return;
+                    }
+                    // If no logging service is left, we have to stop our component.
                     if (helloWorld != null) {
                         helloWorld = null;
                         System.out.println("Hello World stopped.");
                     }
-                    super.removedService(reference, service);
+                    // Release any left over reference to the log service.
+                    logService = null;
                 }
             };
         }
@@ -129,21 +146,24 @@ public class Activator implements BundleActivator {
         logServiceTracker.open();
     }
 
-    /** As before, this method stops our component. It also stops (closes) the service
-     * tracker because we don't want our component to be reactivated only because a log
-     * service (re-)appears. */
+    /** As before, this method stops our component, but in a different way. It stops 
+     * (closes) the service tracker (because we don't want our component to be 
+     * reactivated only because a log service (re-)appears). As this causes the
+     * ServiceTracker to call removedService for the tracked service(s), this will
+     * also stop our service. */
     @Override
     public void stop(BundleContext context) throws Exception {
         logServiceTracker.close();
-        if (helloWorld != null) {
-            helloWorld = null;
-            System.out.println("Hello World stopped.");
-        }
     }
 }
 ```
 
 Run this using a configuration that also includes the Felix console. When the application has started, list the bundles and start and stop the log service and our Hello World component in varying order. Look at the output and understand the start/stop messages from our component's activator.
+
+The code handles some conditions that may not be obvious if you come from "ordinary" Java component models[^po]. Using OSGi, there can be more than one service with the same service interface. Though this is not necessarily applicable to the logging service, services of the same kind can, in general, coexists with different properties. As an example, you can have two persistence services with different back ends installed and running in parallel.
+
+A special property is the version. It is possible to install and start a newer version of a service in a running system[^av]. So `addingService` may be called twice (or more often). Method `serviceRemoved` may be called to remove e.g. an earlier version of a service after the newer version has been added. Therefore it is necessary to update the reference to the log service after each change. Considering the life cycle, a service object is guaranteed to be usable between the invocations of `addingService` and `serviceRemoved` for that service object. But `serviceRemoved` is called *after* the service has been removed from the service tracker. So we cannot use `logServiceTracker.getService()` throughout our code. We have to track the current service incarnation in `logService` in order to have the service available in the short time between the service being removed from the service tracker and stopping our own service in `serviceRemoved`.
+
 
 ---
 
@@ -195,6 +215,10 @@ Run this using a configuration that also includes the Felix console. When the ap
 
 [^ug]: The upper limit is an automatic guess, of course. If there will ever be a version 2.x of the API, chances are high that our code will still run. Usually, however, a change of the major version indicates some incompatible change of the API. So by excluding 2.0 and anything beyond, we're on the safe side. 
 
-[^dss]: But this does sound alluring, doesn't it? Well, that's why OSGi has added such a concept as "Declarative Services". But let's stick to the "low level API" for now.
+[^dss]: But this does sound alluring, doesn't it? Well, that's why OSGi has added such a concept as "Declarative Services". But let's stick to the "mid level API" provided by the `ServiceTracker` utility class for now.
 
 [^sr]: Bundles that provide a service usually register the service when they are started and unregister it when they are stopped.
+
+[^po]: As has been pointed out to me in a [discussion](https://mail.osgi.org/pipermail/osgi-dev/2016-April/005149.html) on the osgi-dev list.
+
+[^av]: Quite handy if you have to provide 24x7 availability and want to apply a patch. 
