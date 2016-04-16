@@ -103,17 +103,14 @@ public class Activator implements BundleActivator {
                  * available now and that our component can be started. */
                 @Override
                 public LogService addingService(ServiceReference<LogService> reference) {
-                    LogService result = super.addingService(reference);
-                    // Update the logService reference to whatever the ServiceTracker
-                    // considers "current" now.
-                    logService = getService();
+                    logService = super.addingService(reference);
                     // The required service has become available, so we should 
                     // start our service if it hasn't been started yet.
                     if (helloWorld == null) {
                         System.out.println("Hello World started.");
                         helloWorld = new HelloWorld();
                     }
-                    return result;
+                    return logService;
                 }
 
                 /** This method is invoked when a service is removed. Since we model
