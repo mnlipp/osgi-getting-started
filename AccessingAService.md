@@ -158,13 +158,36 @@ public class Activator implements BundleActivator {
 }
 ```
 
-Run this using a configuration that also includes the Felix console. When the application has started, list the bundles and start and stop the log service and our Hello World component in varying order. Look at the output and understand the start/stop messages from our component's activator.
+Run this using a configuration that also includes the Felix console. When the application has started, list the bundles and start and stop the log service and our Hello World component in varying order. Look at the output and understand the start/stop messages from our component's activator. Here's an example:
 
-The code handles some conditions that may not be obvious if you come from "ordinary" Java component models[^po]. Using OSGi, there can be more than one service with the same service interface. Though this is not necessarily applicable to the logging service, services of the same kind can, in general, coexists with different properties. As an example, you can have two persistence services with different back ends installed and running in parallel.
+```
+Hello World started.
+____________________________
+Welcome to Apache Felix Gogo
 
-A special property is the version. It is possible to install and start a newer version of a service in a running system[^av]. So `addingService` may be called twice (or more often). Method `serviceRemoved` may be called to remove e.g. an earlier version of a service after the newer version has been added. Therefore it is necessary to update the reference to the log service after each change. Considering the life cycle, a service object is guaranteed to be usable between the invocations of `addingService` and `serviceRemoved` for that service object. But `serviceRemoved` is called *after* the service has been removed from the service tracker. So we cannot use `logServiceTracker.getService()` throughout our code. We have to track the current service incarnation in `logService` in order to have the service available in the short time between the service being removed from the service tracker and stopping our own service in `serviceRemoved`.
+g! lb
+START LEVEL 1
+   ID|State      |Level|Name
+    0|Active     |    0|System Bundle (5.2.0)
+    1|Active     |    1|Apache Felix Log Service (1.0.1)
+    2|Active     |    1|Apache Felix Gogo Command (0.14.0)
+    3|Active     |    1|Apache Felix Gogo Runtime (0.16.2)
+    4|Active     |    1|Apache Felix Gogo Shell (0.10.0)
+    5|Active     |    1|SimpleBundle-logging (1.1.0)
+g! stop 1
+Hello World stopped.
+g! 
+```
 
+The code handles some conditions that may not be obvious if you come from "ordinary" Java component models[^po]. Using OSGi, there can be more than one service with the same service interface. Though this is not very useful in the case of the logging service, several services with the same interface can, in general, coexists. As an example, you can have two persistence services with different back ends installed and running in parallel[^mti]. A special case -- that also makes sense in the case of the log service -- is having a service twice after installing (and starting) a newer version in a running system[^av].
 
+[^mti]: There's much more to it. But let's leave it a bit vague for now.
+
+[^av]: Quite handy if you have to provide 24x7 availability and want to apply a patch.
+
+ In general,  `addingService` and `serviceRemoved` may be called several times in no specific order. In order to get the "current" service object, you could call `logServiceTracker.getService()` each time you need the service. There's a problem with that, however. Considering its life cycle, a service object is guaranteed to be usable between the invocations of `addingService` and `serviceRemoved` for that service object. But `serviceRemoved` is called *after* the service has been removed from the service tracker. So there is a short time span between the service having been removed from the tracker already and stopping our own service in `serviceRemoved`. When the last (or only) log service object is removed, a call to `logServiceTracker.getService()` returns `null` during that time span. Therefore it is necessary to cache the reference to the log service and update it after each change.  
+
+ 
 ---
 
 [^mv]: Rule of thumb: get the latest versions of all libraries and hope that they provide backward compatibility for parts of the application built with older version, right? Well, often this works surprisingly well... 
@@ -221,4 +244,3 @@ A special property is the version. It is possible to install and start a newer v
 
 [^po]: As has been pointed out to me in a [discussion](https://mail.osgi.org/pipermail/osgi-dev/2016-April/005149.html) on the osgi-dev list.
 
-[^av]: Quite handy if you have to provide 24x7 availability and want to apply a patch. 
