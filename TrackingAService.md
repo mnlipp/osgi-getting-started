@@ -39,10 +39,11 @@ The startup code must be updated to something similar to this:
 import org.osgi.service.log.LogService;
 
 public class Activator implements BundleActivator {
+    static public LogService logService;
     ...
     @Override
     public void start(BundleContext context) throws Exception {
-        LogService logService = context.getServiceReference(
+        logService = context.getServiceReference(
                 context.getServiceReference(LogService.class));
         helloWord = new HelloWorld();
         helloWorld.start();
@@ -52,9 +53,9 @@ public class Activator implements BundleActivator {
 }
 ```
 
-The problem with this simple approach is that the method `getServiceReference` returns a service only if it is already registered. If it is not (yet) available, a listener can be added to the `BundleContext` to avoid "busy waiting". The listener is informed about changes of service states. So simply put, it should be possible to check whether the log service already exists and, if it is the case, start our service. Else we register a listener and wait for the log service to appear and start our service then. The details, however, are a bit tricky. For example, what happens if the log service appears after we have done the initial check but before we have registered the listener? That's why OSGi includes a [ServiceTracker](https://osgi.org/javadoc/r6/core/index.html?org/osgi/framework/BundleContext.html) class, which is supposed to simplify things a bit.
+The problem with this simple approach is that the method `getServiceReference` returns a service only if it is already registered. If it is not (yet) available, a listener can be added to the `BundleContext` to avoid "busy waiting". The listener is informed about changes of service states. So simply put, it should be possible to check whether the log service already exists and, if it is the case, start our service. Else we register a listener and wait for the log service to appear and start our service then. The details, however, are a bit tricky. For example, what happens if the log service appears after we have done the initial check but before we have registered the listener? That's why OSGi includes a [ServiceTracker](https://osgi.org/javadoc/r6/core/index.html?org/osgi/util/tracker/ServiceTracker.html) class, which is supposed to simplify things a bit.
 
-We want our service thread to start only if a log service is available. And we want it to stop when the log service becomes unavailable. The following code shows how this can be done using the `ServiveTracker` (as before, you can checkout the [project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-logging) with this code).
+We want our service thread to start only if a log service is available. And we want it to stop when the log service becomes unavailable. The following code shows how this can be done using the `ServiceTracker` (as before, you can checkout the [project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-logging) with this code).
 
 ```java
 public class Activator implements BundleActivator {
@@ -154,7 +155,7 @@ public class Activator implements BundleActivator {
 }
 ```
 
-Run this using a configuration that also includes the Felix console. When the application has started, list the bundles and start and stop the log service and our Hello World component in varying order. Look at the output and understand the start/stop messages from our component's activator. Here's an example:
+Run this using a configuration that also includes the Felix console. When the application has started, list the bundles and start and stop the log service and our `HelloWorld` component in varying order. Look at the output and understand the start/stop messages from our component's activator. Here's an example:
 
 ```
 Hello World started.
@@ -189,12 +190,14 @@ As an additional complexity besides the dynamic appearance and disappearance of 
 
 [^av]: Quite handy if you have to provide 24x7 availability and want to apply a patch.
 
-Due to this OSGi feature, we have to take into consideration that `addingService` and `serviceRemoved` may be called several times. In order to get the "current" service object, the `ServiceTracker` provides `getService()` that is supposed to be called each time we need the service. There are two problem with that, however.  
+Due to this OSGi framework feature, we have to take into consideration that `addingService` and `serviceRemoved` may be called several times. In order to get the "current" service object, the `ServiceTracker` provides `getService()` that is supposed to be called each time we need the service. There are two problem with that, however.  
 
 Method `addingService` is called *before* the service has been added to the set of tracked services. As the `HelloWorld` thread is started in `addingService`, a call to `getService()` from that newly started thread may fail because it may occur before `addingService` returns and the service is added to the services known to the `ServiceTracker`. Likewise, `serviceRemoved` is called *after* the service has been removed from the service tracker. So there is a short time span between the service having been removed from the tracker already and stopping `HelloWord` thread in `serviceRemoved`. When the last (or only) log service object is removed, a call to `logServiceTracker.getService()` returns `null` during that time span. 
 
 Therefore, calling `getService()` from the `HelloWorld` thread is not an option. Rather, it is necessary to cache the reference to the log service and update it after each change. Updating the reference in `serviceRemoved` is simple, because the `ServiceTracker` is up to date (the service has been removed already). In `addingService`, however, we have to find out whether the new service will be preferred over an already tracked service *after* `addingService` has finished. It's possible, but makes things even more complicated, of course.
 
+The documentation doesn't mention this, but the `ServiceTracker` isn't really fit to track required (mandatory) services[^simpler]. We'll have a look at better alternatives later.
 
+[^simpler]: It would be quite easy if there were additional methods `serviceAdded` and `removingService` to override, called *after* a service has been added to the set of tracked services and *before* it is removed from the set of tracked services , respectively. I haven't got the slightest idea why such methods haven't been provided in OSGi's `ServiceTracker`. I have found that an [internal class](http://felix.apache.org/apidocs/dependencymanager/r5/index.html?org/apache/felix/dm/tracker/ServiceTracker.html) in Apache Felix introduces a method `addedService` (that should probably have been called `serviceAdded` to match OSGi's naming pattern).
 
 ---
