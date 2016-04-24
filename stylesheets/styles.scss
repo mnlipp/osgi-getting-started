@@ -109,7 +109,6 @@ img {
 header {
   width:24%;
   float:left;
-  position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
@@ -190,12 +189,12 @@ hr {
 }
 
 footer {
-  background-color: white;
-  width:270px;
+  width:21%;
   float:left;
   position:fixed;
-  padding-bottom:50px;
+  padding:30px 0;
   bottom:0px;
+  background-color:white;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
