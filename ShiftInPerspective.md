@@ -5,7 +5,7 @@ title: Shift in Perspective
 
 # Shift in Perspective
 
-When presenting their software, OSGi framework providers tend to focus -- not surprisingly -- on the capabilities of the product. Among those is the possibility to deploy bundles dynamically from a console. We've used this capability throughout this introduction to test our bundle in various development stages. This might lead to the impression that an OSGi framework is a heavyweight -- or at least light heavyweight -- container[^j2ee], which is not true.
+When presenting their software, OSGi framework providers tend to focus -- not surprisingly -- on the capabilities of the product. Among those is the possibility to deploy bundles dynamically from a console. We've used this capability throughout this introduction to test our bundle in various development stages. This might lead to the impression that the OSGi framework is a heavy weight -- or at least light heavy weight -- container[^j2ee], which is not true.
 
 A more appropriate perspective on the OSGi framework focuses on the aspect that it is a framework: an environment providing some generic functionality to facilitate the development of software (see the [more exhaustive explanation](https://en.wikipedia.org/wiki/Software_framework) on Wikipedia). A characteristic of frameworks (contrary to libraries) is that they implement the startup code. The user-written code is invoked by the framework in a framework dependent way[^invok].
 
