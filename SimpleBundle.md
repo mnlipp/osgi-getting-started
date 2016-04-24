@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Simple Bundle
+date: 2016-03-14 12:00:00
 ---
 
 # Simple Bundle

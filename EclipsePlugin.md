@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Eclipse (OSGi) Plug-in
+date: 2016-03-16 12:00:00
 ---
 
 # Eclipse (OSGi) Plug-in

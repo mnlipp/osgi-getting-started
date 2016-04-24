@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Shift in Perspective
+date: 2016-03-31 12:00:00
 ---
 
 # Shift in Perspective
