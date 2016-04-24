@@ -56,10 +56,8 @@ So here it is, your first OSGi bundle. Its entry looks a bit different from the 
     5|Active     |    1|HelloWorld (1.0.0)|1.0.0
 ```
 
-Despite having an active bundle, nothing happens. This is not really surprising. First, we haven't provided any code aside from the empty class definition. Second, the class hasn't been referenced in the manifest (actually, the class is completely irrelevant for building this bundle, but introducing a bundle without a component base would have been a bit irritating)[^LB]. Obviously, if we want code to be executed, we need something similar to the method "`static void main(...)`" in an application's startup class. This issue will be covered in the next part.
+Despite having an active bundle, nothing happens. This is not really surprising. First, we haven't provided any code aside from the empty class definition. Second, the class hasn't been referenced in the manifest. Actually, the class is completely irrelevant for building this bundle. But as I have started this with a "component framework view" on OSGi, introducing a bundle without a component base would have been a bit irritating. Obviously, if we want code to be executed, we need something similar to the method "`static void main(...)`" in an application's startup class. This issue will be covered in the next part.
 
 Meanwhile &mdash; as it doesn't do anything useful anyway &mdash; you can remove the simplest bundle again. Type "`felix:uninstall 5`". When you re-list the bundles, you'll find that it is gone.
 
----
 
-[^LB]: At least if you stumbled upon OSGi while searching for a component framework. As mentioned before, OSGi bundles are actually just modules, they don't have to be (or contain) "active" components. Modules only contain some classes implementing an aspect of functionality (sometimes forming a generally usable library) and usually don't need to be started. Bundles that provide modules must have an `Export-Package` entry in `MANIFEST-MF` in order to make the classes from the module available to other bundles. We'll come back to that later.
