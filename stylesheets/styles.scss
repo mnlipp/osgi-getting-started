@@ -107,8 +107,11 @@ img {
 }
 
 header {
-  width:24%;
+  width:calc(24% - 50px);
+  height:calc(100% - 160px);
   float:left;
+  position:fixed;
+  overflow:auto;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
@@ -189,7 +192,8 @@ hr {
 }
 
 footer {
-  width:21%;
+  width:calc(24% - 50px);
+  height:40px;
   float:left;
   position:fixed;
   padding:30px 0;
