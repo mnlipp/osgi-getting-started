@@ -51,7 +51,7 @@ START LEVEL 1
     5|Resolved   |    1|HelloWorld (1.0.0)|1.0.0
 ```
 
-So here it is, your first OSGi bundle. Its entry looks a bit different from the others because the state is "Resolved" instead of "Active". This indicates that it has been installed without problems, but it hasn't been started yet. Let's do this now. Issue the command "`felix:start 5`". When you list the bundles again, the state has changed:
+So here it is, your first OSGi bundle. Its display in the list looks a bit different from the others because the state is "Resolved" instead of "Active". This indicates that it has been installed without problems, but it hasn't been started yet. Let's do this now. Issue the command "`felix:start 5`". When you list the bundles again, the state has changed:
 
 ```
     5|Active     |    1|HelloWorld (1.0.0)|1.0.0
