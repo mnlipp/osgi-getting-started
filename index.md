@@ -10,7 +10,10 @@ You find a lot of tutorials about OSGi on the web. Why add another introduction 
 
 Most tutorials that I have found are centered around some tool that is supposed to overcome the difficulties of OSGi. But is OSGi really so difficult to master? No it isn't. You just mustn't start with complex tools. Knowing the JDK and its basic tools is quite sufficient. Of course, you should also have some general knowledge about [modular programming](https://en.wikipedia.org/wiki/Modular_programming) and [component based software](https://en.wikipedia.org/wiki/Component-based_software_engineering), because OSGi is basically about how to build and use modularized and component based applications with a given framework.
 
-The examples used in this introduction are available from the [project site](https://github.com/mnlipp/osgi-getting-started) as an [Eclipse](http://www.eclipse.org/) project. I know that there are other IDEs around, but that's the one I prefer. For most parts of this introduction, the IDE is actually irrelevant. If you want to, you can use a text editor and build the examples with `javac` and `jar`. There are also gradle build configurations provided that automate those compilation and packaging steps.
+The examples used in this introduction are available from the [project site](https://github.com/mnlipp/osgi-getting-started) as an [Eclipse](http://www.eclipse.org/) project. I know that there are other IDEs around, but that's the one I prefer. For the initial parts of this introduction, the IDE is actually irrelevant. If you want to, you can use a text editor and build the examples with `javac` and `jar`. There are also gradle build configurations provided that automate those compilation and packaging steps[^nm].
 
 If you want to comment on this introduction, simply enter your remarks as a [project issue](https://github.com/mnlipp/osgi-getting-started/issues).
 
+---
+
+[^nm]: No maven inside! I think maven is the worst thing that has ever happened to Java development. Neil Ford has [described the issue](http://nealford.com/memeagora/2013/01/22/why_everyone_eventually_hates_maven.html) very nicely (and far less emotionally than I ever could).
