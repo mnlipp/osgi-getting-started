@@ -47,7 +47,7 @@ Bundle-Activator: io.github.mnl.osgiGettingStarted.simpleBundle.Activator
 
 If you have some experience with using libraries in Java projects, you know that the libraries aren't only required at compile time, they must also be available at runtime. If your program depends on a library, you somehow have to include it in your delivery in order to provide a readily executable application. So when we create the `SimpleBundle.jar` in the next step, should we add the OSGi jar besides our classes and the `MANIFEST.MF`?
 
-Actually, the jar that we have downloaded from OSGi holds only the interface definitions required for compilation, it doesn't provide implementations. So it would only be of limited use in the runtime environment. Besides, as the runtime environment expects our bundle to use an interface that it surely knows about, it is reasonable to assume that the OSGi framework supplies the `BundleInterface` type.
+Actually, the jar that we have downloaded from OSGi holds only the interface definitions required for compilation, it doesn't provide implementations. So it would only be of limited use in the runtime environment. Besides, as the runtime environment is supposed to load the activator class provided by our bundle and invoke its methods, it is reasonable to assume that any OSGi framework implementation supplies the `BundleInterface` type out-of-the-box.
 
 Therefore, let's simply package what we have so far into a jar file called `SimpleBundle.jar`:
 
@@ -71,7 +71,7 @@ Caused by: java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
 java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
 ```
 
-So, is there no `BundleActivator` in the runtime environment after all? Yes, there is. It's just that the OSGi runtime doesn't freely allow a bundle to use everything that is available in the environment, not even it is something as obvious as a framework interface. If a bundle wants to use an interface or class from the runtime environment, it must declare this desire with an `Import` statement in the manifest. The complete manifest of our Simple Bundle must hence include such a statement as well:
+So, is there no `BundleActivator` in the runtime environment after all? Yes, there is. It's just that the OSGi runtime doesn't allow a bundle to use everything that is available in the environment freely, not even it is something as obvious as a framework interface. If a bundle wants to use an interface or class from the runtime environment, it must declare this desire with an `Import` statement in the manifest. The complete manifest of our Simple Bundle must hence include such a statement as well:
 
 ```properties
 Manifest-Version: 1.0
@@ -95,4 +95,3 @@ g! felix:stop 10
 Hello World stopped.
 ```
 
-Note that an activator class is not the only way to start (and stop) a bundle. The runtime environment can also provide the `OSGi Declarative Services` (in the case of felix you have to add them explicitly, they don't come "out of the box"). The OSGi's Wiki has a short introduction into [Declarative Services](http://wiki.osgi.org/wiki/Declarative_Services).
