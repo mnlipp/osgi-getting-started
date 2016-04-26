@@ -14,7 +14,9 @@ There is a [tutorial](http://bndtools.org/tutorial.html) for Bndtools, which I f
 
 Create a new Bndtools project in Eclipse using the wizard. Choose the Bndtools/Empty template, use `SimpleBundle-bnd` as project name. When asked for a "bnd configuration project" create one. You'll see two new projects in Eclipse. The `SimpleBundle-bnd`, which was to be expected, and a project `cnf`. Ignore the latter for the time being.
 
-Have a look at the `generated` folder in `SimpleBundle-bnd`. Double-click on `SimpleBundle-bnd.jar` and then -- in the "Jar File Viewer" that appears -- double-click on `MANIFEST.MF`. Looks a bit familiar but much more verbose than what we have written so far. 
+Have a look at the `generated` folder in `SimpleBundle-bnd`. Double-click on `SimpleBundle-bnd.jar` and then -- in the "Jar File Viewer" that appears -- double-click on `MANIFEST.MF`. Looks a bit familiar but much more verbose than what we have written so far[^sb]:
+
+[^sb]: Probably this is really the *simplest bundle* that you can have.  
 
 ![Jar File Viewer](images/JarFileView.png){: width="700px" }
 
@@ -24,4 +26,6 @@ On tab "Content", you can also add the bundle's activator. At the time of this w
 
 Add version "1.0.3" in the "Content" tab of `bnd.bnd`. Save, and you can immediately install and start the bundle (the jar) in felix as with our previous projects.
 
-If you want to continue using Bndtools, you should now start reading the [bnd documentation](http://bnd.bndtools.org/). I recommend to start with "[Introduction](http://bnd.bndtools.org/chapters/110-introduction.html)", proceed with "[Concepts](http://bnd.bndtools.org/chapters/130-concepts.html)" and read the rest as required when encountering problems with your projects.
+If you want to continue using Bndtools, you should have a look at the [bnd documentation](http://bnd.bndtools.org/) after reading the remaining parts of my introduction (at least up to "Cleaning up" -- there are still some parts of the puzzle missing). I recommend to start with "[Introduction](http://bnd.bndtools.org/chapters/110-introduction.html)", proceed with "[Concepts](http://bnd.bndtools.org/chapters/130-concepts.html)" and read the rest as required when you encounter problems with your projects.
+
+---
