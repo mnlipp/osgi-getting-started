@@ -71,7 +71,7 @@ Caused by: java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
 java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
 ```
 
-So, is there no `BundleActivator` in the runtime environment after all? Yes, there is. It's just that the OSGi runtime doesn't allow a bundle to use everything that is available in the environment freely, not even it is something as obvious as a framework interface. If a bundle wants to use an interface or class from the runtime environment, it must declare this desire with an `Import` statement in the manifest. The complete manifest of our Simple Bundle must hence include such a statement as well:
+So, is there no `BundleActivator` in the runtime environment after all? Yes, there is. <a name="need-for-import"></a>It's just that the OSGi runtime doesn't allow a bundle to use everything that is available in the environment freely, not even it is something as obvious as a framework interface. If a bundle wants to use an interface or class from the runtime environment, it must declare this desire with an `Import` statement in the manifest. The complete manifest of our Simple Bundle must hence include such a statement as well:
 
 ```properties
 Manifest-Version: 1.0

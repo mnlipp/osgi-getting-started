@@ -105,7 +105,5 @@ After this change, go back to the "Run" tab of the project's `bnd.bnd` editor. U
 
 Run the project again with the augmented set of bundles and see the log messages being printed in the JUL format. List the bundles and stop and start the simple bundle once more and observe the messages.
 
-*To be continued*
-
 ---
 
