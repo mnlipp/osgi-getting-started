@@ -53,7 +53,7 @@ You may have noticed already that it is possible to choose versions when adding 
 
 ![Choosing a version](images/Bndtools-version-dialog.png){: width="500px" }
 
-Clicking "Add" and saving results in an extended `buildpath` entry in `bnd.bnd`[^ov] and an extended entry in the generated jar's `MANIFEST.MF`[^rl]:
+Clicking "Add" (and saving) results in an extended `buildpath` entry in `bnd.bnd`[^ov] and an extended entry in the generated jar's `MANIFEST.MF`[^rl]:
 
 ```properties
 Import-Package: org.osgi.framework;version="[1.6,2)"
@@ -68,7 +68,8 @@ Import-Package: org.osgi.framework;version="[1.6,2)"
 	    osgi.core;version=4.3
     ```
     
-    When you try to build this using gradle, however, it fails with `error: type ServiceTracker does 
+    And the continuous build executed by Bndtools works fine. When you try to build 
+    the project using gradle, however, it fails with `error: type ServiceTracker does 
     not take parameters`. The reason is that the OSGi libraries provided for version 4.3.0 have been 
     compiled [with a special flag](http://blog.osgi.org/2012/10/43-companion-code-for-java-7.html) 
     that allows generics to be used in pre-Java 5 JVMs. Starting with Java 7, this 
