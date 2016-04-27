@@ -53,7 +53,7 @@ You may have noticed already that it is possible to choose versions when adding 
 
 ![Choosing a version](images/Bndtools-version-dialog.png){: width="500px" }
 
-Clicking "Add" (and saving) results in an extended `buildpath` entry in `bnd.bnd`[^ov] and an extended entry in the generated jar's `MANIFEST.MF`[^rl]:
+Clicking "Add" (and saving) results in an extended `buildpath` entry in `bnd.bnd`[^ov] and an extended entry in the generated jar's `MANIFEST.MF`[^rl]:<a name="version-range"></a>
 
 ```properties
 Import-Package: org.osgi.framework;version="[1.6,2)"
@@ -106,7 +106,7 @@ Import-Package: org.osgi.framework;version="[1.6,2)"
 
 The "version interval" uses the notation known from mathematics: at least version 1.6, higher versions (e.g. 1.6.1, 1.7) are okay, but the version must be less than 2.0[^ug].
 
-[^ug]: The upper limit is an automatic guess, of course. If there will ever be a version 2.x of the API, chances are high that our code will still run. Usually, however, a change of the major version indicates some incompatible change of the API. So by excluding 2.0 and anything beyond, we're on the safe side. 
+[^ug]: The upper limit is an educated guess, of course. If there will ever be a version 2.x of the API, there is a chance that our code will still run. Usually, however, a change of the major version indicates some incompatible change of the API. So by excluding 2.0 and anything beyond, we're on the safe side. 
 
 Now that we know how to easily run oder debug an OSGi application from Eclipse (using the "Run" or "Debug" buttons on the "Run" tab of the `bnd.bnd` editor), we can check the effect of our statement simply by setting a breakpoint after it. Do this and start the application in debug mode. You should get: 
 
