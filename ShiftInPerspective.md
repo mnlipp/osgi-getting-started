@@ -41,7 +41,7 @@ If you want the command shell to be part of your application again, add the bund
 
 Bndtools will remain the tool of choice for the remainder of this introduction. It's basically an Eclipse integration for the command line tool bnd[^mti]. The tool bnd is in turn at the core of all OSGi build tools that I have encountered. While it provides some sophisticated functions, it's easy to get started with, and the configuration and action directives in `bnd.bnd` are straightforward and easy to understand.
 
-[^mti]: This is a bit unfair. Its possibility to deploy the bundle under development into a running framework gives you a really fast development cycle. However, I failed to find a description of this feature in the documentation, so it took me some time to find out about it.
+[^mti]: This is a bit unfair. Its possibility to deploy the bundle under development into a running framework gives you a really fast development cycle. I failed to find a description of this feature in the documentation, so it took me some time to find out about it. Make some change to the source code (adding a space somewhere is sufficient) while the OSGi framework that you started with the "Run" button is running. Save the source file. As you can see from the log messages, the bundle under development is stopped, reinstalled, and restarted automatically.
 
 ---
 
