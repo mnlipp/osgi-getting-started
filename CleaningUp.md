@@ -61,6 +61,15 @@ Dynamic modules are something that most scenarios don't need. Nevertheless, when
 
 ## Services
 
+An important aspect of a modularized design is [loose coupling](https://en.wikipedia.org/wiki/Loose_coupling) between the components. The functionalities made available (called "services" by OSGi) are defined by Java interfaces. The challenge is to provide a mechanism that allows the user of a service to find a provider for the service, i.e. an instance of a class that implements the interface. JavaSE provides such a mechanism (since JavaSE 6) in the form of the [ServiceLoader](https://docs.oracle.com/javase/7/docs/api/index.html?java/util/ServiceLoader.html). The service loader implements a rather static approach. It searches all jars in the classpath for files "`META-INF/services/<interface name>`". The file with a given interface name contains the name of an implementation class for that interface.
+
+The OSGi core framework defines a different, more dynamic approach as its "Service Layer". This  layer works almost independent of the module related features described above. It depends on bundles only in so far as a relationship between services and the bundles that provide them is maintained[^sl-mu]. This relationship is used by the framework to e.g. automatically remove all services provided by a bundle if this bundle is stopped.
+
+[^sl-mu]: Which makes it impossible to use the service layer in your code without providing the code in bundles. My impression is that some people looking for a service layer stumble upon the OSGi platform, and then complain about its complexity when they notice that they have to build modularized applications in order to use the OSGi service layer.
+
+At the core of the service layer is the service registry. It can be accessed using methods from the [BundleContext](https://osgi.org/javadoc/r6/core/index.html?org/osgi/framework/BundleContext.html). Bundles that provide services register them with the registry, usually in the activator's start method. Bundles that need a service look it up using `getServiceObjects`, which returns all registered services of the requested kind. The service objects are instances of classes that implement the required interface. After the initial lookup, there is no overhead in using an object returned by the service registry.
+
+
 *To be continued*
 
 ---
