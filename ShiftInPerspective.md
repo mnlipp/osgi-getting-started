@@ -39,7 +39,9 @@ Looking at the sizes, you find that the core of the OSGI framework is about 680k
 
 If you want the command shell to be part of your application again, add the bundles ``org.apache.felix.gogo.shell``, ``org.apache.felix.gogo.runtime`` and ``org.apache.felix.gogo.command`` in the "Run Bundles" field. Start the application with the augmented set of bundles and you can e.g. check the running bundles with ``felix:lb`` again. To simplify application launch during development, Bndtools provides the "Run" button on the "Run" tab. It immediately starts the environment that you find in the exported bundle used in the previous configuration.
 
-Bndtools will remain the tool of choice for the remainder of this introduction. It's basically an Eclipse integration for the command line tool bnd. The tool bnd is in turn at the core of all OSGi build tools that I have encountered. While it provides some sophisticated functions, it's easy to get started with, and the configuration and action directives in `bnd.bnd` are straightforward and easy to understand.
+Bndtools will remain the tool of choice for the remainder of this introduction. It's basically an Eclipse integration for the command line tool bnd[^mti]. The tool bnd is in turn at the core of all OSGi build tools that I have encountered. While it provides some sophisticated functions, it's easy to get started with, and the configuration and action directives in `bnd.bnd` are straightforward and easy to understand.
+
+[^mti]: This is a bit unfair. Its possibility to deploy the bundle under development into a running framework gives you a really fast development cycle. However, I failed to find a description of this feature in the documentation, so it took me some time to find out about it.
 
 ---
 
