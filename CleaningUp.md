@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Interlude: Cleaning up"
-date: 2016-04-29 12:00:00
+date: 2016-05-01 12:00:00
 ---
 
 # Interlude: Cleaning up
@@ -77,7 +77,25 @@ Changes of the service registry can be tracked by registering service listeners.
 
 The only way to use the OSGi service layer efficiently is to wrap it in some "higher level API". Actually, the best way to manage services is to externalize the task of registering and unregistering them by providing a component that takes care of the registration process based on information supplied by the bundles and also uses this information for dependency resolutions. There are several approaches to this (see next part). The good thing is that you don't have to make a final choice at once, as most solutions are based on the OSGi service layer and can therefore interoperate. The bad thing is that your application is rarely ever based on OSGi alone. Usually you'll have some OSGi based stack -- which implies a steeper learning curve.
 
-*To be continued*
+## Service specifications
+
+The OSGi alliance didn't stop at defining a framework for modules and service in the "OSGi Core" specification. Rather, they have also defined various services based on and to be used in that framework. A complete list of these services can be found in the "OSGi Compendium" specification.
+
+The Services can roughly be grouped in three categories:
+
+* Services that enhance the core framework (e.g. the "Metatype Service Specification")
+* Services that provide a generally useful functionality (obvious example: the "Log Service Specification")
+* Services that make some well known Java (EE) feature available as a an OSGi service (e.g. the "JDBC Service Specification")
+
+Don't try to read the compendium and understand the purpose of all services. The descriptions usually lack an introductory illustrative use case. Rather, keep the titles in mind and come back to the service descriptions when you face a use case that might be related with the service.
+
+You should also not assume that the services are best-of-breed in all cases. I admit, that -- after working my way through the log service specification -- I was a bit disappointed to find a [remark](http://stackoverflow.com/questions/10498846/how-do-you-properly-handle-logging-in-osgi-while-seperating-service-components) by Peter Kriens that the OSGi alliance decided to not upgrade the "14 years old" service because there are "already so (too) many logging systems around"[^pax].
+
+[^pax]: He points to [Pax Logging](https://ops4j1.jira.com/wiki/display/paxlogging/Pax+Logging) which build on and enhances the OSGi log service -- so at least my reading the specification wasn't completely in vain after all.
+
+## ... and more
+
+It would be ridiculous to claim that I could summarize the more than 400 pages of the framework specification (not to speak of the compendium) in a single part of this introduction. I think I have covered the topics that you need to get started. As I have already recommended with regard to the services from the companion specification, have a look at the titles of the framework specification's chapters and return to them when something "rings a bell".
 
 ---
 
