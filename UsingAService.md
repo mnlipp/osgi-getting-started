@@ -83,7 +83,7 @@ Focusing on the Eclipse GUI (Bndtools), an easy way is outlined in its [FAQ](htt
 
 [^ws]: Not to be confused with the Eclipse workspace. The default layout puts `cnf` as a top level project in your Eclipse workspace. However, the only real restriction is that `cnf` must be a sibling of the (bnd) OSGi projects under development. The layout for this introduction uses a [top level](https://github.com/mnlipp/osgi-getting-started) (gradle nature only) project, with `cnf` and the sample bundle projects as children. 
 
-Provided that the bundles that you want to add are maintained in an OSGi repository, a better approach is to add this (remote) repository to the list of repositories that are searched for bundles. This list is initialized from `cnf/ext/repositories.bnd`. The file, however, isn't supposed to be modified. The bnd tool itself supports several ways to add a repository. But the only way compatible with Bndtools is what you get from using the GUI for editing `build.bnd`. 
+Provided that the bundles that you want to add are maintained in an OSGi repository<a name="add-repo"></a>, a better approach is to add this (remote) repository to the list of repositories that are searched for bundles. This list is initialized from `cnf/ext/repositories.bnd`. The file, however, isn't supposed to be modified. The bnd tool itself supports several ways to add a repository. But the only way compatible with Bndtools is what you get from using the GUI for editing `build.bnd`. 
 
 ![Adding a repository](images/Add-repository.png){: width="700px" }
 
