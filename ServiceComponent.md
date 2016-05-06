@@ -151,7 +151,9 @@ public class HelloWorld implements Runnable {
 }
 ```
 
-Note that we don't need an activator any more. The annotations specify the same information as the API calls in the previous example and should be self-explanatory. In order to make them known to the java compiler, you have to add `org.apache.felix.dependencymanager.annotation-x.y.z.jar` to the build path (as you did before with `org.apache.felix.dependencymanager`, see above). The annotations are used to create a file `META-INF/dependencymanager/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld` in the bundle during build. Using the code above, the file looks like this:
+Note that we don't need an activator any more. The annotations specify the same information as the API calls in the previous example and should be self-explanatory[^olddoc]. In order to make them known to the java compiler, you have to add `org.apache.felix.dependencymanager.annotation-x.y.z.jar` to the build path (as you did before with `org.apache.felix.dependencymanager`, see above). The annotations are used to create a file `META-INF/dependencymanager/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld` in the bundle during build. Using the code above, the file looks like this:
+
+[^olddoc]: The "`required`" element included in the `@ServiceDependency` cannot be found in the "[manual](http://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/dependency-service.html#servicedependency)" pages, which obviously aren't complete. When in doubt, have a look at the [javadoc](http://felix.apache.org/apidocs/dependencymanager.annotations/r7/index.html?org/apache/felix/dm/annotation/api/ServiceDependency.html).
 
 ```json
 {"impl":"io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld",
