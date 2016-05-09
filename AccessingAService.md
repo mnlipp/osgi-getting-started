@@ -8,7 +8,22 @@ date: 2016-04-17 12:00:00
 
 A major benefit of using a framework is that you can reuse existing components in an architecturally well defined way. In this section we're going to use the OSGi logging service to improve the logging behavior of our simple bundle.
 
-The OSGi framework manages the available services and makes them available via the [BundleContext](https://osgi.org/javadoc/r6/core/org/osgi/framework/BundleContext.html) interface. An implementation of the `BundleContext` is passed to the `start` method of the `BundleActivator`. Maybe you had noticed this parameter already in our activator implementation:
+The OSGi framework manages the available services and makes them available via the [BundleContext](https://osgi.org/javadoc/r6/core/org/osgi/framework/BundleContext.html) interface[^snbt]. An implementation of the `BundleContext` is passed to the `start` method of the `BundleActivator`. Maybe you had noticed this parameter already in our activator implementation:
+
+[^snbt]: Note that according to an OSGi 
+    [blog entry](http://blog.osgi.org/2013/07/real-men-dont-use-ds.html), this part and 
+    the next part of the introduction should probably not be there 
+    (or banished to some appendix).
+    
+    I don't share this view on software development, I prefer a "from the grounds up" approach when
+    learning about a new technology. From my experience as software architect and project
+    manager, one of the most reliable ways to make a project fail with respect to the delivery timeline
+    is to use some technology that you don't really understand in combination with tools that 
+    are supposed to compensate that lack of understanding. Of course, consultants love this
+    approach and are prepared to come to the rescue -- which will result in the additional failure
+    of the project regarding its budget constraints[^coc].
+
+[^coc]: I definitely liked the response in this [blog](http://blogs.mulesoft.com/dev/news-dev/osgi-no-thanks/): "Ah so consulting is the answer to OSGi complexity. I’ll let everyone know".
 
 ```java
 public class Activator implements BundleActivator {
