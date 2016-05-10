@@ -267,9 +267,11 @@ public class HelloWorld implements Runnable {
 
 The `@Component` annotation for the class looks similar the one in the Felix DM example. The parameter "`service`" serves the same purpose as the parameter "`provides`" of the DM annotation: it prevents our component from being registered as provider for service `java.lang.Runnable`.
 
-Declarative services doesn't support injection of values into fields. Referenced services are made known to the component by invoking a setter method. Considering our example, that's not too bad because we can make the field with the reference to the log service static again[^apDM]. In order to avoid keeping a reference to a log service implementation even if it disappears (and our component is stopped), we have to provide an "unset" method as well. It doesn't need an annotation. Rather, if there is a "`setXYZ`" method with the `@Reference` annotation, declarative services automatically assume an "`unsetXYZ`" method to implement the corresponding "undo" operation.
+Declarative services doesn't support injection of values into fields. Referenced services are made known to the component by invoking a setter method. Considering our example, that's not too bad because we can make the field with the reference to the log service static again[^apDM]. In order to avoid keeping a reference to a log service implementation even if it disappears (and our component is stopped), we have to provide an "unset" method as well[^ofs]. It doesn't need an annotation. Rather, if there is a "`setXYZ`" method with the `@Reference` annotation, declarative services automatically assume an "`unsetXYZ`" method to implement the corresponding "undo" operation.
 
 [^apDM]: You can make Felix DM invoke a method, too.
+
+[^ofs]: You don't need an "unset" method for ordinary (non-static) attributes because the instance of the service component itself is discarded when a component is deactivated.
 
 As with Felix DM, you need a "Service Component Runtime" (as the OSGi specification calls it) to start up the service components. The SCR looks for `Service-Component` headers in all deployed bundles and creates service components, registers their services and activates the components according to the directives in the XML file. Of course, you can use any implementation. But in our environment, the easiest way is to add the bundle `org.apache.felix.scr` to the run bundles. 
 
