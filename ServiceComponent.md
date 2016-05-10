@@ -110,7 +110,7 @@ import org.apache.felix.dm.annotation.api.Start;
 import org.apache.felix.dm.annotation.api.Stop;
 import org.osgi.service.log.LogService;
 
-@Component
+@Component(provides={})
 public class HelloWorld implements Runnable {
 
     @ServiceDependency(required=true)
@@ -151,14 +151,15 @@ public class HelloWorld implements Runnable {
 }
 ```
 
-Note that we don't need an activator any more. The annotations specify the same information as the API calls in the previous example and should be self-explanatory[^olddoc]. In order to make them known to the java compiler, you have to add `org.apache.felix.dependencymanager.annotation-x.y.z.jar` to the build path (as you did before with `org.apache.felix.dependencymanager`, see above). The annotations are used to create a file `META-INF/dependencymanager/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld` in the bundle during build. Using the code above, the file looks like this:
+Note that we don't need an activator any more. The annotations specify the same information as the API calls in the previous example and should be self-explanatory[^olddoc], maybe with the exception of the `@Component` annotation's parameter "`provides`". By default, all interfaces directly implemented by a class "declared" as component are assumed to be interfaces of services provided by the component. (Using the API, declaring a component as provider of a service would require an extra call.) Of course, we don't want our component to be registered as a provider of the `java.lang.Runnable` service. Therefore we have to enumerate the provided services (none) explicitly.
 
 [^olddoc]: The "`required`" element included in the `@ServiceDependency` cannot be found in the "[manual](http://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/dependency-service.html#servicedependency)" pages, which obviously aren't complete. When in doubt, have a look at the [javadoc](http://felix.apache.org/apidocs/dependencymanager.annotations/r7/index.html?org/apache/felix/dm/annotation/api/ServiceDependency.html).
+
+In order to make the annotations known to the java compiler, you have to add `org.apache.felix.dependencymanager.annotation-x.y.z.jar` to the build path (as you did before with `org.apache.felix.dependencymanager`, see above). The annotations are used to create a file `META-INF/dependencymanager/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld` in the bundle during build. Using the code above, the file looks like this:
 
 ```json
 {"impl":"io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld",
  "stop":"stop",
- "provides":["java.lang.Runnable"],
  "start":"start",
  "type":"Component"}
 {"service":"org.osgi.service.log.LogService",
@@ -180,4 +181,99 @@ to the project's `bnd.bnd`. If you want to enable support for the whole (bnd-)wo
 If you're impatient and run the compiled bundle now, nothing's going to happen. As there is no activator any more, another mechanism must notice if a bundle with files `META-INF/dependencymanager/*` in it is started, read the information from the files and act accordingly. Such a mechanism is provided by the dependency manager as bundle `org.apache.felix.dependencymanager.runtime-x.y.z.jar`. Add it to the run bundles and start it again.
 
 
+## OSGi Declarative Services
+
+The OSGi alliance has added support for service components as "Declarative Services" in Release 4 (2005). As the name suggests, there is no API as in Felix DM. Rather, services are declared using a header in `MANIFEST.MF`, e.g.:
+
+```props
+Service-Component: OSGI-INF/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld.xml
+```
+
+The file name pattern `OSGI-INF/<fully qualified class name>.xml` isn't mandatory. For our component the file looks like this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0"
+  name="io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld" 
+  activate="start" deactivate="stop">
+  <implementation class="io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld"/>
+  <reference name="LogService" interface="org.osgi.service.log.LogService" 
+    bind="setLogService" unbind="unsetLogService"/>
+</scr:component>
+```
+
+You would probably not be able to write this file from scratch without further guidance, but when you read it, it's quite self-explanatory. The only thing that might be irritating is the reference to the log service, especially the `bind` and `unbind` attributes. Well, some things have to be approached a bit differently compared to Felix DM. Actually, I didn't write the file shown above. I used the annotations that have been added in release 4.3 of the specification and let `bnd` generate it[^dsbp]. The source code should clarify what happens with the reference to the log service.
+
+[^dsbp]: With declared services, you only have to add `osgi.annotation` to the build path to make `bnd` generate this file. Handling the OSGi annotations is built-in and doesn't require the configuration of a plugin.
+
+```java
+package io.github.mnl.osgiGettingStarted.simpleBundle;
+
+import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.log.LogService;
+
+@Component(service={})
+public class HelloWorld implements Runnable {
+
+    private static LogService logService;
+
+    private Thread runner;
+    
+    @Reference
+    private void setLogService(LogService logService) {
+        this.logService = logService;
+    }
+
+    private void unsetLogService(LogService logService) {
+        this.logService = null;
+    }
+
+    @Activate
+    public void start(ComponentContext ctx) {
+        runner = new Thread(this);
+        runner.start();
+    }
+    
+    @Deactivate
+    public void stop(ComponentContext ctx) {
+        runner.interrupt();
+        try {
+            runner.join();
+        } catch (InterruptedException e) {
+            logService.log(LogService.LOG_WARNING, 
+                    "Could not terminate thread properly", e);
+        }
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Hello World!");
+        while (!runner.isInterrupted()) {
+            try {
+                logService.log(LogService.LOG_INFO, "Hello Word sleeping");
+                Thread.sleep (5000);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    }
+
+}
+```
+
+The `@Component` annotation for the class looks similar the one in the Felix DM example. The parameter "`service`" serves the same purpose as the parameter "`provides`" of the DM annotation: it prevents our component from being registered as provider for service `java.lang.Runnable`.
+
+Declarative services doesn't support injection of values into fields. Referenced services are made known to the component by invoking a setter method. Considering our example, that's not too bad because we can make the field with the reference to the log service static again[^apDM]. In order to avoid keeping a reference to a log service implementation even if it disappears (and our component is stopped), we have to provide an "unset" method as well. It doesn't need an annotation. Rather, if there is a "`setXYZ`" method with the `@Reference` annotation, declarative services automatically assume an "`unsetXYZ`" method to implement the corresponding "undo" operation.
+
+[^apDM]: You can make Felix DM invoke a method, too.
+
+As with Felix DM, you need a "Service Component Runtime" (as the OSGi specification calls it) to start up the service components. The SCR looks for `Service-Component` headers in all deployed bundles and creates service components, registers their services and activates the components according to the directives in the XML file. Of course, you can use any implementation. But in our environment, the easiest way is to add the bundle `org.apache.felix.scr` to the run bundles. 
+
+
 *To be continued*
+
+---
