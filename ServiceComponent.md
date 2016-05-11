@@ -151,11 +151,11 @@ public class HelloWorld implements Runnable {
 }
 ```
 
-Note that we don't need an activator any more. The annotations specify the same information as the API calls in the previous example and should be self-explanatory[^olddoc], maybe with the exception of the `@Component` annotation's parameter "`provides`". By default, all interfaces directly implemented by a class "declared" as component are assumed to be interfaces of services provided by the component. (Using the API, declaring a component as provider of a service would require an extra call.) Of course, we don't want our component to be registered as a provider of the `java.lang.Runnable` service. Therefore we have to enumerate the provided services (none) explicitly.
+Note that we don't need an activator any more. The annotations specify the same information as the API calls in the previous example and should be self-explanatory[^olddoc], maybe with the exception of the `@Component` annotation's parameter "`provides`". All interfaces directly implemented by a class annotated as `@Component` are by default assumed to be interfaces of services provided by the component. (Using the API, declaring a component as provider of a service would require an extra call.) Of course, we don't want our component to be registered as a provider of the `java.lang.Runnable` "service". Therefore we have to enumerate the provided services (none) explicitly.
 
 [^olddoc]: The "`required`" element included in the `@ServiceDependency` cannot be found in the "[manual](http://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/dependency-service.html#servicedependency)" pages, which obviously aren't complete. When in doubt, have a look at the [javadoc](http://felix.apache.org/apidocs/dependencymanager.annotations/r7/index.html?org/apache/felix/dm/annotation/api/ServiceDependency.html).
 
-In order to make the annotations known to the java compiler, you have to add `org.apache.felix.dependencymanager.annotation-x.y.z.jar` to the build path (as you did before with `org.apache.felix.dependencymanager`, see above). The annotations are used to create a file `META-INF/dependencymanager/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld` in the bundle during build. Using the code above, the file looks like this:
+In order to make the annotations known to the java compiler, you have to add `org.apache.felix.dependencymanager.annotation-x.y.z.jar` to the build path (as you did before with `org.apache.felix.dependencymanager`, see above). In an additional build step, the annotations are then used to create a file `META-INF/dependencymanager/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld` in the bundle during packaging. Using the code above, the generated file looks like this:
 
 ```json
 {"impl":"io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld",
@@ -168,7 +168,7 @@ In order to make the annotations known to the java compiler, you have to add `or
  "required":"true"}
 ```
 
-There are two ways to add the additional build step for creating this file to the `bnd` packaging tool. If you want to use the dependency manager only in a single project, you can add a line
+There are two ways to add the additional build step for creating this file to the `bnd` packaging tool. If you want to use the dependency manager in a single project only, you can add a line
 
 ```
 -plugin: org.apache.felix.dm.annotation.plugin.bnd.AnnotationPlugin;\
@@ -183,13 +183,15 @@ If you're impatient and run the compiled bundle now, nothing's going to happen. 
 
 ## OSGi Declarative Services
 
-The OSGi alliance has added support for service components as "Declarative Services" in Release 4 (2005). As the name suggests, there is no API as in Felix DM. Rather, services are declared using a header in `MANIFEST.MF`, e.g.:
+The OSGi alliance has added support for service components as "Declarative Services" in Release 4 of the service specification (2005). As the name suggests, there is no API as in Felix DM. Rather, services are declared using a header in `MANIFEST.MF`, e.g.:
 
 ```props
 Service-Component: OSGI-INF/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld.xml
 ```
 
-The file name pattern `OSGI-INF/<fully qualified class name>.xml` isn't mandatory. For our component the file looks like this:
+The file name pattern "`OSGI-INF/<fully qualified class name>.xml`" isn't mandatory but recommended. 
+
+If we want our component to be a declared service component, the file should look like this:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
