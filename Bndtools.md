@@ -30,4 +30,8 @@ Add version "1.0.3" in the "Content" tab of `bnd.bnd`. Save, and you can immedia
 
 If you want to continue using Bndtools, you should have a look at the [bnd documentation](http://bnd.bndtools.org/) after reading the remaining parts of my introduction (at least up to "Cleaning up" -- there are still some parts of the puzzle missing). I recommend to start with "[Introduction](http://bnd.bndtools.org/chapters/110-introduction.html)", proceed with "[Concepts](http://bnd.bndtools.org/chapters/130-concepts.html)" and read the rest as required when you encounter problems with your projects.
 
+When you create a project with Bndtools, it automatically adds the required files for a gradle built (which is completely independent from Bndtools). The generated build configuration uses [bnd's gradle plugins](https://github.com/bndtools/bnd/tree/master/biz.aQute.bnd.gradle). Don't try to develop OSGi bundles with the plugin from the gradle project. As one of the gradle developers remarked in a [discussion](https://discuss.gradle.org/t/the-osgi-plugin-has-several-flaws/2546/25): "The existing OSGi plugin is one of the oldest Gradle plugins. My opinion is that the best thing to do here would be to start again."[^wid] The plugins bundled with bnd actually represent this "fresh start".
+
+[^wid]: I only wish they had put that in the gradle [documentation](https://docs.gradle.org/current/userguide/osgi_plugin.html) of the plugin. Would have saved me half a day.
+
 ---
