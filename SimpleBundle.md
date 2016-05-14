@@ -35,7 +35,7 @@ public class Activator implements BundleActivator {
 }
 ```
 
-Our class "`HelloWorld`" is still not doing anything useful. But as it represents our service, the activator creates an instance in the `start` method and discards it again in the `stop` method.
+Our class "`HelloWorld`" is still not doing anything useful. But as it represents our component, the activator creates an instance in the `start` method and discards it again in the `stop` method.
 
 If you simply add this class to your project, you'll get an error indicator, because the interface `BundleActivator` isn't known. As is usual in a Java project, classes that are not part of the JDK must be provided by a jar file that you add to the classpath of your project. Again, let's keep things simple. Download the jar that holds the interface from the [OSGi site](https://www.osgi.org/developer/downloads/), put it in a subdirectory of your project (usually called "`lib`") and add it to your classpath.
 
@@ -71,7 +71,7 @@ Caused by: java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
 java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
 ```
 
-Is there no `BundleActivator` in the runtime environment after all? Yes, there is. <a name="need-for-import"></a>It's just that the OSGi runtime doesn't allow a bundle to use everything that is available in the environment freely, not even it is something as obvious as a framework interface. If a bundle wants to use an interface or class from the runtime environment, it must declare this desire with an `Import` statement in the manifest. The complete manifest of our Simple Bundle must hence include such a statement as well:
+Is there no `BundleActivator` in the runtime environment after all? Yes, there is. <a name="need-for-import"></a>It's just that the OSGi runtime doesn't allow a bundle to use everything that is available in the environment freely, not even if it is something as obvious as a framework interface. If a bundle wants to use an interface or class from the runtime environment, it must declare this desire with an `Import` statement in the manifest. The complete manifest of our Simple Bundle must hence include such a statement as well:
 
 ```properties
 Manifest-Version: 1.0
