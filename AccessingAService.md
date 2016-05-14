@@ -6,7 +6,7 @@ date: 2016-04-17 12:00:00
 
 # Accessing a Service
 
-A major benefit of using a framework is that you can reuse existing components in an architecturally well defined way. In this section we're going to use the OSGi logging service to improve the logging behavior of our simple bundle.
+A major benefit of using a framework is that you can reuse existing components in an architecturally well defined way. In this part I'm going to use the OSGi logging service to improve the logging behavior of our simple bundle.
 
 The OSGi framework manages the available services and makes them available via the [BundleContext](https://osgi.org/javadoc/r6/core/org/osgi/framework/BundleContext.html) interface[^snbt]. An implementation of the `BundleContext` is passed to the `start` method of the `BundleActivator`. Maybe you had noticed this parameter already in our activator implementation:
 
@@ -136,7 +136,7 @@ osgi.wiring.package; (&(osgi.wiring.package=org.osgi.service.log)(version>=1.3.0
 
 Read the message carefully and try to understand it. You may encounter similar messages later when the cause is less obvious. Note how version constraints are translated to [filter](https://osgi.org/javadoc/r6/core/org/osgi/framework/Filter.html) expressions that can be easily evaluated by the framework. It's a quite intuitive prefix notation known from LDAP search filters.
 
-What the message comes down to is that there is no logging service in the runtime environment. So go back to the "Run" tab of the `bnd.bnd` editor. Add `org.apache.felix.log` and debug again.
+What the message comes down to is that there is no logging service in the runtime environment. Go back to the "Run" tab of the `bnd.bnd` editor. Add `org.apache.felix.log` and debug again.
 
 ![Adding felix log](images/Adding-felix-log.png){: width="400px" }
 
