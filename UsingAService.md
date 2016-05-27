@@ -127,7 +127,7 @@ As you can see in the screenshot, the edit buttons are disabled. In previous ver
 -plugin.5.de.mnl.osgi: \
 	aQute.bnd.deployer.repository.FixedIndexedRepo; \
 		name=de.mnl.osgi; \
-		locations=https://raw.githubusercontent.com/mnlipp/de.mnl.osgi/master/cnf/releaserepo/index.xml; \
+		locations=https://raw.githubusercontent.com/mnlipp/de.mnl.osgi/master/cnf/release/index.xml; \
 		readonly=true
 ```
 
