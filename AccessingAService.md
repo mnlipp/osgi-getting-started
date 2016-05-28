@@ -58,7 +58,21 @@ public class Activator implements BundleActivator {
 }
 ```
 
-You should see several error markers. First of all, `LogService` is unknown. That's okay, because up to now, we only needed the OSGi core and had therefore only a jar with the core API in the classpath. Go to the "Build" tab of the `bnd.bnd` editor and add `osgi.residential` to the "Build Path". Save, and Bndtools updates the Eclipse project's library path accordingly.
+You should see several error markers. First of all, `LogService` is unknown. That's okay, because up to now, we only needed the OSGi core and had therefore only a jar with the core API in the classpath. Go to the "Build" tab of the `bnd.bnd` editor and add "Bndtools Hub/osgi.residential"[^bndhub] to the "Build Path". Save, and Bndtools updates the Eclipse project's library path accordingly.
+
+[^bndhub]: Since Bndtools 3.2.0 this will no longer be offered by default. 
+    If you have created the "Bndtools OSGi Workspace" using the wizard (instead of 
+    checking out the tutorial project), you have to add
+    the following snippet to `cnf/build.bnd`:
+    
+    ```properties
+	-plugin.6.bndtoolshub: \
+		aQute.bnd.deployer.repository.FixedIndexedRepo; \
+			name=Bndtools Hub; \
+			locations=https://raw.githubusercontent.com/bndtools/bundle-hub/master/index.xml.gz
+    ``` 
+    
+    This makes some older versions of the OSGi bundles available again.
 
 Going back to the source, one error marker remains. The parameter of type `Class` is not accepted. Reading carefully through the method's [JavaDoc](https://osgi.org/javadoc/r6/core/org/osgi/framework/BundleContext.html#getServiceReference(java.lang.Class)), you will find that the flavor accepting this parameter only exists since version 1.6 of the API. This version was first included in the OSGi platform specification 4.3. So, if we want to use this method, we have to make sure that the environment provides at least this version. Managing application module's versions is one of the big topics of OSGi. If you come from building some simple Java application[^mv], this might surprise you. In an enterprise environment, however, this is definitely an issue. 
 
