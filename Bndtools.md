@@ -8,7 +8,7 @@ date: 2016-03-21 12:00:00
 
 [Bndtools](http://bndtools.org/) is an Eclipse plugin that integrates the (command line) tool [bnd](http://bnd.bndtools.org/) in Eclipse and provides "continuous build" for bundles. [Install](http://bndtools.org/installation.html) it now.
 
-The tool bnd takes a different perspective on defining bundles. From bnd's point of view, `MANIFEST.MF` is the source of information about the bundle at runtime only. While developing the bundle, you need closely related, but sometimes slightly different information and  *additional* information. So, to bnd, `MANIFEST.MF` is an artifact that is generated during build time from information contained in a file called `bnd.bnd`. The eclipse plugin bndtools provides a GUI for editing `bnd.bnd` (again with the possibility to edit the source directly). 
+The tool bnd takes a different perspective on defining bundles. From bnd's point of view, `MANIFEST.MF` is the source of information about the bundle at runtime only. While developing the bundle, you need closely related, but sometimes slightly different information and  *additional* information. So, to bnd, `MANIFEST.MF` is an artifact that is generated during build time from information contained in a file called `bnd.bnd`. The eclipse plugin bndtools provides a GUI for editing `bnd.bnd` (again with the possibility to edit the source directly) and components that make the information from `bnd.bnd` available to Eclipse's continuous build. 
 
 There is a [tutorial](http://bndtools.org/tutorial.html) for Bndtools, which I found (at the time of this writing) to be rather confusing. It addresses developers with some OSGi experience rather than users who want to get an (Eclipse based) environment for writing their first bundle. So let's simply once more focus on our Simple Bundle and port it to a Bndtools project.
 
@@ -34,6 +34,8 @@ When you create a "Bndtools OSGi workspace", the required files for a gradle bui
 
 [^wid]: I only wish they had put that in the gradle [documentation](https://docs.gradle.org/current/userguide/osgi_plugin.html) of the plugin. Would have saved me half a day.
 
-To make absolutely sure that the dependencies are clear, let me summarize again. At the center of the build is the bnd command line tool with its project specific configuration file `bnd.bnd`. It provides the necessary plugins to use gradle, with the project specific build information being taken from `bnd.bnd`. Bndtools integrates bnd into Eclipse. It uses the same information from `bnd.bnd` and components from bnd to provide a class path container and other information for the continuous Eclipse build. The results from the Eclipse build and the gradle build are exactly the same. Using Bndtools therefore does not make your project depend on Eclipse.
+To make absolutely sure that the dependencies are clear, let me summarize again. At the center of the build is the bnd command line tool. Its "gradle module" provides the necessary plugins to adapt gradle (via `build.gradle`) in such a way that it takes the project specific build information from `bnd.bnd`, thus making `bnd.bnd` the primary source of information for the gradle build.
+
+Bndtools integrates bnd into Eclipse. It provides plugins for Eclipse that use the information from `bnd.bnd` to provide a class path container and other information for the continuous Eclipse build. The results from the Eclipse build and the gradle build are exactly the same. Using Bndtools therefore does not make your project depend on Eclipse.
 
 ---
