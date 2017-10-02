@@ -60,20 +60,20 @@ There is no alternative implementation with the same API.
 ## From Modules to Services
 
 Encapsulating internals of a module and making only the public API available is a
-first step to achieve independency and interchangeability. But for fully reaching
+first step to achieve independency and interchangeability. For fully reaching
 these goals, it must be possible to configure the provider of a required
 feature (i.e. the implementor of the API) during deployment or even choose among
 several providers at runtime.
 
 In Java 6, "a well-known set of interfaces and (usually) abstract classes" 
-became termed as a "service" and a specific implementation of a a service
+became termed as a "service" and a specific implementation of a service
 as a "service provider". You find those definitions in the description
 of the central support class for this approach, the `ServiceLoader`
 ([JavaDoc](https://docs.oracle.com/javase/8/docs/api/index.html?java/util/ServiceLoader.html)).
 
 Note that the use of the term "service" in this context is similar but not identical
-to its usage in the context of Service Oriented Architectures 
-([SOA](https://en.wikipedia.org/wiki/Service-oriented_architecture)).  
+to its usage in the context of Service Oriented Architectures
+([SOA](https://en.wikipedia.org/wiki/Service-oriented_architecture)).
 SOA focuses on distributed systems while in our context a service is simply 
 defined by an API and used by getting an implementation class for that API 
 and calling its methods (no networking or other overhead involved).
@@ -87,8 +87,6 @@ providing module without changing your code. In order to meet the special
 possiblities and requirements that originate in being able to deploy bundles 
 dynamically, OSGi defines its own implementation of a service directory 
 and API as a service layer on top of the modules layer.
-
-In the next section I'm going to show how to use this for a simple logging task.
 
 ---
 
