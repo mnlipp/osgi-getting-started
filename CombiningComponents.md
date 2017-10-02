@@ -60,7 +60,7 @@ as a "service provider". You find those definitions in the description
 of the central support class for this approach, the `ServiceLoader`
 ([JavaDoc](https://docs.oracle.com/javase/8/docs/api/index.html?java/util/ServiceLoader.html)).
 
-Note that he use of the term service in this context is similar but not identical
+Note that the use of the term service in this context is similar but not identical
 to its usage in the context of Service Oriented Architectures 
 ([SOA](https://en.wikipedia.org/wiki/Service-oriented_architecture)). However, 
 SOA focuses on distributed systems while in our context a service is simply 
