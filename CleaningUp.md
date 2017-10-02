@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Interlude: Cleaning up"
-date: 2016-05-01 12:00:00
+date: 2017-10-02 12:00:00
 ---
 
 # Interlude: Cleaning up
@@ -75,7 +75,7 @@ JBoss Application Server 7.
 Coming with Java 9, we now have support for modularity from the 
 "Java Platform Module System" (JPMS), as defined in 
 [JSR 376](https://jcp.org/en/jsr/detail?id=376).
-JPMS has its roots in project[Jigsaw](http://openjdk.java.net/projects/jigsaw/),
+JPMS has its roots in project [Jigsaw](http://openjdk.java.net/projects/jigsaw/),
 which aimed at providing a modular JDK. Contrary to OSGi, JPMS checks and
 enforces the rules defined for modularity at compile-time. It does, however,
 not define a service layer and supports neither sophisticated versioning 
