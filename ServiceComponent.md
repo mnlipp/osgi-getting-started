@@ -62,13 +62,17 @@ public class HelloWorld extends Thread {
 }
 ```
 
-To get this working, we have to add the DM to the sets of "build" and "run" bundles. During runtime, the DM has additional required dependencies on the OSGi "Configuration Admin" and the "Metatype" services. So we have to add those as well. You can do this using the GUI (see below), of course. What you end up with are entries in the `bnd.bnd` similar to this:
+To get this working, we have to add the DM to the sets of "build" and "run" bundles. 
+During runtime, the DM has additional required dependencies on the OSGi 
+"Configuration Admin" and the "Metatype" services. So we have to add those as 
+well. You can do this using the GUI (see below), of course. What you end up 
+with are entries in the `bnd.bnd` similar to this:
 
 ```properties
 -buildpath: \
         osgi.cmpn;version=4.3.1,\
         osgi.core;version=4.3.1,\
-        org.apache.felix.dependencymanager
+        org.apache.felix.dependencymanager;version=4.4.0
 -runbundles: \
         org.apache.felix.log,\
         org.apache.felix.gogo.command,\
@@ -80,7 +84,20 @@ To get this working, we have to add the DM to the sets of "build" and "run" bund
         org.apache.felix.metatype
 ```
 
-Regrettably, the Felix DM is in none of the Bndtools "standard repositories". An obvious fix would be to add the Apache Felix Repository (http://felix.apache.org/obr/releases.xml) in the same way as we added the "de.mnl.osgi" repository [before](UsingAService.html#add-repo). But -- at the time of this writing -- the Felix respository doesn't contain the latest version yet. So you have to [download](http://www-us.apache.org/dist//felix/org.apache.felix.dependencymanager-r8-bin.zip) the latest version, unpack the `org.apache.felix.dependencymanager-x.y.z.jar` and add it to the local repository as described in Bndtools [FAQ](http://bndtools.org/faq.html). If you have checked out the [companion project](https://github.com/mnlipp/osgi-getting-started) for this tutorial, it's already there, of course.
+Regrettably, the Felix DM is in none of the Bndtools "standard repositories".
+We can add the Apache Felix Repository (http://felix.apache.org/obr/releases.xml) 
+in the same way as we added the "de.mnl.osgi" repository 
+[before](UsingAService.html#add-repo). If you have checked out the 
+[companion project](https://github.com/mnlipp/osgi-getting-started) for this tutorial, 
+it's already there, of course.
+
+```properties
+-plugin.6.Felix: \
+	aQute.bnd.deployer.repository.FixedIndexedRepo; \
+		name=Felix; \
+		cache=${workspace}/cnf/cache; \
+		locations=http://felix.apache.org/obr/releases.xml
+```
 
 Run the modified bundle with the enhanced configuration and -- it works, i.e. we get the "Hello World!" and the log messages. This is nice to see, but where's the magic, I mean, what started our thread? As it happens, the methods invoked by the DM on a service component are 
 
@@ -168,17 +185,27 @@ In order to make the annotations known to the java compiler, you have to add `or
  "required":"true"}
 ```
 
-There are two ways to add the additional build step for creating this file to the `bnd` packaging tool. If you want to use the dependency manager in a single project only, you can add a line
+There are two ways to add the additional build step for creating this file to 
+the `bnd` packaging tool. If you want to use the dependency manager in a 
+single project only, you can add the lines
 
 ```
--plugin: org.apache.felix.dm.annotation.plugin.bnd.AnnotationPlugin;\
-path:="${workspace}/cnf/localrepo/org.apache.felix.dependencymanager.annotation-4.1.0.jar";\
-log=debug
+-pluginpath:\
+	${workspace}/cnf/cache/org.apache.dependencymanager.annotation-4.2.0.jar;\
+	url=http://repo1.maven.org/maven2/org/apache/felix/org.apache.felix.dependencymanager.annotation/4.2.0/org.apache.felix.dependencymanager.annotation-4.2.0.jar	
+-plugin: org.apache.felix.dm.annotation.plugin.bnd.AnnotationPlugin;log=debug
 ```
 
-to the project's `bnd.bnd`. If you want to enable support for the whole (bnd-)workspace, add the line to the `build.bnd` in the `cnf` project.
+to the project's `bnd.bnd`. If you want to enable support for the whole (bnd-)workspace, 
+add the lines to the `build.bnd` in the `cnf` project. The first line tells bnd
+about the location of the plugin and the second instructs it to apply the plugin. 
 
-If you're impatient and run the compiled bundle now, nothing's going to happen. As there is no activator any more, another mechanism must notice if a bundle with files `META-INF/dependencymanager/*` in it is started, read the information from the files and act accordingly. Such a mechanism is provided by the dependency manager as bundle `org.apache.felix.dependencymanager.runtime-x.y.z.jar`. Add it to the run bundles and start it again.
+If you're impatient and run the compiled bundle now, nothing's going to happen. 
+As there is no activator any more, another mechanism must notice if a bundle 
+with files `META-INF/dependencymanager/*` in it is started, read the information 
+from the files and act accordingly. Such a mechanism is provided by the dependency 
+manager as bundle `org.apache.felix.dependencymanager.runtime-x.y.z.jar`. 
+Add it to the run bundles and start it again.
 
 
 ## OSGi Declarative Services
@@ -275,8 +302,29 @@ Declarative services doesn't support injection of values into fields. Referenced
 
 [^ofs]: You don't need an "unset" method for ordinary (non-static) attributes because the instance of the service component itself is discarded when a component is deactivated.
 
-As with Felix DM, you need a "Service Component Runtime" (as the OSGi specification calls it) to start up the service components. The SCR looks for `Service-Component` headers in all deployed bundles and creates service components, registers their services and activates the components according to the directives in the XML file. Of course, you can use any implementation. But in our environment, the easiest way is to add the bundle `org.apache.felix.scr` to the run bundles. 
+As with Felix DM, you need a "Service Component Runtime" (as the OSGi specification calls it) 
+to start up the service components. The SCR looks for `Service-Component` headers 
+in all deployed bundles and creates service components, registers their 
+services and activates the components according to the directives in the XML 
+file. Of course, you can use any implementation. But in our environment, 
+the easiest way is to add the bundle `org.apache.felix.scr` to the run bundles. 
 
+Using those, the paths in `bnd.bnd` look like this:
+
+```properties
+-buildpath: \
+	osgi.cmpn;version=4.3.1,\
+	osgi.core;version=4.3.1,\
+	osgi.annotation
+-runbundles: \
+	org.apache.felix.log,\
+	org.apache.felix.gogo.command,\
+	org.apache.felix.gogo.runtime,\
+	org.apache.felix.gogo.shell,\
+	de.mnl.osgi.log.fwd2jul,\
+	org.apache.felix.configadmin,\
+	org.apache.felix.scr
+```
 
 *To be continued*
 
