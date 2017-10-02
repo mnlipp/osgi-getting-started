@@ -34,7 +34,7 @@ access to the interface in the runtime environment, we had to
 "`Import-Package: org.osgi.framework`" to the `MANIFEST.MF`.
 
 When using OSGi, everything that a module comprises of is assembled in a 
-jar (the "bundle"), and the Java package that provides the module's public  
+jar (the "bundle"), and the Java package that provides the module's public
 API is explicitly declared as such in that jar's manifest. (Of course, 
 a module may export several packages if it has a complex API.) We haven't made 
 use of this feature in our sample bundle (as we don't provide anything, there is 
