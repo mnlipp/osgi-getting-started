@@ -18,8 +18,8 @@ basic layer not a component framework. Rather, its a framework for managing
 modules -- which sometimes happen to be components[^several]. 
 
 [^several]: OSGi, with its various specifications, addresses several, 
-mostly independent topics. This makes articles about OSGi sometimes hard
-to understand. At its core, it really is about managing modules.
+	mostly independent topics. This makes articles about OSGi sometimes hard
+	to understand. At its core, it really is about managing modules.
 
 ## Strong Modularity for Java
 

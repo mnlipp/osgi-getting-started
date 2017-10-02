@@ -28,16 +28,16 @@ to public, else you won't be able to use them within your module[^jsr294].
 [^novis]: Or declaring no visibility at all, as "protected" is the default visibility.
 
 [^jsr294]: A "fine grained" access control to the content of Java packages using 
-"normal" Java syntax was proposed in the (now withdrawn) 
-[JSR 294](http://jcp.org/en/jsr/detail?id=294). A lot of information that went 
-along with it seems to have vanished from the web together with the withdrawal. 
-I found some explanations in a 
-[blog](https://community.oracle.com/docs/DOC-983193) and in an 
-[article](http://www.javabeat.net/new-features-in-java-7-0-part-1/) about new 
-features in Java 7 (written too early, obviously). The cause for the withdrawal 
-is the advent of the "successor" JSR 376 (see below). And 
-[politics](https://mmilinkov.wordpress.com/2006/10/20/java-component-war/). 
-Java and modules seems to be a mined area.
+	"normal" Java syntax was proposed in the (now withdrawn) 
+	[JSR 294](http://jcp.org/en/jsr/detail?id=294). A lot of information that went 
+	along with it seems to have vanished from the web together with the withdrawal. 
+	I found some explanations in a 
+	[blog](https://community.oracle.com/docs/DOC-983193) and in an 
+	[article](http://www.javabeat.net/new-features-in-java-7-0-part-1/) about new 
+	features in Java 7 (written too early, obviously). The cause for the withdrawal 
+	is the advent of the "successor" JSR 376 (see below). And 
+	[politics](https://mmilinkov.wordpress.com/2006/10/20/java-component-war/). 
+	Java and modules seems to be a mined area.
  
 One means to prevent programmers from using classes that are intended for a 
 module's internal use only is to do regular dependency analysis using source 
@@ -47,10 +47,10 @@ is maintained properly and that the compliance with the rules is enforced
 organizationally[^fallorg].
 
 [^byteCode]: When using Java, those are usually source code/byte code analysis 
-tools, i.e. they can analyze dependencies even if only the byte code is available.
+	tools, i.e. they can analyze dependencies even if only the byte code is available.
 
 [^fallorg]: This usually falls apart when a developer claims that the only way to 
-meet the deadline is to let him use a particular class, "no matter what the rules say". 
+	meet the deadline is to let him use a particular class, "no matter what the rules say". 
 
 Formally supported modularity is therefore a highly desirable feature in any 
 non-trivial project[^eclipse-osgi]. As mentioned already, OSGi provides such 
@@ -62,11 +62,11 @@ information to configure class loaders in such a way that the restrictions
 are enforced at runtime.  
 
 [^eclipse-osgi]: If you became curious about OSGi because it is used in Eclipse, 
-you should note that the modularity is the 
-[main usage](http://rinswind.blogspot.de/2009/06/current-state-of-affairs.html) 
-of OSGi in Eclipse (together with the dynamic modules -- though considering 
-the constant prompt for a restart after installing a plugin, Eclipse doesn't 
-seem to believe in this feature).
+	you should note that the modularity is the 
+	[main usage](http://rinswind.blogspot.de/2009/06/current-state-of-affairs.html) 
+	of OSGi in Eclipse (together with the dynamic modules -- though considering 
+	the constant prompt for a restart after installing a plugin, Eclipse doesn't 
+	seem to believe in this feature).
 
 An alternative approach is [JBoss Modules](https://docs.jboss.org/author/display/MODULES/Home). 
 However, it seems that this approach hasn't caught on outside its initial usage in 
@@ -150,14 +150,14 @@ either work around the unavailability of the other module or
 becomes unavailable.
 
 [^mixms]: I admit that I am mixing up module dependencies and 
-service dependencies here. Take it as an illustration of the 
-underlying problem. I don't want to complicate things by introducing 
-a "pure module" example.
+	service dependencies here. Take it as an illustration of the 
+	underlying problem. I don't want to complicate things by introducing 
+	a "pure module" example.
 
 [^less-complex]: Let me emphasize again that there are means to 
-greatly simplify this for the programmer (see below). But we should 
-have a clear idea about what kind of functionality fully dynamic 
-modules actually provide and at what cost.
+	greatly simplify this for the programmer (see below). But we should 
+	have a clear idea about what kind of functionality fully dynamic 
+	modules actually provide and at what cost.
 
 There are two reasons why you would want to remove a module from a 
 running system. The first is resource consumption. When OSGi started 
@@ -191,12 +191,12 @@ will always prefer a freshly booted machine."
 ([Caucho Blog](http://blog.caucho.com/2009/06/15/why-osgi-is-cool-but-not-for-most-enterprise-apps/)) And, of course, consider that being able to replace a module does not mean that you have an uninterrupted service. Other modules may depend on the module being replaced and may go down until the substitute becomes available, just like our simple bundle will, when you replace the log service[^uwa].
 
 [^uwa]: If there is a dependency between the modules on the service 
-level only (and you have put the interface in a bundle of its own),  
-you can alternatively add the new version in parallel before removing 
-the old version. Properly programmed consumers (such as our simple bundle) 
-will switch to the new version on-the-fly by updating the reference. 
-However, modules that take possession of a unique resource (e.g. a TCP server 
-port) cannot coexist in two versions, so there are limits to this approach.
+	level only (and you have put the interface in a bundle of its own),  
+	you can alternatively add the new version in parallel before removing 
+	the old version. Properly programmed consumers (such as our simple bundle) 
+	will switch to the new version on-the-fly by updating the reference. 
+	However, modules that take possession of a unique resource (e.g. a TCP server 
+	port) cannot coexist in two versions, so there are limits to this approach.
 
 Dynamic modules are something that most scenarios don't need. Nevertheless, 
 when using OSGi you buy into them and and this can cause of lot of additional 
@@ -224,10 +224,10 @@ This relationship is used by the framework to e.g. automatically remove all
 services provided by a bundle if this bundle is stopped.
 
 [^sl-mu]: Which makes it impossible to use the service layer in your code 
-without providing the code in bundles. My impression is that some people 
-looking for a service layer stumble upon the OSGi platform, and then 
-complain about its complexity when they notice that they have to build 
-modularized applications in order to use the OSGi service layer.
+	without providing the code in bundles. My impression is that some people 
+	looking for a service layer stumble upon the OSGi platform, and then 
+	complain about its complexity when they notice that they have to build 
+	modularized applications in order to use the OSGi service layer.
 
 At the core of the service layer is the service registry. It can be 
 accessed using methods from the 
@@ -253,9 +253,9 @@ But as we have seen, it fails to really simplify the implementation
 of dependent services.
 
 [^shame]: I think it's unfortunate that an explicit reference to 
-the very basic character of the service layer hasn't found its way 
-into the specification of the service layer, not even into the latest 
-release 6.
+	the very basic character of the service layer hasn't found its way 
+	into the specification of the service layer, not even into the latest 
+	release 6.
 
 The only way to use the OSGi service layer efficiently is to wrap 
 it in some "higher level API". Actually, the best way to manage 
@@ -282,9 +282,9 @@ The Services can roughly be grouped in three categories:
 
 * Services that enhance the core framework (e.g. the "Metatype Service Specification")
 * Services that provide a generally useful functionality 
-(obvious example: the "Log Service Specification")
+  (obvious example: the "Log Service Specification")
 * Services that make some well known Java (EE) feature available 
-as a an OSGi service (e.g. the "JDBC Service Specification")
+  as a an OSGi service (e.g. the "JDBC Service Specification")
 
 Don't try to read the compendium and understand the purpose of 
 all services. The descriptions usually lack an introductory 
@@ -301,8 +301,8 @@ the "14 years old" service because there are "already so (too)
 many logging systems around"[^pax].
 
 [^pax]: He points to [Pax Logging](https://ops4j1.jira.com/wiki/display/paxlogging/Pax+Logging) 
-which build on and enhances the OSGi log service -- so at least 
-my reading the specification wasn't completely in vain after all.
+	which build on and enhances the OSGi log service -- so at least 
+	my reading the specification wasn't completely in vain after all.
 
 ## ... and more
 
