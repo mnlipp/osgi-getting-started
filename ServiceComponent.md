@@ -309,7 +309,9 @@ services and activates the components according to the directives in the XML
 file. Of course, you can use any implementation. But in our environment, 
 the easiest way is to add the bundle `org.apache.felix.scr` to the run bundles. 
 
-Using those, the paths in `bnd.bnd` look like this:
+Since Felix SCR has a dependency on an OSGi service called "Configuration Admin",
+we actually have to add two bundles to the configuration, which results
+in a `bnd.bnd` that looks like this:
 
 ```properties
 -buildpath: \
