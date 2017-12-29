@@ -26,7 +26,7 @@ rather by stating that they depend on a component that implements a
 specific interface or feature.
 
 [^contracts]: In more general terms, we're talking about contracts between
-components.
+	components.
 
 A special form of specifying a dependency the "OSGI way" is the 
 `Import-Package` Header in the `MANIFEST.MF` that we have seen before. Let's re-use the
