@@ -164,6 +164,9 @@ facility[^osgi-support].
 
 A nice solution would be to have an OSGi search facility maintained by e.g.
 the OSGi Alliance that uses the major repositories as backing repositories[^JPM].
+Since no such facility exists, OSGi projects have to fall back to downloading
+a subset of their artifacts and create an OSGi repository (index) from them.
+Various bnd plugins exist for that purpose.
 
 [^JPM]: The "JPM" project (Java Package Manager) developed by 
 	[Peter Kriens](https://github.com/pkriens) when he was *not* working
@@ -192,6 +195,10 @@ the OSGi Alliance that uses the major repositories as backing repositories[^JPM]
 	> that can be used during development from a growing number of build 
 	> technologies and IDEs (including of course Eclipse and Maven).
 	
+	(Retrieved from 
+	[WayBackMachine](https://web.archive.org/web/20170105235749/http://www.jpm4j.org:80/#!/))
+
+
 
 *To be continued*
 
