@@ -171,7 +171,7 @@ facility[^osgi-support].
 	repository products with OSGi support, tell me and I'll add it here.
 
 A nice solution would be to have an OSGi search facility maintained by e.g.
-the OSGi Alliance that uses the major repositories as backing repositories[^JPM].
+the OSGi Alliance that uses the major public repositories as backing repositories[^JPM].
 Since no such facility exists, bnd workspaces have to fall back to downloading
 a subset of a Maven repository's artifacts and creating an OSGi Bundle Repository 
 (index) from them. Various bnd plugins exist for that purpose.
