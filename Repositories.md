@@ -87,8 +87,8 @@ consists of a directory with bundles and an index file that describes the capabi
 file is extracted from the manifests of the bundles in the repository.
 
 The `cnf` directory of our sample bnd workspace contains three such local 
-repositories: `local`, `release` and `templates`. They are defined in `cnf/build.bnd`
-by these statements:
+repositories: `local`, `release` and `templates`. They are made known to bnd
+in `cnf/build.bnd` by these statements:
 
 ```properties
 -plugin.2.Local: \
@@ -114,7 +114,7 @@ The `local` and `release` repositories are empty, but if you have look at the fi
 `cnf/templates/index.xml`, you get an idea how the information about capabilities and
 requirements is represented.
 
-The implementations of an OBR service that use this kind of persistence usually
+The implementations of an OBR service that uses this kind of persistence usually
 accept a URL for the index file, i.e. the data can be kept on a remote server.
 We made use of this feature for the definition of the following three repositories:
 
@@ -138,12 +138,16 @@ We made use of this feature for the definition of the following three repositori
 ```
 
 In an ideal world (from OSGi's point of view) all freely available bundles would be
-maintained in a "native" repository. Not necessary using the simple persistence,
-because this could result in a very large index file. Rather, a server could provide
-a remotely accessible implementation of the `Repository` API. In reality, however,
-we have a few "vendor" maintained repositories (such as the "Felix" repository) and
-some repositories maintained by individual projects (such as my "de.mnl.osgi"
-repository and -- with a broader scope, but no longer maintained, the "Bndtools Hub").
+maintained in a "native" repository. Not necessarily using the simple persistence,
+because this could result in a very large index file. Rather, a server would provide
+some remotely accessible implementation of the `Repository` API. In reality, however,
+we only have a few "vendor" maintained[^badly] repositories (such as the "Felix" 
+repository) and some repositories maintained by individual projects (such as my 
+"de.mnl.osgi" repository and -- with a broader scope, but no longer maintained, 
+the "Bndtools Hub").
+
+[^badly]: Sometimes badly maintained, as you can see 
+	[here](https://github.com/mnlipp/osgi-getting-started/issues/1).
 
 ## OSGi views on Maven repositories
 
