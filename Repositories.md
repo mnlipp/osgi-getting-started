@@ -40,8 +40,8 @@ It is internally transformed to the more general form of a requirement:
 
 ```properties
 Require-Capability: osgi.wiring.package;\
-	(&(osgi.wiring.package=org.osgi.framework)\
-	  (&(version>=1.6)(!(version>=2.0.0))))
+	filter:="(&(osgi.wiring.package=org.osgi.framework)\
+	  (&(version>=1.6)(!(version>=2.0.0))))"
 ```
 
 Of course, there is also a generalized form of the `Export-Package` header that
