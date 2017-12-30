@@ -58,7 +58,15 @@ public class Activator implements BundleActivator {
 }
 ```
 
-You should see several error markers. First of all, `LogService` is unknown. That's okay, because up to now, we only needed the OSGi core and had therefore only a jar with the core API in the classpath. Go to the "Build" tab of the `bnd.bnd` editor and add "Bndtools Hub/osgi.residential"[^bndhub] to the "Build Path". Save, and Bndtools updates the Eclipse project's library path accordingly.
+You should see several error markers. First of all, `LogService` is unknown. That's okay, because up to now, we only needed the OSGi core and had therefore only a jar with the core API in the classpath. Go to the "Build" tab of the `bnd.bnd` editor and add "Bndtools Hub/osgi.cmpn"[^bndhub] to the "Build Path". Make sure to choose the (rather old) versions 4.2.0 for both osgi.core and osgi.cmpn, because I want to make you aware of something. Check your project's `bnd.bnd` for the proper versions on the (now augmented) buildpath:
+
+```properties
+-buildpath: \
+	osgi.core;version=4.2.0,\
+	osgi.cmpn;version=4.2.0
+```
+
+If the versions don't match, simply edit them. Save, rebuild (on the build tab), and Bndtools updates the Eclipse project's library path accordingly.
 
 [^bndhub]: Since Bndtools 3.2.0 this will no longer be offered by default. 
     If you have created the "Bndtools OSGi Workspace" using the wizard (instead of 
@@ -78,11 +86,11 @@ Going back to the source, one error marker remains. The parameter of type `Class
 
 [^mv]: Rule of thumb: get the latest versions of all libraries and hope that they provide backward compatibility for parts of the application built with older version, right? Well, often this works surprisingly well... 
 
-You may have noticed already that it is possible to choose versions when adding something to the build path in the Bndtools dialog (first, remove OSGi core again, else it won't be offered):
+Add newer versions such as 4.3.0[^lv] of the bundles in the Bndtools dialog (first, remove the bundles again, else they won't be offered):
 
 ![Choosing a version](images/Bndtools-version-dialog.png){: width="500px" }
 
-Clicking "Add" (and saving) results in an extended `buildpath` entry in `bnd.bnd`[^ov] and an extended entry in the generated jar's `MANIFEST.MF`[^rl]:<a name="version-range"></a>
+Clicking "Add", saving and rebuilding results in a successful build[^ov]. Looking at the generated jar's `MANIFEST.MF`[^rl] you now see:<a name="version-range"></a>
 
 ```properties
 Import-Package: org.osgi.framework;version="[1.6,2)"
@@ -93,7 +101,7 @@ Import-Package: org.osgi.framework;version="[1.6,2)"
     
     ```
     -buildpath: \
-	    osgi.residential,\
+	    osgi.residential;version=4.3,\
 	    osgi.core;version=4.3
     ```
     
