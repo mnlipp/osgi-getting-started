@@ -58,7 +58,7 @@ public class Activator implements BundleActivator {
 }
 ```
 
-You should see several error markers. First of all, `LogService` is unknown. That's okay, because up to now, we only needed the OSGi core and had therefore only a jar with the core API in the classpath. Go to the "Build" tab of the `bnd.bnd` editor and add "Bndtools Hub/osgi.cmpn"[^bndhub] to the "Build Path". Make sure to choose the (rather old) versions 4.2.0 for both osgi.core and osgi.cmpn, because I want to make you aware of something. Check your project's `bnd.bnd` for the proper versions on the (now augmented) buildpath:
+You should see several error markers. First of all, `LogService` is unknown. That's okay, because up to now, we only needed the OSGi core and had therefore only a jar with the core API in the classpath. Go to the "Build" tab of the `bnd.bnd` editor and add "Bndtools Hub/osgi.cmpn"[^bndhub] to the "Build Path". Make sure to choose the (rather old) versions 4.2.0 for both osgi.core and osgi.cmpn, because I want you to become aware of something. Check your project's `bnd.bnd` for the proper versions on the (now augmented) buildpath:
 
 ```properties
 -buildpath: \
@@ -86,7 +86,7 @@ Going back to the source, one error marker remains. The parameter of type `Class
 
 [^mv]: Rule of thumb: get the latest versions of all libraries and hope that they provide backward compatibility for parts of the application built with older version, right? Well, often this works surprisingly well... 
 
-Add newer versions such as 4.3.0 of the bundles in the Bndtools dialog (first, remove the bundles again, else they won't be offered):
+Add newer versions of the bundles (such as 4.3.0) in the Bndtools dialog (first, remove the bundles again, else they won't be offered):
 
 ![Choosing a version](images/Bndtools-version-dialog.png){: width="500px" }
 
@@ -111,9 +111,7 @@ Import-Package: org.osgi.framework;version="[1.6,2)"
     compiled [with a special flag](http://blog.osgi.org/2012/10/43-companion-code-for-java-7.html) 
     that allows generics to be used in pre-Java 5 JVMs. Starting with Java 7, this 
     "trick" doesn't work anymore. Therefore the OSGi alliance has released jars built "in the
-    ordinary way" (compatible with Java 7 and beyond) as version 4.3.1. To complicate things a bit,
-    there is no 4.3.1 release of the jar with the "residential" subset of services. Only the
-    "companion" jar with the full set of services has been re-released.
+    ordinary way" (compatible with Java 7 and beyond) as version 4.3.1.
     
     As the 4.3.1 versions aren't offered in the `bnd.bnd` GUI dialog, you have to change 
     the version "manually" in the source view[^lv]:
