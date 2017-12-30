@@ -99,13 +99,21 @@ in `cnf/build.bnd` by these statements:
 		local = ${build}/release
 ```
 
-The `local` and `release` repositories are empty, but if you have look at the file
+The `local` and `release` repositories are empty, but if you have a look at the file
 `cnf/templates/index.xml`, you get an idea how the information about capabilities and
-requirements is represented.
+requirements is represented. The plugin type 
+`aQute.bnd.deployer.repository.LocalIndexedRepo` provides an editable repository in the
+local file system. "Editable" means that you can deploy bundles to it and the index 
+is regenerated automatically by bndtools. Details about the configuration properties
+can be found in the 
+[bndtools documentation](http://bndtools.org/repositories.html#local-indexed-repository).
 
-The implementations of an OBR service that uses this kind of persistence usually
-accept a URL for the index file, i.e. the data can be kept on a remote server.
-We made use of this feature for the definition of the following three repositories:
+Another implementation of an OSGi repository that uses an index file is the
+`aQute.bnd.deployer.repository.FixedIndexedRepo`. Bndtools makes no attempt to modify the 
+content of such a repository. The index file is specified by a URL, i.e. the data 
+can be kept on a remote server. Again, the configuration options can be found in the 
+[bndtools documentation](http://bndtools.org/repositories.html#fixed-index-repositories).
+We made use of this kind of repository in the following three cases:
 
 ```properties
 -plugin.5.de.mnl.osgi: \
@@ -164,9 +172,9 @@ facility[^osgi-support].
 
 A nice solution would be to have an OSGi search facility maintained by e.g.
 the OSGi Alliance that uses the major repositories as backing repositories[^JPM].
-Since no such facility exists, OSGi projects have to fall back to downloading
-a subset of their artifacts and create an OSGi repository (index) from them.
-Various bnd plugins exist for that purpose.
+Since no such facility exists, bnd workspaces have to fall back to downloading
+a subset of a Maven repository's artifacts and creating an OSGi Bundle Repository 
+(index) from them. Various bnd plugins exist for that purpose.
 
 [^JPM]: The "JPM" project (Java Package Manager) developed by 
 	[Peter Kriens](https://github.com/pkriens) when he was *not* working
