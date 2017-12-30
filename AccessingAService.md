@@ -86,7 +86,7 @@ Going back to the source, one error marker remains. The parameter of type `Class
 
 [^mv]: Rule of thumb: get the latest versions of all libraries and hope that they provide backward compatibility for parts of the application built with older version, right? Well, often this works surprisingly well... 
 
-Add newer versions such as 4.3.0[^lv] of the bundles in the Bndtools dialog (first, remove the bundles again, else they won't be offered):
+Add newer versions such as 4.3.0 of the bundles in the Bndtools dialog (first, remove the bundles again, else they won't be offered):
 
 ![Choosing a version](images/Bndtools-version-dialog.png){: width="500px" }
 
