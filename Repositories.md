@@ -66,18 +66,7 @@ using the "Require-Capability" expression as search expression. This is
 the main functionality of the 
 [OSGi repository interface](https://osgi.org/javadoc/r6/cmpn/index.html?org/osgi/service/repository/Repository.html).
 Pity enough, this kind of query is something that Maven Repositories in general 
-don't support[^osgi-support].
-
-[^osgi-support]: At least not out-of-the-box. I found that Sonatype's Nexus
-	repository manager[^relation] can provide a 
-	[Virtual OSGi Bundle Repository](https://help.sonatype.com/display/NXRM2/OSGi+Bundle+Repositories#OSGiBundleRepositories-VirtualOSGiBundleRepositories)
-	for a Maven repository. However, this does not seem to be enabled on their
-	[most popular installation](https://oss.sonatype.org/#welcome). 
-
-[^relation]: I have no relations with this company except for an account
-	on oss.sonatype.org. It just happens that I found the feature description
-	when searching through the web. If you're aware of other 
-	repository products with OSGi support, tell me and I'll add it here.
+don't support.
 
 ## OSGi "native" repositories
 
@@ -151,7 +140,58 @@ the "Bndtools Hub").
 
 ## OSGi views on Maven repositories
 
+Today's Java development is Maven Central centric[^sorry]. No matter whether
+a project uses Maven or some other tool like Gradle for project management,
+(almost) everybody makes Java Open Source Software artifacts available on
+Maven Central (or [jCenter](https://bintray.com/bintray/jcenter)) and downloads
+required libraries from there using their Maven coordinates. As mentioned 
+before, the problem from an OSGi's point of view is that Maven repositories 
+do not provide the requirements and capabilities based search 
+facility[^osgi-support]. 
 
+[^sorry]: Sorry, couldn't resist.
+
+[^osgi-support]: At least not out-of-the-box. I found that Sonatype's Nexus
+	repository manager[^relation] can provide a 
+	[Virtual OSGi Bundle Repository](https://help.sonatype.com/display/NXRM2/OSGi+Bundle+Repositories#OSGiBundleRepositories-VirtualOSGiBundleRepositories)
+	for a Maven repository. However, this does not seem to be enabled on their
+	[most popular installation](https://oss.sonatype.org/#welcome). 
+
+[^relation]: I have no relations with this company except for an account
+	on oss.sonatype.org. It just happens that I found the feature description
+	when searching through the web. If you're aware of other 
+	repository products with OSGi support, tell me and I'll add it here.
+
+A nice solution would be to have an OSGi search facility maintained by e.g.
+the OSGi Alliance that uses the major repositories as backing repositories[^JPM].
+
+[^JPM]: The "JPM" project (Java Package Manager) developed by 
+	[Peter Kriens](https://github.com/pkriens) when he was *not* working
+	for the OSGi Alliance included an attempt to create a "Meta Repository"[^broader]
+	with the possibility to query bundles by packages.
+	You will still find references to it when searching for sample 
+	OSGi project configurations in the Web, but the JPM Web site was "officially" 
+	[declared down](https://groups.google.com/forum/#!topic/bndtools-users/_epXQiMDiX4)
+	on March 1st, 2017. Support for JPM will be removed from
+	bnd in the [next release](https://github.com/bndtools/bnd/wiki/Changes-in-3.5.0).
+
+[^broader]: Actually, the project had a somewhat broader scope. The idea
+	was to provide a `jpm` command that would work similar to the 
+	[`npm`](https://www.npmjs.com/). From the (now gone) Web Site:
+	
+	> jpm4j is a package manager for java. Languages like Ruby with its 
+	> Gems, Node.js with npm, and Perl's CPAN, provide a package manager 
+	> that makes it easy to install libraries and applications regardless 
+	> of platform. jpm4j unleashes the power of Java with a "write once, 
+	> deploy anywhere" model. Just publish the binaries on the Internet, 
+	> notify jpm4j, and then deploy from anywhere to any platform with jpm4j.
+	>
+	> An open index provides already organized access to almost binaries 
+	> (and growing) organized in programs. An index that is searchable, 
+	> editable, rankable, and extendable (in real time) by you. An index 
+	> that can be used during development from a growing number of build 
+	> technologies and IDEs (including of course Eclipse and Maven).
+	
 
 *To be continued*
 
