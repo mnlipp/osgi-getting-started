@@ -301,7 +301,7 @@ it doesn't refresh properly. I'm not sure about the state of the
 3.5.0 this hasn't been fixed yet.
 
 The second problem is that the search works only with Maven Central, which means
-that it won't include snapshots of bundles.
+that it won't include snapshots of artifacts.
 
 ### Nexus Search Repository Plugin
 
