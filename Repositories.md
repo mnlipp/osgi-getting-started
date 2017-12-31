@@ -30,7 +30,7 @@ specific interface or feature.
 
 A special form of specifying a dependency the "OSGi way" is the 
 `Import-Package` Header in the `MANIFEST.MF` that we have seen before. Let's re-use the
-header from the chapter ["Accessing a Service"](AccessingAService.html#version-range):
+header from the part ["Accessing a Service"](AccessingAService.html#version-range):
 
 ```properties
 Import-Package: org.osgi.framework;version="[1.6,2)"
@@ -327,7 +327,7 @@ Once you have found a configuration that suits your needs, it isn't too hard
 to include content from the popular Maven repositories in your bnd/bndtools
 projects. A different issue is how you make the bundles from your own project
 available to others. This is closely related to your project's build and CI/CD
-chain. I'll cover this topic in another chapter.
+chain. I'll cover this topic in another part.
 
 
 ---
