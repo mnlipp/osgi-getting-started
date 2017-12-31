@@ -206,6 +206,119 @@ a subset of a Maven repository's artifacts and creating an OSGi Bundle Repositor
 	(Retrieved from 
 	[WayBackMachine](https://web.archive.org/web/20170105235749/http://www.jpm4j.org:80/#!/))
 
+### JPM Repository Plugin (deprecated)
+
+When you create a new workspace with bndtools 3.5.0, it configures
+an `aQute.bnd.jpm.Repository` plugin for accessing Maven Central:
+
+```properties
+# Configure Repositories
+-plugin.1.Central: \
+	aQute.bnd.deployer.repository.wrapper.Plugin; \
+		location = "${build}/cache/wrapper"; \
+		reindex = true, \
+	aQute.bnd.jpm.Repository; \
+		includeStaged = true; \
+		name = Central; \
+		location = ~/.bnd/shacache; \
+		index = ${build}/central.json
+```
+
+This initial setup is a bit strange, considering the fact that JPM support 
+will be removed from bndtools in the next release. Details about the 
+configuration of the plugin can be found in OSGi's 
+[enroute Maven tutorial](http://enroute.osgi.org/tutorial_maven/310-central.html).
+
+### Maven Bnd Repository Plugin
+
+As the JPM plugin is deprecated and the detour via JPM unnecessary, I prefer
+another plugin that provides the same functionality and is easier to
+configure, the `aQute.bnd.repository.maven.provider.MavenBndRepository`. Here is
+a sample configuration (details can be found in the 
+[bnd documentation](http://bnd.bndtools.org/plugins/maven.html)):
+
+```properties
+-plugin.1.CentralMvn: \
+	aQute.bnd.deployer.repository.wrapper.Plugin; \
+		location = "${build}/cache/wrapper"; \
+		reindex = true, \
+	aQute.bnd.repository.maven.provider.MavenBndRepository; \
+		name="Central (Maven)"; \
+		snapshotUrl=https://oss.sonatype.org/content/repositories/snapshots/; \
+		releaseUrl=https://repo.maven.apache.org/maven2/; \
+		index=${.}/central.mvn
+```
+
+Both plugins basically work in the same way. They use the file configured with the
+`index` property[^idx-nc] that specifies the Maven artifacts to be downloaded
+and to be included in the repository (view) provided by the respective plugin. 
+
+[^idx-nc]: Not to be confused with an OBR index file.
+
+While the JPM Repository plugin uses a JSON formatted index file, which is a bit
+harder to maintain, the Maven Bnd Repository plugin uses
+a simple list of Maven coordinates to specify the artifacts to be included in
+the configured repository. If you have the Repositories view open in Eclipse
+(usually when you are in the bndtools perspective), you can even drag and drop
+the URL of a POM file (e.g. found by searching Maven Central) into a
+Maven Bnd Repository and the Maven coordinates will be added to the
+index file. 
+
+This sounds like a nice way to get the artifacts that your project depends on,
+until you notice that the plugins don't support transitive dependencies. You
+get exactly what you have specified, and if an artifact depends on some other
+artifact, you have to explicitly specify this as well -- a very arduous task.
+
+### Bnd POM Repository Plugin
+
+This is where the `aQute.bnd.repository.maven.pom.provider.BndPomRepository` plugin
+comes in (details can, again, be found in the 
+[bnd documentation](http://bnd.bndtools.org/plugins/pomrepo.html)). This plugin
+is kind of a strange beast, because it allows you to configure an initial
+set of artifacts to retrieve in very different ways, including the possiblity
+to use Maven Central's search facility. No matter how you obtain the initial
+set of artifacts, the plugin's default behavior is to also include the transitive
+dependencies, i.e. the dependencies specified in the POM files of the artifacts.
+
+As an example, we can get all Apache Felix artifacts and the artifacts that they
+depend on with a Bnd POM Repository configured like this:
+
+```properties
+-plugin.6.Felix: \
+    aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+        name=Felix; \
+    	snapshotUrls=https://oss.sonatype.org/content/repositories/snapshots/; \
+        releaseUrls=https://repo1.maven.org/maven2; \
+        query='q=g:%22org.apache.felix%22&rows=1000'
+```
+
+Be careful to add the `rows=1000` search parameter (it's not mentioned in the
+bnd documentation), else you may not get everything you need.
+
+I have personally experienced two problems with this plugin. The first is that
+it doesn't refresh properly. I'm not sure about the state of the 
+[related issue](https://github.com/bndtools/bnd/pull/2114), but at least in
+3.5.0 this hasn't been fixed yet.
+
+The second problem is that the search works only with Maven Central, which means
+that it won't include snapshots of bundles.
+
+### Nexus Search Repository Plugin
+
+In order to easily access the snapshots of the artifacts of a project under 
+development I've started a 
+[Nexus Search Plugin](https://github.com/mnlipp/de.mnl.osgi/tree/master/de.mnl.osgi.bnd.repository),
+that -- as its name suggests -- uses the Nexus search API to find both
+the released artifacts and the snapshot artifacts on a Nexus server
+(especially those on the [Open Source](https://oss.sonatype.org/#welcome) repository).
+
+### Aether Plugin
+
+The bndtools documentation also mentions an 
+["Aether (Maven) Repositories" plugin](http://bndtools.org/repositories.html#aether-maven-repositories) that I haven't tested. The documentation seems incomplete
+and what I could find in addition was 
+[not encouraging](https://groups.google.com/forum/#!topic/bndtools-users/yefAUFz_1eg)).
+
 
 
 *To be continued*
