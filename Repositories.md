@@ -317,7 +317,7 @@ the released artifacts and the snapshot artifacts on a Nexus server
 The bndtools documentation also mentions an 
 ["Aether (Maven) Repositories" plugin](http://bndtools.org/repositories.html#aether-maven-repositories) that I haven't tested. The documentation seems incomplete
 and what I could find in addition was 
-[not encouraging](https://groups.google.com/forum/#!topic/bndtools-users/yefAUFz_1eg)).
+[not encouraging](https://groups.google.com/forum/#!topic/bndtools-users/yefAUFz_1eg).
 
 
 
