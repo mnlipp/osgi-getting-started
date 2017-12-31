@@ -318,10 +318,17 @@ The bndtools documentation also mentions an
 ["Aether (Maven) Repositories" plugin](http://bndtools.org/repositories.html#aether-maven-repositories) that I haven't tested. The documentation seems incomplete
 and what I could find in addition was 
 [not encouraging](https://groups.google.com/forum/#!topic/bndtools-users/yefAUFz_1eg).
+Besides, the underlying Eclipse Aether project has been archived and isn't easily
+accessible any more.
 
+## Conclusion
 
+Once you have found a configuration that suits your needs, it isn't too hard
+to include content from the popular Maven repositories in your bnd/bndtools
+projects. A different issue is how you make the bundles from your own project
+available to others. This is closely related to your project's build and CI/CD
+chain. I'll cover this topic in another chapter.
 
-*To be continued*
 
 ---
 
