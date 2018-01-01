@@ -86,7 +86,15 @@ Going back to the source, one error marker remains. The parameter of type `Class
 
 [^mv]: Rule of thumb: get the latest versions of all libraries and hope that they provide backward compatibility for parts of the application built with older version, right? Well, often this works surprisingly well... 
 
-Add newer versions of the bundles (such as 4.3.0) in the Bndtools dialog (first, remove the bundles again, else they won't be offered):
+Add newer versions of the bundles (such as 4.3.0) in the Bndtools dialog (first, remove the bundles again, else they won't be offered)[^orSource]:
+
+[^orSource]: Or change the version in the source tab. Editing the buildpath there
+	allows the use of some very 
+	[interesting options](https://github.com/bndtools/bnd/wiki/Buildpath-Versions)[^unbe].
+
+[^unbe]: It's unbelievable where they sometimes hide interesting information. I mean,
+	you would expect this information to be provided
+	[here](http://bnd.bndtools.org/instructions/buildpath.html), wouldn't you?
 
 ![Choosing a version](images/Bndtools-version-dialog.png){: width="500px" }
 
