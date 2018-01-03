@@ -36,6 +36,8 @@ of the latter is that it defines how to handle versions during development
 	[Angular](http://angularjs.blogspot.de/2016/10/versioning-and-releasing-angular.html)
 	(to just name a few of the top search results).
 
+## What to Version
+
 Let's first get a clear idea about the kinds of versions that we have to provide. 
 Regarding the API, the contract between components is essentially defined by
 the "Export-Package" and "Import-Package". The versions declared in the
@@ -51,7 +53,7 @@ However, although the bundle version can be used as a requirement at various
 places, the default is always "[0.0.0,&infin;)" (any version). Especially
 when providing "ordinary" libraries that include the required headers to 
 be faithfully used in an OSGi context, you shouldn't run into problems if 
-the bundle version moves differently. Of course, the bunde version is used
+the bundle version moves differently. Of course, the bundle version is used
 by tools to choose among available bundles with the same bundle name, so
 it isn't completely insignificant.
 
@@ -59,29 +61,31 @@ Finally, we have the Maven artifact version. Wouldn't it be nice if it matched
 the bundle version? It certainly would, and maybe could, if only OSGi
 had considered the pre-release versioning a bit more carefully.
 
+## Pre- vs. Post-Qualifiers
+
 Let's head straight at the core of the problem. OSGi defines a version number
 with a qualifier ("1.0.0.test") to be higher than the version without the
 qualifier ("1.0.0", the "release version"). So the qualifier is in fact a 
 post-release qualifier. SemVer (and Maven) consider the release version 
 "1.0.0" to be the final version with these major, minor and patch numbers. 
 There is nothing "post" this release[^like]. A version with a qualifier, such as
-"1.0.0-test"[^notice], is therefore defined to be lower than "1.0.0". 
+"1.0.0-test"[^notice], is therefore defined to be lower than "1.0.0"[^qorder]. 
 
-[^like]: I admit that I like this approach. *Anything* that causes a an artifact
+[^like]: I admit that I like this approach. IMHO *anything* that causes an artifact
 	to be rebuilt after its release (which establishes the release version)
 	should result in an increase of the patch number. 
 
-This is important: OSGi: `1.0.0.test > 1.0.0`, SemVer (and Maven): `1.0.0-test < 1.0.0`. 
-It is one of the reasons why it is so easy to work with pre-releases when using 
-Maven versioning. (The other is, of course, the special keyword "`SNAPSHOT`". 
-When used as the qualifier, it simply denotes the latest pre-release of a given 
-release version[^once].
+This is important: OSGi: `1.0.0.test > 1.0.0`, SemVer (and Maven): 
+`1.0.0-test < 1.0.0`. It is one of the reasons why it is so easy 
+to work with pre-releases when using Maven versioning. (The other is, of 
+course, the special keyword "`SNAPSHOT`". When used as the qualifier, 
+it simply denotes the latest pre-release of a given release version[^once].
 
 [^notice]: Notice the different separator being used to separate the qualifier
 	from the rest of the version number. Some have brought up the interpretation
 	of a "minus", so "1.0.0" is the release "minus" something, which clearly
-	indicates that it is "less". Though this interpretation becomes dubious
-	when you consider the ordering of pre-release: `1.0.0-2 < 1.0.0-3`. Doesn't
+	indicates that it is "less". Of course, this interpretation becomes dubious
+	when you consider the ordering of pre-releases: `1.0.0-2 < 1.0.0-3`. Doesn't
 	really comply with mathematics.
 
 [^once]: The OSGi Alliance has once 
@@ -91,15 +95,21 @@ release version[^once].
 
 [^maybeBetter]: Maybe for the better, since it would have increased the mess.
 	The attempt to define a version system that supports both pre- and
-	post-release qualifiers (the use of "." vs. "-" came in quite handly)
-	made things quite complicated.
+	post-release qualifiers (the use of "`.`" vs. "`-`" came in quite handy)
+	made things rather complicated.
+
+[^qorder]: At least there is no difference in the sort order of the qualifiers.
+	SemVer defines it to be based on the ASCII values, OSGI refers to
+	[`String.compareTo`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#compareTo-java.lang.String-).
+	Luckily, with respect to the characters allow in a qualifier, this boils down
+	to the same result.
 
 The real fun starts when you think about version ranges. How do pre-release
 versions fit in? Obviously, a range "[1.0.0,1.1.0)" does not include the
 pre-release "1.0.0-test", else the pre-release would have to provide
 all the features of the release version[^orNot]. But what about 
 "1.1.0-rc1"? It's lower than "1.0.0", so the version range formally
-includes. But the intention of the range definition presumably was to
+includes it. But the intention of the range definition presumably was to
 *exclude* anything "related to" (includes "leading to") version "1.1.0" 
 (and beyond) because it was expected to introduce some incompatibility.
 
