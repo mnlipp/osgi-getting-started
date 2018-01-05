@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Bndtools
+description: Describes the Eclipse Bndtools feature and its basic usage.
 date: 2016-03-21 12:00:00
 ---
 

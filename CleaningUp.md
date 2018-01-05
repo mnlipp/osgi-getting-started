@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Interlude: Cleaning up"
+description: Introduces the OSGi core concepts besides providing components.
 date: 2017-10-02 12:00:00
 ---
 
@@ -109,7 +110,8 @@ change of the API. Usually, modules programmed against version `1.a.b`
 will not be able to use an implementation with version `2.y.z`. 
 This is the reason why Bndtools generated a version range `[1.6,2)` 
 when we [added the import](AccessingAService.html#version-range) 
-of the framework.
+of the framework. (More on versioning in the 
+[part dedicated to versions](Versions.html).)
 
 
 ## Dynamic modules

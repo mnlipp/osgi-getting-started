@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Tracking a Service
+description: Shows what can go wrong when using an OSGi service and how to handle the problems.
 date: 2016-04-20 12:00:00
 ---
 

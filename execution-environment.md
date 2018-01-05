@@ -1,6 +1,7 @@
 ---
 layout: default
 title: The container
+description: Describes the container (environment) provided by the OSGi framework for components.
 date: 2016-03-31 12:00:00
 ---
 

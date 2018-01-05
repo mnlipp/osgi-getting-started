@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Repositories
+description: Describes how the OSGi tools make use of repositories and why this is not really compatible with the "Maven way".
 date: 2017-12-28 12:00:00
 ---
 
