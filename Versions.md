@@ -3,6 +3,7 @@ layout: default
 title: Versions
 description: A detailed discussion about versioning OSGi bundles (vs. versioning Maven artifacts).
 date: 2018-01-02 12:00:00
+commentIssue: 16
 ---
 
 # Versions

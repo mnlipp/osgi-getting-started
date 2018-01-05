@@ -8,3 +8,13 @@
 	background-color: white;
 	height: 1em;
 }
+
+.share-button-list a.button {
+	font-size: 90%;
+	color: grey;
+	background: white;
+	padding: 0px 3px 0px 3px;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
+}

@@ -3,6 +3,7 @@ layout: default
 title: Simplest Bundle
 description: Shows how to create an OSGi compliant bundle using nothing but the JDK.
 date: 2016-03-31 12:00:00
+commentIssue: 4
 ---
 
 # Simplest Bundle

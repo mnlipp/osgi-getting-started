@@ -3,6 +3,7 @@ layout: default
 title: Simple Bundle
 description: Extends the simplest bundle from the previous part and (finally) outputs "Hello World!".
 date: 2016-03-14 12:00:00
+commentIssue: 5
 ---
 
 # Simple Bundle

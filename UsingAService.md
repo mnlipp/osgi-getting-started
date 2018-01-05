@@ -3,6 +3,7 @@ layout: default
 title: Using a Service
 description: A complete example how to use the OSGi log service.
 date: 2016-04-24 12:00:00
+commentIssue: 12
 ---
 
 # Using a Service

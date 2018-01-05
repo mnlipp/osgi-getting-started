@@ -3,6 +3,7 @@ layout: default
 title: Combining Components
 description: Describes how components can be packaged and made available as services.
 date: 2017-10-02 12:00:00
+commentIssue: 9
 ---
 
 # From Components to Modules and Services

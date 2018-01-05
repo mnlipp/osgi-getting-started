@@ -3,6 +3,7 @@ layout: default
 title: Accessing a Service
 description: Describes how to access an OSGi service programmatically.
 date: 2016-04-17 12:00:00
+commentIssue: 10
 ---
 
 # Accessing a Service

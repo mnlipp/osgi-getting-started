@@ -3,6 +3,7 @@ layout: default
 title: Shift in Perspective
 description: Introduces OSGi as a lightweight framework. 
 date: 2016-03-31 12:00:00
+commentIssue: 8
 ---
 
 # Shift in Perspective

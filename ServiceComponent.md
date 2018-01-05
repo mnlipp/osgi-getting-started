@@ -3,6 +3,7 @@ layout: default
 title: Service Components
 description: Introduces service components as a simpler form of services.
 date: 2016-05-06 12:00:00
+commentIssue: 14
 ---
 
 # From Services to Service Components

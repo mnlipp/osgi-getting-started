@@ -3,6 +3,7 @@ layout: default
 title: Eclipse (OSGi) Plug-in
 description: Introduces the Eclipse Plug-in Development Environment.
 date: 2016-03-16 12:00:00
+commentIssue: 6
 ---
 
 # Eclipse (OSGi) Plug-in

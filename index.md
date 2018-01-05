@@ -3,6 +3,7 @@ layout: default
 title: Why?
 description: Describes why this introduction was written.
 date: 2016-03-31 12:00:00
+commentIssue: 2
 ---
 
 # Why?
@@ -13,7 +14,7 @@ Most tutorials that I have found are centered around some tool that is supposed 
 
 The examples used in this introduction are available from the [project site](https://github.com/mnlipp/osgi-getting-started) as an [Eclipse](http://www.eclipse.org/) project. I know that there are other IDEs around, but that's the one I prefer. For the initial parts of this introduction, the IDE is actually irrelevant. If you want to, you can use a text editor and build the examples with `javac` and `jar`. There are also gradle build configurations provided that automate those compilation and packaging steps[^nm].
 
-If you want to comment on this introduction, simply enter your remarks as a [project issue](https://github.com/mnlipp/osgi-getting-started/issues).
+If you want to comment on this introduction, please use the links at the bottom of the pages.
 
 ---
 

@@ -3,6 +3,7 @@ layout: default
 title: "Interlude: Cleaning up"
 description: Introduces the OSGi core concepts besides providing components.
 date: 2017-10-02 12:00:00
+commentIssue: 13
 ---
 
 # Interlude: Cleaning up
