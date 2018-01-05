@@ -79,7 +79,7 @@ This is important: OSGi: `1.0.0.test > 1.0.0`, SemVer (and Maven):
 `1.0.0-test < 1.0.0`. It is one of the reasons why it is so easy 
 to work with pre-releases when using Maven versioning. (The other is, of 
 course, the special keyword "`SNAPSHOT`". When used as the qualifier, 
-it simply denotes the latest pre-release of a given release version[^once].
+it simply denotes the latest pre-release of a given release version[^once].)
 
 [^notice]: Notice the different separator being used to separate the qualifier
 	from the rest of the version number. Some have brought up the interpretation
@@ -108,7 +108,7 @@ The real fun starts when you think about version ranges. How do pre-release
 versions fit in? Obviously, a range "[1.0.0,1.1.0)" does not include the
 pre-release "1.0.0-test", else the pre-release would have to provide
 all the features of the release version[^orNot]. But what about 
-"1.1.0-rc1"? It's lower than "1.0.0", so the version range formally
+"1.1.0-rc1"? It's lower than "1.1.0", so the version range formally
 includes it. But the intention of the range definition presumably was to
 *exclude* anything "related to" (includes "leading to") version "1.1.0" 
 (and beyond) because it was expected to introduce some incompatibility.
