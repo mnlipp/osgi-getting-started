@@ -81,7 +81,7 @@ This is important: OSGi: `1.0.0.test > 1.0.0`, SemVer `1.0.0-test < 1.0.0`. And 
 Well, Maven effectively has qualifiers that mark a version as pre-release and 
 qualifiers that mark it as post-release. The exact rules are decribed in the
 [POM reference](https://maven.apache.org/pom.html#Version_Order_Specification)
-and are a bit complicated. What it boils down to from a practival point of view is,
+and are a bit complicated. What it boils down to from a practical point of view is,
 that qualifiers that start with a number (such as those used by maven tooling for
 snapshot versions) are pre-release versions.
 
