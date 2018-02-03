@@ -68,7 +68,7 @@ had considered the pre-release versioning a bit more carefully.
 Let's head straight at the core of the problem. OSGi defines a version number
 with a qualifier ("1.0.0.test") to be higher than the version without the
 qualifier ("1.0.0", the "release version"). So the qualifier is in fact a 
-post-release qualifier. SemVer (and Maven) consider the release version 
+post-release qualifier. SemVer considers the release version 
 "1.0.0" to be the final version with these major, minor and patch numbers. 
 There is nothing "post" this release[^like]. A version with a qualifier, such as
 "1.0.0-test"[^notice], is therefore defined to be lower than "1.0.0"[^qorder]. 
@@ -77,10 +77,17 @@ There is nothing "post" this release[^like]. A version with a qualifier, such as
 	to be rebuilt after its release (which establishes the release version)
 	should result in an increase of the patch number. 
 
-This is important: OSGi: `1.0.0.test > 1.0.0`, SemVer (and Maven): 
-`1.0.0-test < 1.0.0`. It is one of the reasons why it is so easy 
-to work with pre-releases when using Maven versioning. (The other is, of 
-course, the special keyword "`SNAPSHOT`". When used as the qualifier, 
+This is important: OSGi: `1.0.0.test > 1.0.0`, SemVer `1.0.0-test < 1.0.0`. And Maven?
+Well, Maven effectively has qualifiers that mark a version as pre-release and 
+qualifiers that mark it as post-release. The exact rules are decribed in the
+[POM reference](https://maven.apache.org/pom.html#Version_Order_Specification)
+and are a bit complicated. What it boils down to from a practival point of view is,
+that qualifiers that start with a number (such as those used by maven tooling for
+snapshot versions) are pre-release versions.
+
+Maven versioning's support for qualifiers that indicate pre-release versions 
+is one of the reasons that make working with such pre-releases rather simple.
+(The other is, of course, the special keyword "`SNAPSHOT`". When used as the qualifier, 
 it simply denotes the latest pre-release of a given release version[^once].)
 
 [^notice]: Notice the different separator being used to separate the qualifier
