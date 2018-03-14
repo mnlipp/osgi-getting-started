@@ -36,18 +36,21 @@ If you want to continue using Bndtools, you should have a look at the [bnd docum
 
 When you create a "Bndtools OSGi workspace", the required files for a gradle built (which is completely independent from Bndtools) are automatically added in the directory that contains your project. It's added there because more often than not an OSGi based project consists of several bundles. From gradle's point of view, all bundles are sub-projects in their respective folders. The generated build configuration uses [bnd's gradle plugins](https://github.com/bndtools/bnd/tree/master/biz.aQute.bnd.gradle). Don't try to develop OSGi bundles with the plugin from the gradle project. As one of the gradle developers remarked in a [discussion](https://discuss.gradle.org/t/the-osgi-plugin-has-several-flaws/2546/25): "The existing OSGi plugin is one of the oldest Gradle plugins. My opinion is that the best thing to do here would be to start again."[^wid] The plugins bundled with bnd actually represent this "fresh start"[^restructure].
 
-[^wid]: I only wish they had put that in the gradle [documentation](https://docs.gradle.org/current/userguide/osgi_plugin.html) of the plugin. Would have saved me half a day.
+[^wid]: I only wish they had put that in the gradle [documentation](https://docs.gradle.org/current/userguide/osgi_plugin.html) of the plugin at the time of this writing (in March 2016). Would have saved me half a day. [Update: They have added it by now!]
 
 [^restructure]: A difficulty with this project layout is that you cannot see the files created
     in the same directory as your project in Eclipse. This can be fixed by using the nested
     project layout that Eclipse started to support with version 4.5 (Mars). Create a new
-    project of type "General" named e.g. "OSGi-Tests". Delete the projects created so far 
+    project of type "General" named e.g. "OSGi-Tests"[^bug1847]. Delete the projects created so far 
     from your workspace (it should only contain "OSGi-Tests" now) and close Eclipse. Move
     everything in your workspace (except folders "OSGi-Test" and ".metadata") into the
     folder "OSGi-Tests". Make sure not to miss the "hidden" folders such as "`.gradle`" etc.
     Re-open Eclipse again and re-import the projects that are now sub-projects of
     "OSGi-Tests". Choose "Project Presentation: Hierarchical" in the "Project Explorer"
     window to see everything in Eclipse.
+
+[^bug1847]: Due to a [bug in bndtools](https://github.com/bndtools/bndtools/issues/1847), 
+	you have to make this a project of type "Java" in Bndtools version 3.5.0.
 
 To make absolutely sure that the dependencies are clear, let me summarize again. At the center of the build is the bnd command line tool. Its "gradle module" provides the necessary plugins to adapt gradle (via `build.gradle`) in such a way that it takes the project specific build information from `bnd.bnd`, thus making `bnd.bnd` the primary source of information for the gradle build.
 
