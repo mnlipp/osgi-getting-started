@@ -41,7 +41,7 @@ When you create a "Bndtools OSGi workspace", the required files for a gradle bui
 [^restructure]: A difficulty with this project layout is that you cannot see the files created
     in the same directory as your project in Eclipse. This can be fixed by using the nested
     project layout that Eclipse started to support with version 4.5 (Mars). Create a new
-    project of type "General" named e.g. "OSGi-Tests"[^bug1847]. Delete the projects created so far 
+    project of type "General"[^bug1847] named e.g. "OSGi-Tests". Delete the projects created so far 
     from your workspace (it should only contain "OSGi-Tests" now) and close Eclipse. Move
     everything in your workspace (except folders "OSGi-Test" and ".metadata") into the
     folder "OSGi-Tests". Make sure not to miss the "hidden" folders such as "`.gradle`" etc.
