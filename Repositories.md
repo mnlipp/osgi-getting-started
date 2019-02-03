@@ -291,11 +291,21 @@ depend on with a Bnd POM Repository configured like this:
         name=Felix; \
     	snapshotUrls=https://oss.sonatype.org/content/repositories/snapshots/; \
         releaseUrls=https://repo1.maven.org/maven2; \
-        query='q=g:%22org.apache.felix%22&rows=1000'
+        query='q=g:%22org.apache.felix%22&rows=10000'
 ```
 
-Be careful to add the `rows=1000` search parameter (it's not mentioned in the
-bnd documentation), else you may not get everything you need.
+Here's the query for [Equinox](https://www.eclipse.org/equinox/). Note that they 
+have changed the group id in later versions, so in order to get everything, we
+have to query using the artifact id.
+
+```properties
+-plugin.7.Equinox = \
+    aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+        name=Equinox; \
+    	snapshotUrls=https://oss.sonatype.org/content/repositories/snapshots/; \
+        releaseUrls=https://central.maven.org/maven2; \
+        query='q=a:%22org.eclipse.osgi%22&rows=10000'
+```
 
 I have personally experienced two problems with this plugin. The first is that
 it doesn't refresh properly. I'm not sure about the state of the 
