@@ -201,6 +201,6 @@ Therefore, calling `getService()` from the `HelloWorld` thread is not an option.
 
 The documentation doesn't mention this, but the `ServiceTracker` isn't really fit to track required (mandatory) services[^simpler]. We'll have a look at more sophisticated alternatives later.
 
-[^simpler]: It would be quite easy if there were additional methods `serviceAdded` and `removingService` to override, called *after* a service has been added to the set of tracked services and *before* it is removed from the set of tracked services , respectively. Because things become so much simpler once you have these methods, I have written the [`ServiceCollector`](https://mnlipp.github.io/de.mnl.osgi/de.mnl.osgi.coreutils/javadoc/de/mnl/coreutils/package-summary.html#package.description) as an alternative to the `ServiceTracker`.
+[^simpler]: It would be quite easy if there were additional methods `serviceAdded` and `removingService` to override, called *after* a service has been added to the set of tracked services and *before* it is removed from the set of tracked services , respectively. Because things become so much simpler once you have these methods, I have written the [`ServiceCollector`](https://mnlipp.github.io/de.mnl.osgi/de.mnl.osgi.coreutils/javadoc/index.html?de/mnl/osgi/coreutils/package-summary.html) as an alternative to the `ServiceTracker`.
 
 ---
