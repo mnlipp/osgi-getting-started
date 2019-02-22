@@ -30,12 +30,12 @@ of the latter is that it defines how to handle versions during development
 [^careful]: Trying to be very careful here.
 
 [^indiv]: This is "only" an individual's 
-	([Tom Preston-Werner](http://tom.preston-werner.com/)) project. But an
+	([Tom Preston-Werner](https://tom.preston-werner.com/)) project. But an
 	influential one. The specification has been picked up by projects such as 
 	[NPM](https://docs.npmjs.com/getting-started/semantic-versioning),
 	[Racket](https://docs.racket-lang.org/semver/index.html),
-	[Ruby Gems](http://guides.rubygems.org/patterns/#semantic-versioning),
-	[Angular](http://angularjs.blogspot.de/2016/10/versioning-and-releasing-angular.html)
+	[Ruby Gems](https://guides.rubygems.org/patterns/#semantic-versioning),
+	[Angular](https://angularjs.blogspot.de/2016/10/versioning-and-releasing-angular.html)
 	(to just name a few of the top search results).
 
 ## What to Version
@@ -50,7 +50,7 @@ for an "Import-Package" requirement with a given name and version range.
 The "Bundle-Version" header is, interesting enough, optional (with a default
 value of "0.0.0"). A bundle is an aggregate and therefore, if a bundle version
 is given, it "must move as fast as the fastest moving package [it contains]" 
-(see the [bnd documentation](http://bnd.bndtools.org/chapters/170-versioning.html)).
+(see the [bnd documentation](https://bnd.bndtools.org/chapters/170-versioning.html)).
 However, although the bundle version can be used as a requirement at various
 places, the default is always "[0.0.0,&infin;)" (any version). Especially
 when providing "ordinary" libraries that include the required headers to 
@@ -98,9 +98,9 @@ it simply denotes the latest pre-release of a given release version[^once].)
 	really comply with mathematics.
 
 [^once]: The OSGi Alliance has once 
-	[considered](http://web.archive.org/web/20130618191418/http://www.osgi.org/download/osgi-early-draft-2011-09.pdf)
+	[considered](https://web.archive.org/web/20130618191418/http://www.osgi.org/download/osgi-early-draft-2011-09.pdf)
 	to support pre-release versions as well, but
-	[discarded the proposal](http://blog.osgi.org/2012/03/)[^maybeBetter]. 
+	[discarded the proposal](https://blog.osgi.org/2012/03/)[^maybeBetter]. 
 
 [^maybeBetter]: Maybe for the better, since it would have increased the mess.
 	The attempt to define a version system that supports both pre- and

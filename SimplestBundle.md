@@ -40,7 +40,7 @@ META-INF/MANIFEST.MF
 io/github/mnl/osgiGettingStarted/simplestBundle/HelloWorld.class
 ```
 
-The jar file can now be deployed in the OSGi framework. Go to the console of your running Felix and type "`felix:install file:<path-to-jar>`" (details can be found in the [Felix Documentation](http://felix.apache.org/documentation/subprojects/apache-felix-framework/apache-felix-framework-usage-documentation.html#installing-bundles)). Enter `felix:lb`. You'll get:
+The jar file can now be deployed in the OSGi framework. Go to the console of your running Felix and type "`felix:install file:<path-to-jar>`" (details can be found in the [Felix Documentation](https://felix.apache.org/documentation/subprojects/apache-felix-framework/apache-felix-framework-usage-documentation.html#installing-bundles)). Enter `felix:lb`. You'll get:
 
 ```
 START LEVEL 1

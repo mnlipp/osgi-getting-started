@@ -46,4 +46,4 @@ This is the Eclipse "built-in" way of handling bundles. Although it works, it us
 
 ---
 
-[^ESWI]: You should know how to do this. If not look it up in the [Manual](http://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-124.htm).
+[^ESWI]: You should know how to do this. If not look it up in the [Manual](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-124.htm).

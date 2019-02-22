@@ -57,7 +57,7 @@ Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
 states that the component requires JavaSE 8 as runtime environment. As you can
 have a header only once in the `MANIFEST.MF`, all requirements of a bundle are 
 combined in one header, using a comma as separator.
-An [article](http://blog.osgi.org/2015/12/using-requirements-and-capabilities.html)
+An [article](https://blog.osgi.org/2015/12/using-requirements-and-capabilities.html)
 in the OSGI Alliance Block gives a short introduction to the general
 "Requirements and Capabilities" model.
 
@@ -108,13 +108,13 @@ requirements is represented. The plugin type
 local file system. "Editable" means that you can deploy bundles to it and the index 
 is regenerated automatically by bndtools. Details about the configuration properties
 can be found in the 
-[bndtools documentation](http://bndtools.org/repositories.html#local-indexed-repository).
+[bndtools documentation](https://bndtools.org/repositories.html#local-indexed-repository).
 
 Another implementation of an OSGi repository that uses an index file is the
 `aQute.bnd.deployer.repository.FixedIndexedRepo`. Bndtools makes no attempt to modify the 
 content of such a repository. The index file is specified by a URL, i.e. the data 
 can be kept on a remote server. Again, the configuration options can be found in the 
-[bndtools documentation](http://bndtools.org/repositories.html#fixed-index-repositories).
+[bndtools documentation](https://bndtools.org/repositories.html#fixed-index-repositories).
 We made use of this kind of repository in the following three cases:
 
 ```properties
@@ -128,7 +128,7 @@ We made use of this kind of repository in the following three cases:
 	aQute.bnd.deployer.repository.FixedIndexedRepo; \
 		name=Felix; \
 		cache=${workspace}/cnf/cache; \
-		locations=http://felix.apache.org/obr/releases.xml
+		locations=https://felix.apache.org/obr/releases.xml
 
 -plugin.7.bndtoolshub: \
 	aQute.bnd.deployer.repository.FixedIndexedRepo; \
@@ -229,7 +229,7 @@ an `aQute.bnd.jpm.Repository` plugin for accessing Maven Central:
 This initial setup is a bit strange, considering the fact that JPM support 
 will be removed from bndtools in the next release. Details about the 
 configuration of the plugin can be found in OSGi's 
-[enroute Maven tutorial](http://enroute.osgi.org/tutorial_maven/310-central.html).
+[enroute Maven tutorial](https://enroute.osgi.org/tutorial_maven/310-central.html).
 
 ### Maven Bnd Repository Plugin
 
@@ -237,7 +237,7 @@ As the JPM plugin is deprecated and the detour via JPM unnecessary, I prefer
 another plugin that provides the same functionality and is easier to
 configure, the `aQute.bnd.repository.maven.provider.MavenBndRepository`. Here is
 a sample configuration (details can be found in the 
-[bnd documentation](http://bnd.bndtools.org/plugins/maven.html)):
+[bnd documentation](https://bnd.bndtools.org/plugins/maven.html)):
 
 ```properties
 -plugin.1.CentralMvn: \
@@ -275,7 +275,7 @@ artifact, you have to explicitly specify this as well -- a very arduous task.
 
 This is where the `aQute.bnd.repository.maven.pom.provider.BndPomRepository` plugin
 comes in (details can, again, be found in the 
-[bnd documentation](http://bnd.bndtools.org/plugins/pomrepo.html)). This plugin
+[bnd documentation](https://bnd.bndtools.org/plugins/pomrepo.html)). This plugin
 is kind of a strange beast, because it allows you to configure an initial
 set of artifacts to retrieve in very different ways, including the possiblity
 to use Maven Central's search facility. No matter how you obtain the initial
@@ -327,7 +327,7 @@ the released artifacts and the snapshot artifacts on a Nexus server
 ### Aether Plugin
 
 The bndtools documentation also mentions an 
-["Aether (Maven) Repositories" plugin](http://bndtools.org/repositories.html#aether-maven-repositories) that I haven't tested. The documentation seems incomplete
+["Aether (Maven) Repositories" plugin](https://bndtools.org/repositories.html#aether-maven-repositories) that I haven't tested. The documentation seems incomplete
 and what I could find in addition was 
 [not encouraging](https://groups.google.com/forum/#!topic/bndtools-users/yefAUFz_1eg).
 Besides, the underlying Eclipse Aether project has been archived and isn't easily

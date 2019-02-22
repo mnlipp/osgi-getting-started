@@ -10,17 +10,17 @@ commentIssue: 14
 
 As we have seen in the previous parts, the service registry provides a a very simple and flexible mechanism to establish the relationships between the components of a software system (provided as bundles). The drawback of its simplicity is that it requires a relatively large effort for individual components to manage their service dependencies.
 
-A somewhat different approach to managing services is the use of "service components". The OSGi specification defines a service component as a component that "[...] contains a description that is interpreted at run time to create and dispose objects depending on the availability of other services, the need for such an object, and available configuration data. Such objects can optionally provide a service." Have a look at the [article](http://www-adele.imag.fr/Les.Publications/intConferences/CBSE2003Cer.pdf) cited in the specification, which provides a nice introduction into the topic.
+A somewhat different approach to managing services is the use of "service components". The OSGi specification defines a service component as a component that "[...] contains a description that is interpreted at run time to create and dispose objects depending on the availability of other services, the need for such an object, and available configuration data. Such objects can optionally provide a service." Have a look at the [article](https://www-adele.imag.fr/Les.Publications/intConferences/CBSE2003Cer.pdf) cited in the specification, which provides a nice introduction into the topic.
 
 Service components supply the information required for managing the service dependencies. The management functions that evaluate this information are implemented in an independent component (the "dependency manager" or "service component runtime") that is deployed in the OSGi framework in addition to the service components. All dependency managers work according to the same basic pattern. They watch for bundle state changes, either by monitoring the framework or by requiring a bundle to notify the manager about its start explicitly in its bundle activator. Once the bundle has been started, the dependency information is retrieved. When all the required (i.e. non-optional) services are available, some startup-method of the service component is invoked. (And, of course, there is a shutdown-method, which is invoked if one of the required services goes away.)
 
 ## Felix Dependency Manager (DM)
 
-One of the oldest and at the same time very recent solutions to dependency management is the [Felix Dependency Manager (DM)](http://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager.html). It has its origins in 2004, but has recently undergone a major [overhaul](http://www.planetmarrs.net/dependency-manager-4/). The DM supports two mechanism for supplying the dependency information: programmatically or by using annotations.
+One of the oldest and at the same time very recent solutions to dependency management is the [Felix Dependency Manager (DM)](https://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager.html). It has its origins in 2004, but has recently undergone a major [overhaul](https://www.planetmarrs.net/dependency-manager-4/). The DM supports two mechanism for supplying the dependency information: programmatically or by using annotations.
 
 ### Using DM programmatically
 
-When using Felix DM programmatically, you have to provide a bundle activator that extends the abstract class [DependencyActivatorBase](http://felix.apache.org/apidocs/dependencymanager/r7/index.html?org/apache/felix/dm/DependencyActivatorBase.html) and implements the `init`-method. This method tells the manager about the service requirements (and about provides services) using the dependency manager's API.
+When using Felix DM programmatically, you have to provide a bundle activator that extends the abstract class [DependencyActivatorBase](https://felix.apache.org/apidocs/dependencymanager/r7/index.html?org/apache/felix/dm/DependencyActivatorBase.html) and implements the `init`-method. This method tells the manager about the service requirements (and about provides services) using the dependency manager's API.
 
 ```java
 public class Activator extends DependencyActivatorBase {
@@ -87,7 +87,7 @@ with are entries in the `bnd.bnd` similar to this:
 ```
 
 Regrettably, the Felix DM is in none of the Bndtools "standard repositories".
-We can add the Apache Felix Repository (http://felix.apache.org/obr/releases.xml) 
+We can add the Apache Felix Repository (https://felix.apache.org/obr/releases.xml) 
 in the same way as we added the "de.mnl.osgi" repository 
 [before](UsingAService.html#add-repo). If you have checked out the 
 [companion project](https://github.com/mnlipp/osgi-getting-started) for this tutorial, 
@@ -112,7 +112,7 @@ Except for the first, these methods are all defined by the `Thread` class, which
 
 [^overstop]: Unfortunately, `stop` is final and cannot be overridden. I'll improve the solution in the second part.
 
-The log service has been made available by the DM in the attribute `logService` by [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection). The details can all be found in the DM [documentation](http://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/components.html).
+The log service has been made available by the DM in the attribute `logService` by [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection). The details can all be found in the DM [documentation](https://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/components.html).
 
 When it comes to optional services, DM supports a nifty feature known as "[Null Object](https://en.wikipedia.org/wiki/Null_Object_pattern)". Try it out: change the parameter of `setRequired` in the activator's `init`-method to `false` and remove the log service bundle from the set of run bundles. Our component continues to work, despite the fact that we should get a `NullPointerException` when trying to invoke the `log`-method (`logService.log(...)`), since there cannot possibly be a log service available. If an optional dependency is not available, DM injects an instance of class [Proxy](https://docs.oracle.com/javase/7/docs/api/index.html?java/lang/reflect/Proxy.html) that simply handles all method invocations by doing nothing (except for returning a "zero" value matching the method's return type). Of course, it's not guaranteed that this "dummy service implementation" won't cause trouble in the invoking code. But (as in the case of the log service) this feature can sometimes simplify the code because you don't have to check whether an optional service is actually available.
 
@@ -172,7 +172,7 @@ public class HelloWorld implements Runnable {
 
 Note that we don't need an activator any more. The annotations specify the same information as the API calls in the previous example and should be self-explanatory[^olddoc], maybe with the exception of the `@Component` annotation's parameter "`provides`". All interfaces directly implemented by a class annotated as `@Component` are by default assumed to be interfaces of services provided by the component. (Using the API, declaring a component as provider of a service would require an extra call.) Of course, we don't want our component to be registered as a provider of the `java.lang.Runnable` "service". Therefore we have to enumerate the provided services (none) explicitly.
 
-[^olddoc]: The "`required`" element included in the `@ServiceDependency` cannot be found in the "[manual](http://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/dependency-service.html#servicedependency)" pages, which obviously aren't complete. When in doubt, have a look at the [javadoc](http://felix.apache.org/apidocs/dependencymanager.annotations/r7/index.html?org/apache/felix/dm/annotation/api/ServiceDependency.html).
+[^olddoc]: The "`required`" element included in the `@ServiceDependency` cannot be found in the "[manual](https://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/dependency-service.html#servicedependency)" pages, which obviously aren't complete. When in doubt, have a look at the [javadoc](https://felix.apache.org/apidocs/dependencymanager.annotations/r7/index.html?org/apache/felix/dm/annotation/api/ServiceDependency.html).
 
 In order to make the annotations known to the java compiler, you have to add `org.apache.felix.dependencymanager.annotation-x.y.z.jar` to the build path (as you did before with `org.apache.felix.dependencymanager`, see above). In an additional build step, the annotations are then used to create a file `META-INF/dependencymanager/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld` in the bundle during packaging. Using the code above, the generated file looks like this:
 

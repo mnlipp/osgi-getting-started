@@ -13,7 +13,7 @@ A major benefit of using a framework is that you can reuse existing components i
 The OSGi framework manages the available services and makes them available via the [BundleContext](https://osgi.org/javadoc/r6/core/org/osgi/framework/BundleContext.html) interface[^snbt]. An implementation of the `BundleContext` is passed to the `start` method of the `BundleActivator`. Maybe you had noticed this parameter already in our activator implementation:
 
 [^snbt]: Note that according to an OSGi 
-    [blog entry](http://blog.osgi.org/2013/07/real-men-dont-use-ds.html), this part and 
+    [blog entry](https://blog.osgi.org/2013/07/real-men-dont-use-ds.html), this part and 
     the next part of the introduction should probably not be there 
     (or banished to some appendix).
     
@@ -25,7 +25,7 @@ The OSGi framework manages the available services and makes them available via t
     approach and are prepared to come to the rescue -- which will result in the additional failure
     of the project regarding its budget constraints[^coc].
 
-[^coc]: I definitely liked the response in this [blog](http://blogs.mulesoft.com/dev/news-dev/osgi-no-thanks/): "Ah so consulting is the answer to OSGi complexity. I’ll let everyone know".
+[^coc]: I definitely liked the response in this [blog](https://blogs.mulesoft.com/dev/news-dev/osgi-no-thanks/): "Ah so consulting is the answer to OSGi complexity. I’ll let everyone know".
 
 ```java
 public class Activator implements BundleActivator {
@@ -96,7 +96,7 @@ Add newer versions of the bundles (such as 4.3.0) in the Bndtools dialog (first,
 
 [^unbe]: It's unbelievable where they sometimes hide interesting information. I mean,
 	you would expect this information to be provided
-	[here](http://bnd.bndtools.org/instructions/buildpath.html), wouldn't you?
+	[here](https://bnd.bndtools.org/instructions/buildpath.html), wouldn't you?
 
 ![Choosing a version](images/Bndtools-version-dialog.png){: width="500px" }
 
@@ -118,7 +118,7 @@ Import-Package: org.osgi.framework;version="[1.6,2)"
     And the continuous build executed by Bndtools works fine. When you try to build 
     the project using gradle, however, it fails with `error: type ServiceTracker does 
     not take parameters`. The reason is that the OSGi libraries provided for version 4.3.0 have been 
-    compiled [with a special flag](http://blog.osgi.org/2012/10/43-companion-code-for-java-7.html) 
+    compiled [with a special flag](https://blog.osgi.org/2012/10/43-companion-code-for-java-7.html) 
     that allows generics to be used in pre-Java 5 JVMs. Starting with Java 7, this 
     "trick" doesn't work anymore. Therefore the OSGi alliance has released jars built "in the
     ordinary way" (compatible with Java 7 and beyond) as version 4.3.1.

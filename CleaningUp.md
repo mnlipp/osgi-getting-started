@@ -31,11 +31,11 @@ to public, else you won't be able to use them within your module[^jsr294].
 
 [^jsr294]: A "fine grained" access control to the content of Java packages using 
 	"normal" Java syntax was proposed in the (now withdrawn) 
-	[JSR 294](http://jcp.org/en/jsr/detail?id=294). A lot of information that went 
+	[JSR 294](https://jcp.org/en/jsr/detail?id=294). A lot of information that went 
 	along with it seems to have vanished from the web together with the withdrawal. 
 	I found some explanations in a 
 	[blog](https://community.oracle.com/docs/DOC-983193) and in an 
-	[article](http://www.javabeat.net/new-features-in-java-7-0-part-1/) about new 
+	[article](https://www.javabeat.net/new-features-in-java-7-0-part-1/) about new 
 	features in Java 7 (written too early, obviously). The cause for the withdrawal 
 	is the advent of the "successor" JSR 376 (see below). And 
 	[politics](https://mmilinkov.wordpress.com/2006/10/20/java-component-war/). 
@@ -65,7 +65,7 @@ are enforced at runtime.
 
 [^eclipse-osgi]: If you became curious about OSGi because it is used in Eclipse, 
 	you should note that the modularity is the 
-	[main usage](http://rinswind.blogspot.de/2009/06/current-state-of-affairs.html) 
+	[main usage](https://rinswind.blogspot.de/2009/06/current-state-of-affairs.html) 
 	of OSGi in Eclipse (together with the dynamic modules -- though considering 
 	the constant prompt for a restart after installing a plugin, Eclipse doesn't 
 	seem to believe in this feature).
@@ -77,7 +77,7 @@ JBoss Application Server 7.
 Coming with Java 9, we now have support for modularity from the 
 "Java Platform Module System" (JPMS), as defined in 
 [JSR 376](https://jcp.org/en/jsr/detail?id=376).
-JPMS has its roots in project [Jigsaw](http://openjdk.java.net/projects/jigsaw/),
+JPMS has its roots in project [Jigsaw](https://openjdk.java.net/projects/jigsaw/),
 which aimed at providing a modular JDK. Contrary to OSGi, JPMS checks and
 enforces the rules defined for modularity at compile-time. It does, however,
 not define a service layer and supports neither sophisticated versioning 
@@ -165,7 +165,7 @@ becomes unavailable.
 There are two reasons why you would want to remove a module from a 
 running system. The first is resource consumption. When OSGi started 
 in 1999, hardware wasn't as cheap as it is today. I found a 
-[post](http://aqute.biz/pipermail/osgi_aqute.biz/2005-September/000004.html) 
+[post](https://aqute.biz/pipermail/osgi_aqute.biz/2005-September/000004.html) 
 by Peter Kriens[^PK] from 2005 where he wanted to evaluate OSGi on a 
 device with 32-64MB RAM and 2-8MB Flash, USB and Ethernet costing less 
 than $100. Compare these requirements with what you get nowadays for $30 
@@ -191,7 +191,7 @@ on a secondary system and switch over. Consider the (additional) testing
 that has to be performed for bringing a new module into a running productive 
 system. Keep in mind that "No matter how clean the framework, administrators 
 will always prefer a freshly booted machine." 
-([Caucho Blog](http://blog.caucho.com/2009/06/15/why-osgi-is-cool-but-not-for-most-enterprise-apps/)) And, of course, consider that being able to replace a module does not mean that you have an uninterrupted service. Other modules may depend on the module being replaced and may go down until the substitute becomes available, just like our simple bundle will, when you replace the log service[^uwa].
+([Caucho Blog](https://blog.caucho.com/2009/06/15/why-osgi-is-cool-but-not-for-most-enterprise-apps/)) And, of course, consider that being able to replace a module does not mean that you have an uninterrupted service. Other modules may depend on the module being replaced and may go down until the substitute becomes available, just like our simple bundle will, when you replace the log service[^uwa].
 
 [^uwa]: If there is a dependency between the modules on the service 
 	level only (and you have put the interface in a bundle of its own),  
@@ -248,7 +248,7 @@ This allows components to react to the appearance or disappearance of a service.
 registry and its operations should be considered implementation primitives. 
 They are powerful enough to build anything from them, but you'll want 
 something more sophisticated for every day's work. Or, to 
-[quote](http://blog.osgi.org/2010/03/services.html) Peter Kriens: 
+[quote](https://blog.osgi.org/2010/03/services.html) Peter Kriens: 
 "The original model of handling your service dependency manually 
 is and was broken from the start". The service tracker was 
 introduced as a minor amendment in release 2 (October 2001)[^shame]. 
@@ -298,7 +298,7 @@ might be related with the service.
 You should also not assume that the services are best-of-breed in 
 all cases. I admit, that -- after working my way through the log 
 service specification -- I was a bit disappointed to find a 
-[remark](http://stackoverflow.com/questions/10498846/how-do-you-properly-handle-logging-in-osgi-while-seperating-service-components) 
+[remark](https://stackoverflow.com/questions/10498846/how-do-you-properly-handle-logging-in-osgi-while-seperating-service-components) 
 by Peter Kriens that the OSGi alliance decided to not upgrade 
 the "14 years old" service because there are "already so (too) 
 many logging systems around"[^pax].
