@@ -2,7 +2,7 @@
 layout: default
 title: Repositories
 description: Describes how the OSGi tools make use of repositories and why this is not really compatible with the "Maven way".
-date: 2017-12-28 12:00:00
+date: 2019-03-28 12:00:00
 commentIssue: 15
 ---
 
@@ -62,8 +62,8 @@ in the OSGI Alliance Block gives a short introduction to the general
 "Requirements and Capabilities" model.
 
 This powerful model allows you to easily choose a component providing
-required capabilities from a repository if -- and that's the important point 
-in this context -- you can query the repository for such a component, 
+required capabilities from a repository if&mdash;and that's the important point 
+in this context&mdash;you can query the repository for such a component, 
 using the "Require-Capability" expression as search expression. This is
 the main functionality of the 
 [OSGi repository interface](https://osgi.org/javadoc/r6/cmpn/index.html?org/osgi/service/repository/Repository.html).
@@ -155,7 +155,7 @@ a project uses Maven or some other tool like Gradle for project management,
 (almost) everybody makes Java Open Source Software artifacts available on
 Maven Central (or [jCenter](https://bintray.com/bintray/jcenter)) and downloads
 required libraries from there using their Maven coordinates. As mentioned 
-before, the problem from an OSGi's point of view is that Maven repositories 
+before, the deficiency from an OSGi's point of view is that Maven repositories 
 do not provide the requirements and capabilities based search 
 facility[^osgi-support]. 
 
@@ -165,7 +165,11 @@ facility[^osgi-support].
 	repository manager[^relation] can provide a 
 	[Virtual OSGi Bundle Repository](https://help.sonatype.com/display/NXRM2/OSGi+Bundle+Repositories#OSGiBundleRepositories-VirtualOSGiBundleRepositories)
 	for a Maven repository. However, this does not seem to be enabled on their
-	[most popular installation](https://oss.sonatype.org/#welcome). 
+	[most popular installation](https://oss.sonatype.org/#welcome). And it doesn't
+	look as if it is planned to support it in 
+	[version 3](https://help.sonatype.com/repomanager3/repository-manager-feature-matrix)
+	any more.
+	  
 
 [^relation]: I have no relations with this company except for an account
 	on oss.sonatype.org. It just happens that I found the feature description
@@ -208,35 +212,10 @@ a subset of a Maven repository's artifacts and creating an OSGi Bundle Repositor
 	(Retrieved from 
 	[WayBackMachine](https://web.archive.org/web/20170105235749/http://www.jpm4j.org:80/#!/))
 
-### JPM Repository Plugin (deprecated)
-
-When you create a new workspace with bndtools 3.5.0, it configures
-an `aQute.bnd.jpm.Repository` plugin for accessing Maven Central:
-
-```properties
-# Configure Repositories
--plugin.1.Central: \
-	aQute.bnd.deployer.repository.wrapper.Plugin; \
-		location = "${build}/cache/wrapper"; \
-		reindex = true, \
-	aQute.bnd.jpm.Repository; \
-		includeStaged = true; \
-		name = Central; \
-		location = ~/.bnd/shacache; \
-		index = ${build}/central.json
-```
-
-This initial setup is a bit strange, considering the fact that JPM support 
-will be removed from bndtools in the next release. Details about the 
-configuration of the plugin can be found in OSGi's 
-[enroute Maven tutorial](https://enroute.osgi.org/tutorial_maven/310-central.html).
-
 ### Maven Bnd Repository Plugin
 
-As the JPM plugin is deprecated and the detour via JPM unnecessary, I prefer
-another plugin that provides the same functionality and is easier to
-configure, the `aQute.bnd.repository.maven.provider.MavenBndRepository`. Here is
-a sample configuration (details can be found in the 
+The `aQute.bnd.repository.maven.provider.MavenBndRepository` is probably the easiest
+to setup. Here is a sample configuration (details can be found in the 
 [bnd documentation](https://bnd.bndtools.org/plugins/maven.html)):
 
 ```properties
@@ -251,14 +230,13 @@ a sample configuration (details can be found in the
 		index=${.}/central.mvn
 ```
 
-Both plugins basically work in the same way. They use the file configured with the
-`index` property[^idx-nc] that specifies the Maven artifacts to be downloaded
-and to be included in the repository (view) provided by the respective plugin. 
+The plugin uses the file configured with the
+`index` property[^idx-nc] which specifies the Maven artifacts to be downloaded
+and to be included in the repository (view) provided by the plugin. 
 
 [^idx-nc]: Not to be confused with an OBR index file.
 
-While the JPM Repository plugin uses a JSON formatted index file, which is a bit
-harder to maintain, the Maven Bnd Repository plugin uses
+The Maven Bnd Repository plugin uses
 a simple list of Maven coordinates to specify the artifacts to be included in
 the configured repository. If you have the Repositories view open in Eclipse
 (usually when you are in the bndtools perspective), you can even drag and drop
@@ -315,14 +293,25 @@ it doesn't refresh properly. I'm not sure about the state of the
 The second problem is that the search works only with Maven Central, which means
 that it won't include snapshots of artifacts.
 
+### Indexed Maven Repository Plugin
+
+My Indexed Maven Repository Plugin maintains an index of one or more 
+maven repositories using a configuration that is aligned with maven 
+group ids. It makes use of the maven dependency information both for
+adding artifacts to the index and for filtering artifacts. For more
+details, have a look at the plugin's 
+[documentation](https://mnlipp.github.io/de.mnl.osgi/IndexedMavenRepository.html)
+
 ### Nexus Search Repository Plugin
 
-In order to easily access the snapshots of the artifacts of a project under 
-development I've started a 
-[Nexus Search Plugin](https://github.com/mnlipp/de.mnl.osgi/tree/master/de.mnl.osgi.bnd.repository),
-that -- as its name suggests -- uses the Nexus search API to find both
+In a previous attempt to index maven artifacts, I had started a 
+[Nexus Search Plugin](https://github.com/mnlipp/de.mnl.osgi/tree/master/de.mnl.osgi.bnd.repository) plugin
+that&mdash;as its name suggests&mdash;uses the Nexus search API to find both
 the released artifacts and the snapshot artifacts on a Nexus server
 (especially those on the [Open Source](https://oss.sonatype.org/#welcome) repository).
+
+I'm not perfectly sure yet, but with the Indexed Maven Repository Plugin available,
+I consider to deprecate this plugin.
 
 ### Aether Plugin
 
@@ -332,6 +321,29 @@ and what I could find in addition was
 [not encouraging](https://groups.google.com/forum/#!topic/bndtools-users/yefAUFz_1eg).
 Besides, the underlying Eclipse Aether project has been archived and isn't easily
 accessible any more.
+
+### JPM Repository Plugin (deprecated)
+
+When you create a new workspace with bndtools 3.5.0, it configures
+an `aQute.bnd.jpm.Repository` plugin for accessing Maven Central:
+
+```properties
+# Configure Repositories
+-plugin.1.Central: \
+	aQute.bnd.deployer.repository.wrapper.Plugin; \
+		location = "${build}/cache/wrapper"; \
+		reindex = true, \
+	aQute.bnd.jpm.Repository; \
+		includeStaged = true; \
+		name = Central; \
+		location = ~/.bnd/shacache; \
+		index = ${build}/central.json
+```
+
+This initial setup is a bit strange, considering the fact that JPM support 
+will be removed from bndtools in the next release. Details about the 
+configuration of the plugin could be found in OSGi's 
+[enroute Maven tutorial](https://web.archive.org/web/20160418231617/https://enroute.osgi.org/tutorial_maven/310-central.html).
 
 ## Conclusion
 
