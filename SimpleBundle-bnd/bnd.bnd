@@ -1,0 +1,4 @@
+-buildpath: osgi.core
+Private-Package: io.github.mnl.osgiGettingStarted.simpleBundle
+Bundle-Activator: io.github.mnl.osgiGettingStarted.simpleBundle.Activator
+Bundle-Version: 1.0.3

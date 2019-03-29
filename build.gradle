@@ -7,8 +7,3 @@ buildscript {
 	}
 }
 
-subprojects {
-	if (project.name != "SimplestBundle") {
-		apply plugin: 'biz.aQute.bnd.builder'
-	} 
-}
