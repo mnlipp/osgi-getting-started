@@ -27,23 +27,6 @@
 		pretty = true; \
 		local = ${build}/release
 
--plugin.5.de.mnl.osgi: \
-	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=de.mnl.osgi; \
-		locations=https://raw.githubusercontent.com/mnlipp/de.mnl.osgi/master/cnf/release/index.xml; \
-		readonly=true
-
--plugin.6.Felix: \
-	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=Felix; \
-		cache=${workspace}/cnf/cache; \
-		locations=http://felix.apache.org/obr/releases.xml
-
--plugin.7.bndtoolshub: \
-	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=Bndtools Hub; \
-		locations=https://raw.githubusercontent.com/bndtools/bundle-hub/master/index.xml.gz
-
 -releaserepo: Release
 -baselinerepo: Release
 

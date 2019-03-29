@@ -1,6 +1,7 @@
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 
+// Configure sensible layout
 sourceSets {
     main {
         java {
@@ -9,10 +10,9 @@ sourceSets {
         resources {
             srcDir 'resources'
         }
-        output.classesDir 'bin'
     }
 }
-
+    
 jar {
     manifest {
         from('META-INF/MANIFEST.MF')
