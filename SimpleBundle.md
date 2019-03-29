@@ -2,7 +2,7 @@
 layout: default
 title: Simple Bundle
 description: Extends the simplest bundle from the previous part and (finally) outputs "Hello World!".
-date: 2016-03-14 12:00:00
+date: 2019-03-29 12:00:00
 commentIssue: 5
 ---
 
@@ -62,15 +62,16 @@ io/github/mnl/osgiGettingStarted/simpleBundle/HelloWorld.class
 This can be installed in felix without any problem. But when you start the bundle, you get a nasty stack trace (shortened):
 
 ```
-org.osgi.framework.BundleException: Activator start error in bundle io.github.mnl.osgiGettingStarted.simpleBundle [8].
-	at org.apache.felix.framework.Felix.activateBundle(Felix.java:2276)
-	at org.apache.felix.framework.Felix.startBundle(Felix.java:2144)
+org.osgi.framework.BundleException: Activator start error in bundle io.github.mnl.osgiGettingStarted.simpleBundle [9].
+	at org.apache.felix.framework.Felix.activateBundle(Felix.java:2452)
+	at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
 	...
 Caused by: java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
 	at java.lang.ClassLoader.defineClass1(Native Method)
-	at java.lang.ClassLoader.defineClass(ClassLoader.java:760)
+	at java.lang.ClassLoader.defineClass(ClassLoader.java:763)
 	...
-java.lang.NoClassDefFoundError: org/osgi/framework/BundleActivator
+Caused by: java.lang.ClassNotFoundException: org.osgi.framework.BundleActivator not found by io.github.mnl.osgiGettingStarted.simpleBundle [9]
+	...
 ```
 
 Is there no `BundleActivator` in the runtime environment after all? Yes, there is. <a name="need-for-import"></a>It's just that the OSGi runtime doesn't allow a bundle to use everything that is available in the environment freely, not even if it is something as obvious as a framework interface. If a bundle wants to use an interface or class from the runtime environment, it must declare this desire with an `Import` statement in the manifest. The complete manifest of our Simple Bundle must hence include such a statement as well:
@@ -81,7 +82,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: HelloWorld
 Bundle-SymbolicName: io.github.mnl.osgiGettingStarted.simpleBundle
 Bundle-Version: 1.0.0
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: io.github.mnl.osgiGettingStarted.simpleBundle.Activator
 Import-Package: org.osgi.framework
 ```
@@ -90,10 +91,10 @@ Packaging the `SimpleBundle.jar` again with the updated `MANIFEST.MF` gives the 
 
 ```
 g! felix:install file:<your path>/SimpleBundle.jar
-Bundle ID: 10
-g! felix:start 10
+Bundle ID: 9
+g! felix:start 9
 Hello World started.
-g! felix:stop 10
+g! felix:stop 9
 Hello World stopped.
 ```
 
