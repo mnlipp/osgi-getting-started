@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: HelloWorld
+Bundle-SymbolicName: io.github.mnl.osgiGettingStarted.simpleBundle
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Activator: io.github.mnl.osgiGettingStarted.simpleBundle.Activator
+Import-Package: org.osgi.framework

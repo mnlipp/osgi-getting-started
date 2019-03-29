@@ -1,0 +1,21 @@
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        resources {
+            srcDir 'resources'
+        }
+        compileClasspath = fileTree('lib').include('*.jar')
+    }
+}
+
+jar {
+    manifest {
+        from('META-INF/MANIFEST.MF')
+    }
+}
+
