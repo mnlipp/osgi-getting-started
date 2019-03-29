@@ -2,7 +2,7 @@
 layout: default
 title: Bndtools
 description: Describes the Eclipse Bndtools feature and its basic usage.
-date: 2016-03-21 12:00:00
+date: 2019-03-29 12:00:00
 commentIssue: 7
 ---
 
@@ -10,23 +10,60 @@ commentIssue: 7
 
 [Bndtools](https://bndtools.org/) is an Eclipse plugin that integrates the (command line) tool [bnd](https://bnd.bndtools.org/) in Eclipse and provides "continuous build" for bundles. [Install](https://bndtools.org/installation.html) it now[^bndtools-version].
 
-[^bndtools-version]: This chapter was originally written using bndtools 3.2.0. However, I have checked recently that things still work with bndtools 3.5.0 and Eclipse oxygen and made minor changes and updates.
+[^bndtools-version]: This chapter was originally written using bndtools 3.2.0. However, the current version has been updated to comply with bndtools 4.3.0 and Eclipse 2019-03.
 
 The tool bnd takes a different perspective on defining bundles. From bnd's point of view, `MANIFEST.MF` is the source of information about the bundle at runtime only. While developing the bundle, you need closely related, but sometimes slightly different information and  *additional* information. So, to bnd, `MANIFEST.MF` is an artifact that is generated during build time from information contained in a file called `bnd.bnd`. The eclipse plugin bndtools provides a GUI for editing `bnd.bnd` (again with the possibility to edit the source directly) and components that make the information from `bnd.bnd` available to Eclipse's continuous build. 
 
-There is a [tutorial](https://bndtools.org/tutorial.html) for Bndtools, which I found (at the time of this writing) to be rather confusing. It addresses developers with some OSGi experience rather than users who want to get an (Eclipse based) environment for writing their first bundle. So let's simply once more focus on our Simple Bundle and port it to a Bndtools project.
+There is a [tutorial](https://bndtools.org/tutorial.html) for Bndtools, which I found (at the time of this writing) to be rather confusing[^lastLook]. It addresses developers with some OSGi experience rather than users who want to get an (Eclipse based) environment for writing their first bundle. So let's simply once more focus on our Simple Bundle and port it to a Bndtools project.
 
-In order to be able to work with Bndtools without problems, you need a so called configuration project. Use the wizard to create a "Bndtools OSGi Workspace" (File/New/Other/Bndtools). Choose "bndtools/workspace" as workspace template. You'll see a project `cnf` having been created in your workspace. Ignore it for the time being. Use the wizard again and create a new "Bndtools OSGi Project". Choose the Bndtools/Empty template and use `SimpleBundle-bnd` as project name.
+[^lastLook]: When I last had a look at it, it was marked as "out of date" and as
+    to be replaced by something new. So when you read this, maybe things
+    have changed for the better already.
 
-Have a look at the `generated` folder in `SimpleBundle-bnd`. Double-click on `SimpleBundle-bnd.jar` and then -- in the "Jar File Viewer" that appears -- double-click on `MANIFEST.MF`. Looks a bit familiar but much more verbose than what we have written so far[^sb]:
+In order to be able to work with Bndtools without problems, you need a so called configuration project. Bndtools is a great Eclipse plugin, but ... during the last 
+three years there has never been a version which was distributed with up-to-date templates for the wizard that creates the configuration project (or a bundle project). So 
+open "Window/Preferences/Bndtools/Repositories", "Enable templates repositories"
+and restart Eclipse.
+
+Now use the wizard to create a "Bndtools OSGi Workspace" (File/New/Other/Bndtools).
+Choose the "Minimal workspace", anything else is outdated.
+You'll see a project `cnf` having been created in your workspace. Ignore it for the time being. Use the wizard again and create a new "Bndtools OSGi Project". Choose the Bndtools/Empty template and use `SimpleBundle-bnd` as project name.
+
+Have a look at the `generated` folder in `SimpleBundle-bnd`. Double-click on `SimpleBundle-bnd.jar` (ignore the error dialog) and then&mdash;in the "Jar File Viewer" that 
+appears&mdash;double-click on `MANIFEST.MF`. Looks a bit familiar but much 
+more verbose than what we have written so far[^sb]:
 
 [^sb]: Probably this is really the *simplest bundle* that you can have.  
 
 ![Jar File Viewer](images/JarFileView.png){: width="700px" }
 
-Copy our source package into the `src` folder of the new project. Open `Activator.java` and have a look at the error. Looks familiar. Regrettably, there's no quick fix this time. Open `bnd.bnd` and select the "Build" tab. In the "Build Path sub-window use "+" to add `osgi.core`. Save the file, click on "Rebuild project" (under "Build Operations") and see the error disappear. If you switch to the "JAR File Viewer" again, you can see that the jar is still empty (apart from the `MANIFEST.MF`, of course). Bndtools doesn't include Java sources just because they are there. Rather, you have to add them to the "Private Packages" in `bnd.bnd`, tab "Contents". Do this, save, and you can see the project's classes in the jar file now.
+Copy our source package into the `src` folder of the new project. Open `Activator.java` and have a look at the error. Looks familiar. Regrettably, there's no quick fix this time.
 
-On tab "Contents", you can also add the bundle's activator. You can use content assist to enter the class name into the field (it's the only proposal). Save again, and you can see the `Bundle-Activator` header having been added to the generated `MANIFEST.MF`. You can also see it on the "Source" tab of `bnd.bnd`. The basic idea about the format of `bnd.bnd` is that entries that are to be copied to `MANIFEST.MF` look just like the headers in `MANIFEST.MF` (well, sometimes they are processed a bit). Entries that control the behavior of the bnd tool start with a dash[^cwp].
+What we first have to do is to provide the library with the OSGi Core API.
+In the "plain Java" project, we simply added a jar to the project. In the Eclipse PDE 
+project, the wizard found the library because "it happened to be available" in 
+Eclipse. Bndtools can also search for libraries (bundles, actually), but we first 
+have to configure a so called "repository", a searchable provider of bundles. 
+This could be done in the projects's `bnd.bnd` but as we are going to need the repository 
+most likely in several projects, it's preferably done in the
+configuration project's `cnf/build.bnd`.
+
+We'll have a detailed look at repositories later. For now you should simply
+copy the files `build.bnd` and `pom.xml` from the 
+[sample project](https://github.com/mnlipp/osgi-getting-started/tree/master/cnf) 
+into the `cnf/` directory, switch to the Bndtools perspective and choose 
+"Bndtools/Refresh Repositories" from the menu (or click on the refresh button
+at the top of the "Repositories" view). 
+When you go back to `Activator.java` and look at the quick fix proposals for the
+error at the import statement, it offers to "Add bundle 'osgi.core' to Bnd
+build path'. Do this. It will fix all errors. Alternatively, open `bnd.bnd` and 
+select the "Build" tab. In the "Build Path sub-window use "+" to add `osgi.core`
+(use the search field to find the bundle in the repositories). Save the file, click on "Rebuild project" (under "Build Operations") and see the error disappear. 
+
+![Added Build Path](images/AddedBuildPath.png){: width="500px" }
+
+No matter how you fixed the compilation problems, open `bnd.bnd`, go to tab "Contents"
+and add the bundle's activator. You can use content assist to enter the class name into the field (it's the only proposal). Save again, and in the Jar file viewer, you can see the `Bundle-Activator` header having been added to the generated `MANIFEST.MF`. You can also see it on the "Source" tab of `bnd.bnd`. The basic idea about the format of `bnd.bnd` is that entries that are to be copied to `MANIFEST.MF` look just like the headers in `MANIFEST.MF` (well, sometimes they are processed a bit). Entries that control the behavior of the bnd tool start with a dash[^cwp].
 
 [^cwp]: Comparing this with PDE's approach as shown in the previous part, you could say that `bnd.bnd` combines the information maintained by PDE in `MANIFEST.MF` and `build.properties`.
 
