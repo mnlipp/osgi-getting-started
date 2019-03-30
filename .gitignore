@@ -1,2 +1,4 @@
 .gradle/
-.metadata
+**/build/
+**/generated/
+**/bin/

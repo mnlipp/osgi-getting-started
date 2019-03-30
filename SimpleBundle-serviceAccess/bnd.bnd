@@ -1,0 +1,11 @@
+-buildpath: \
+	osgi.core;version=4.3.1,\
+	osgi.cmpn;version=4.3.1
+Bundle-Activator: io.github.mnl.osgiGettingStarted.simpleBundle.Activator
+javac.source: 1.7
+javac.target: 1.7
+Private-Package: io.github.mnl.osgiGettingStarted.simpleBundle
+-runfw: org.apache.felix.framework;version='[5.4.0,5.4.0]'
+-runee: JavaSE-1.7
+-runprogramargs: -console
+Bundle-Version: 1.0.3
