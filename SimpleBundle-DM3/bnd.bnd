@@ -1,0 +1,20 @@
+Bundle-Version: 1.2.0
+Private-Package: io.github.mnl.osgiGettingStarted.simpleBundle
+-buildpath: \
+	osgi.cmpn;version=4.3.1,\
+	osgi.core;version=4.3.1,\
+	osgi.annotation
+-runfw: org.apache.felix.framework;version='[6.0.2,6.0.2]'
+-runee: JavaSE-1.8
+-runbundles: \
+	org.apache.felix.log,\
+	org.apache.felix.gogo.command,\
+	org.apache.felix.gogo.runtime,\
+	org.apache.felix.gogo.shell,\
+	de.mnl.osgi.coreutils,\
+	de.mnl.osgi.osgi2jul,\
+	org.apache.felix.configadmin,\
+	org.apache.felix.scr,\
+	org.osgi.util.promise;version=1.1.1,\
+	org.osgi.util.function;version=1.1.0
+	

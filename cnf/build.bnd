@@ -29,12 +29,12 @@
         releaseUrls=https://repo1.maven.org/maven2; \
 		query='q=g:%22org.apache.felix%22&rows=10000'
 		
-#-plugin.6.de.mnl.osgi: \
-#    aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
-#        name=de.mnl.osgi; \
-#		readOnly=true; \
-#        releaseUrls=https://repo1.maven.org/maven2; \
-#		query='q=g:%22de.mnl.osgi%22&rows=10000'
+-plugin.6.de.mnl.osgi: \
+    aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+        name=de.mnl.osgi; \
+		readOnly=true; \
+        releaseUrls=https://repo1.maven.org/maven2; \
+		query='q=g:%22de.mnl.osgi%22&rows=10000'
 		
 
 -releaserepo: Release
