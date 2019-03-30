@@ -2,3 +2,9 @@
 Private-Package: io.github.mnl.osgiGettingStarted.simpleBundle
 Bundle-Activator: io.github.mnl.osgiGettingStarted.simpleBundle.Activator
 Bundle-Version: 1.0.3
+-runee: JavaSE-1.8
+-runfw: org.apache.felix.framework;version='[6.0.2,6.0.2]'
+-runbundles: \
+	org.apache.felix.gogo.command;version=1.1.0,\
+	org.apache.felix.gogo.shell;version=1.1.2,\
+	org.apache.felix.gogo.runtime;version=1.1.2

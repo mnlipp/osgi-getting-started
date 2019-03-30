@@ -17,4 +17,12 @@
 		name=Central; \
 		location=${.}/target/cached.xml
 
+-plugin.8.Felix = \
+    aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+        name=Felix; \
+		readOnly=true; \
+    	snapshotUrls=https://oss.sonatype.org/content/repositories/snapshots/; \
+        releaseUrls=https://repo1.maven.org/maven2; \
+		query='q=g:%22org.apache.felix%22&rows=10000'
+
 -releaserepo: Release
