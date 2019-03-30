@@ -1,0 +1,14 @@
+Bundle-Version: 1.1.0
+Private-Package: io.github.mnl.osgiGettingStarted.loggingBundle
+-buildpath: \
+	osgi.cmpn;version=4.3.1,\
+	osgi.core;version=4.3.1
+Bundle-Activator: io.github.mnl.osgiGettingStarted.loggingBundle.Activator
+-runfw: org.apache.felix.framework;version='[6.0.2,6.0.2]'
+-runee: JavaSE-1.8
+-runbundles: \
+	org.apache.felix.log,\
+	org.apache.felix.gogo.command,\
+	org.apache.felix.gogo.runtime,\
+	org.apache.felix.gogo.shell
+-runvm: -Djava.util.logging.config.file=jul.properties
