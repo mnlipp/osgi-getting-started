@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Central" increment="1553895115290">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Central" increment="1553950644709">
   <resource>
     <capability namespace="osgi.content">
       <attribute name="size" value="306578" type="Long"/>
@@ -1382,24 +1382,6 @@
   </resource>
   <resource>
     <capability namespace="osgi.content">
-      <attribute name="size" value="276420" type="Long"/>
-      <attribute name="url" value="file:/home/mnl/.m2/repository/xalan/serializer/2.7.2/serializer-2.7.2.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="E8F5B4340D3B12A0CFA44AC2DB4BE4E0639E479AE847DF04C4ED8B521734BB4A"/>
-    </capability>
-    <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="xalan:serializer"/>
-      <attribute name="type" value="application/java-archive"/>
-      <attribute name="version" value="2.7.2" type="Version"/>
-    </capability>
-    <capability namespace="bnd.info">
-      <attribute name="name" value="xalan:serializer:2.7.2"/>
-      <attribute name="from" value="xalan:serializer:2.7.2"/>
-      <attribute name="version" value="0.0.0" type="Version"/>
-    </capability>
-  </resource>
-  <resource>
-    <capability namespace="osgi.content">
       <attribute name="size" value="1367760" type="Long"/>
       <attribute name="url" value="file:/home/mnl/.m2/repository/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
@@ -1413,6 +1395,24 @@
     <capability namespace="bnd.info">
       <attribute name="name" value="xerces:xercesImpl:2.11.0"/>
       <attribute name="from" value="xerces:xercesImpl:2.11.0"/>
+      <attribute name="version" value="0.0.0" type="Version"/>
+    </capability>
+  </resource>
+  <resource>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="276420" type="Long"/>
+      <attribute name="url" value="file:/home/mnl/.m2/repository/xalan/serializer/2.7.2/serializer-2.7.2.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="E8F5B4340D3B12A0CFA44AC2DB4BE4E0639E479AE847DF04C4ED8B521734BB4A"/>
+    </capability>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="xalan:serializer"/>
+      <attribute name="type" value="application/java-archive"/>
+      <attribute name="version" value="2.7.2" type="Version"/>
+    </capability>
+    <capability namespace="bnd.info">
+      <attribute name="name" value="xalan:serializer:2.7.2"/>
+      <attribute name="from" value="xalan:serializer:2.7.2"/>
       <attribute name="version" value="0.0.0" type="Version"/>
     </capability>
   </resource>
@@ -2569,24 +2569,6 @@
     </capability>
   </resource>
   <resource>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="28211" type="Long"/>
-      <attribute name="url" value="file:/home/mnl/.m2/repository/org/apache/geronimo/specs/geronimo-jms_1.1_spec/1.0/geronimo-jms_1.1_spec-1.0.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="293180AFED47A7276B2180CD37BAF2C89D41452B982D8B9B11FB0271303E1BC1"/>
-    </capability>
-    <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="org.apache.geronimo.specs:geronimo-jms_1.1_spec"/>
-      <attribute name="type" value="application/java-archive"/>
-      <attribute name="version" value="1.0.0" type="Version"/>
-    </capability>
-    <capability namespace="bnd.info">
-      <attribute name="name" value="org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.0"/>
-      <attribute name="from" value="org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.0"/>
-      <attribute name="version" value="0.0.0" type="Version"/>
-    </capability>
-  </resource>
-  <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="http://www.apache.org/licenses/LICENSE-2.0, http://www.eclipse.org/org/documents/epl-v10.php"/>
       <attribute name="osgi.identity" value="org.eclipse.jetty.websocket.client"/>
@@ -2670,6 +2652,24 @@
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.eclipse.jetty.websocket.common.io.http)(&amp;(version&gt;=9.0.0)(!(version&gt;=10.0.0))))"/>
     </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="28211" type="Long"/>
+      <attribute name="url" value="file:/home/mnl/.m2/repository/org/apache/geronimo/specs/geronimo-jms_1.1_spec/1.0/geronimo-jms_1.1_spec-1.0.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="293180AFED47A7276B2180CD37BAF2C89D41452B982D8B9B11FB0271303E1BC1"/>
+    </capability>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="org.apache.geronimo.specs:geronimo-jms_1.1_spec"/>
+      <attribute name="type" value="application/java-archive"/>
+      <attribute name="version" value="1.0.0" type="Version"/>
+    </capability>
+    <capability namespace="bnd.info">
+      <attribute name="name" value="org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.0"/>
+      <attribute name="from" value="org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.0"/>
+      <attribute name="version" value="0.0.0" type="Version"/>
+    </capability>
   </resource>
   <resource>
     <capability namespace="osgi.content">
