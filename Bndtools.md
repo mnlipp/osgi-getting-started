@@ -23,10 +23,12 @@ There is a [tutorial](https://bndtools.org/tutorial.html) for Bndtools, which I 
 In order to be able to work with Bndtools without problems, you need a so called configuration project. Bndtools is a great Eclipse plugin, but ... during the last 
 three years there has never been a version which was distributed with up-to-date templates for the wizard that creates the configuration project (or a bundle project). So 
 open "Window/Preferences/Bndtools/Repositories", "Enable templates repositories"
-and restart Eclipse.
+and restart Eclipse[^templDefault].
+
+[^templDefault]: No idea why they don't make this the default seeting.
 
 Now use the wizard to create a "Bndtools OSGi Workspace" (File/New/Other/Bndtools).
-Choose the "Minimal workspace", anything else is outdated.
+Choose the "Minimal workspace", everything else is outdated.
 You'll see a project `cnf` having been created in your workspace. Ignore it for the time being. Use the wizard again and create a new "Bndtools OSGi Project". Choose the Bndtools/Empty template and use `SimpleBundle-bnd` as project name.
 
 Have a look at the `generated` folder in `SimpleBundle-bnd`. Double-click on `SimpleBundle-bnd.jar` (ignore the error dialog) and then&mdash;in the "Jar File Viewer" that 
@@ -39,10 +41,10 @@ more verbose than what we have written so far[^sb]:
 
 Copy our source package into the `src` folder of the new project. Open `Activator.java` and have a look at the error. Looks familiar. Regrettably, there's no quick fix this time.
 
-What we first have to do is to provide the library with the OSGi Core API.
+What we first have to do is to provide the bundle with the OSGi Core API (again).
 In the "plain Java" project, we simply added a jar to the project. In the Eclipse PDE 
-project, the wizard found the library because "it happened to be available" in 
-Eclipse. Bndtools can also search for libraries (bundles, actually), but we first 
+project, the wizard found the bundle because "it happened to be available" in 
+Eclipse. Bndtools can also search for bundles, but we first 
 have to configure a so called "repository", a searchable provider of bundles. 
 This could be done in the projects's `bnd.bnd` but as we are going to need the repository 
 most likely in several projects, it's preferably done in the
@@ -56,11 +58,20 @@ into the `cnf/` directory, switch to the Bndtools perspective and choose
 at the top of the "Repositories" view). 
 When you go back to `Activator.java` and look at the quick fix proposals for the
 error at the import statement, it offers to "Add bundle 'osgi.core' to Bnd
-build path'. Do this. It will fix all errors. Alternatively, open `bnd.bnd` and 
-select the "Build" tab. In the "Build Path sub-window use "+" to add `osgi.core`
-(use the search field to find the bundle in the repositories). Save the file, click on "Rebuild project" (under "Build Operations") and see the error disappear. 
+build path'. Do this. It will fix all errors. 
 
-![Added Build Path](images/AddedBuildPath.png){: width="500px" }
+Alternatively, open `bnd.bnd` and 
+select the "Build" tab. In the "Build Path sub-window use "+" to add `osgi.core`
+(use the search field to find the bundle in the repositories). 
+
+![Add from Repository](images/AddFromRepoQuery.png){: width="370px" }
+
+Click "Finish" and the osgi.core bundle can be found in the "Build Path" 
+section of `bnd.bnd`'s "Build Tab".
+
+![Added Build Path](images/AddedBuildPath.png){: width="400px" }
+
+Save the file, click on "Rebuild project" (under "Build Operations") and see the error disappear. 
 
 No matter how you fixed the compilation problems, open `bnd.bnd`, go to tab "Contents"
 and add the bundle's activator. You can use content assist to enter the class name into the field (it's the only proposal). Save again, and in the Jar file viewer, you can see the `Bundle-Activator` header having been added to the generated `MANIFEST.MF`. You can also see it on the "Source" tab of `bnd.bnd`. The basic idea about the format of `bnd.bnd` is that entries that are to be copied to `MANIFEST.MF` look just like the headers in `MANIFEST.MF` (well, sometimes they are processed a bit). Entries that control the behavior of the bnd tool start with a dash[^cwp].

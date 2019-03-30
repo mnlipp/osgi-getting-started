@@ -34,7 +34,9 @@ Adding an OSGi framework sounds like a very good idea, and if you choose this op
 
 ![Plugin classpath container](images/Plugin-classpath-container.png){: width="350px" }
 
-Instead of adding the location of the jar directly, PDE adds the classpath container "Plug-In Dependencies". As content of this container, PDE supplies the jars that provide the packages enumerated in the `Import-Package` header of the manifest. You can see that PDE could locate `org.osgi.framework` in a jar that is part of the Eclipse Equinox package -- Eclipse's own implementation of the OSGi framework and base of Eclipse itself.
+Instead of adding the location of the jar directly, PDE adds the classpath container "Plug-In Dependencies". As content of this container, PDE supplies the jars that provide the packages enumerated in the `Import-Package` header of the manifest. You can see that PDE could locate `org.osgi.framework` in a jar[^isBundle] that is part of the Eclipse Equinox package -- Eclipse's own implementation of the OSGi framework and base of Eclipse itself.
+
+[^isBundle]: Again, to be precise, it's not simply a jar, it's a bundle.
 
 When you compare the manifest that has been created up to now with the manifest from our previous project, there should be 3 differences. First, PDE used the project's name to fill in the bundle symbolic name. Change that back to `io.github.mnl.osgiGettingStarted.simpleBundle` as this is the usual pattern for bundle symbolic names. Second, the version has been filled with `1.0.0.qualifier`. We should update the version to `1.0.1`. You can also keep the `qualifier` if you like. It is replaced with a time stamp at build time, thus assigning a unique version to each build.
 

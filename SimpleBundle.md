@@ -39,7 +39,8 @@ public class Activator implements BundleActivator {
 
 Our class "`HelloWorld`" is still not doing anything useful. But as it represents our component, the activator creates an instance in the `start` method and discards it again in the `stop` method.
 
-If you simply add this class to your project, you'll get an error indicator, because the interface `BundleActivator` isn't known. As is usual in a Java project, classes that are not part of the JDK must be provided by a jar file that you add to the classpath of your project. Again, let's keep things simple. Download the jar that holds the interface from the [OSGi site](https://www.osgi.org/developer/downloads/), put it in a subdirectory of your project (usually called "`lib`") and add it to your classpath.
+If you simply add this class to your project, you'll get an error indicator, because the interface `BundleActivator` isn't known. As is usual in a Java project, classes that are not part of the JDK must be provided by a jar file that you add to the classpath of your project. Again, let's keep things simple. Download 
+[the jar that holds the interface](https://search.maven.org/remotecontent?filepath=org/osgi/org.osgi.core/6.0.0/org.osgi.core-6.0.0.jar), put it in a subdirectory of your project (usually called "`lib`") and add it to your classpath.
 
 The OSGi framework doesn't search through your bundle for a class that implements the `BundleActivator` interface. Rather, it must be made known to the framework by an additional entry in the `MANIFEST.MF`:
 
@@ -98,3 +99,9 @@ g! felix:stop 9
 Hello World stopped.
 ```
 
+Before you continue, it's worth to have a closer look at the jar that we
+have included in our project. Browse the content with a tool of your choice
+and open the `MANIFEST.MF`. It also has those `Bundle-*` headers, just like those
+that we have written for our `SimpleBundle`. So, to be precise, what we have
+included in our project is not a simple jar, but another bundle&mdash;the bundle
+with the OSGi Core API definitions.
