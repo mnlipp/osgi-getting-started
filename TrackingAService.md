@@ -169,12 +169,12 @@ Welcome to Apache Felix Gogo
 g! lb
 START LEVEL 1
    ID|State      |Level|Name
-    0|Active     |    0|System Bundle (5.2.0)
-    1|Active     |    1|Apache Felix Log Service (1.0.1)
-    2|Active     |    1|Apache Felix Gogo Command (0.14.0)
-    3|Active     |    1|Apache Felix Gogo Runtime (0.16.2)
-    4|Active     |    1|Apache Felix Gogo Shell (0.10.0)
-    5|Active     |    1|SimpleBundle-logging (1.1.0)
+    0|Active     |    0|System Bundle (6.0.2)|6.0.2
+    1|Active     |    1|Apache Felix Log Service (1.2.0)|1.2.0
+    2|Active     |    1|Apache Felix Gogo Command (1.1.0)|1.1.0
+    3|Active     |    1|Apache Felix Gogo Runtime (1.1.2)|1.1.2
+    4|Active     |    1|Apache Felix Gogo Shell (1.1.2)|1.1.2
+    5|Active     |    1|SimpleBundle-logging (1.1.0)|1.1.0
 g! stop 1
 Hello World stopped.
 g! start 1
