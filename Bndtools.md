@@ -14,7 +14,7 @@ commentIssue: 7
 
 The tool bnd takes a different perspective on defining bundles. From bnd's point of view, `MANIFEST.MF` is the source of information about the bundle at runtime only. While developing the bundle, you need closely related, but sometimes slightly different information and  *additional* information. So, to bnd, `MANIFEST.MF` is an artifact that is generated during build time from information contained in a file called `bnd.bnd`. The eclipse plugin bndtools provides a GUI for editing `bnd.bnd` (again with the possibility to edit the source directly) and components that make the information from `bnd.bnd` available to Eclipse's continuous build. 
 
-There is a [tutorial](https://bndtools.org/tutorial.html) for Bndtools, which I found (at the time of this writing) to be rather confusing[^lastLook]. It addresses developers with some OSGi experience rather than users who want to get an (Eclipse based) environment for writing their first bundle. So let's simply once more focus on our Simple Bundle and port it to a Bndtools project.
+There is a [tutorial](https://bndtools.org/tutorial.html) for Bndtools, which I found (at the time of writing this) to be rather confusing[^lastLook]. It addresses developers with some OSGi experience rather than users who want to get an (Eclipse based) environment for developing their first bundle. So let's simply once more focus on our Simple Bundle and port it to a Bndtools project.
 
 [^lastLook]: When I last had a look at it, it was marked as "out of date" and as
     to be replaced by something new. So when you read this, maybe things
@@ -28,7 +28,7 @@ three years there has never been a version which was distributed with up-to-date
 open "Window/Preferences/Bndtools/Repositories", "Enable templates repositories"
 and restart Eclipse[^templDefault].
 
-[^templDefault]: No idea why they don't make this the default seeting.
+[^templDefault]: No idea why they don't make this the default setting.
 
 Now use the wizard to create a "Bndtools OSGi Workspace" (File/New/Other/Bndtools).
 Choose the "Minimal workspace", everything else is outdated.
@@ -51,8 +51,8 @@ In the "plain Java" project, we simply added a jar to the project. In the Eclips
 project, the wizard found the bundle because "it happened to be available" in 
 Eclipse. Bndtools can also search for bundles, but we first 
 have to configure a so called "repository", a searchable provider of bundles. 
-This could be done in the projects's `bnd.bnd` but as we are going to need the repository 
-most likely in several projects, it's preferably done in the
+This could be done in the projects's `bnd.bnd` but most likely we are
+going to need the repository in several projects, so we add it in the
 configuration project's `cnf/build.bnd`.
 
 We'll have a detailed look at repositories later. For now you should simply
@@ -71,7 +71,7 @@ select the "Build" tab. In the "Build Path sub-window use "+" to add `osgi.core`
 
 ![Add from Repository](images/AddFromRepoQuery.png){: width="370px" }
 
-Click "Finish" and the osgi.core bundle can be found in the "Build Path" 
+Click "Finish" and the osgi.core bundle shows up in the "Build Path" 
 section of `bnd.bnd`'s "Build Tab".
 
 ![Added Build Path](images/AddedBuildPath.png){: width="400px" }
@@ -81,11 +81,19 @@ Save the file, click on "Rebuild project" (under "Build Operations") and see the
 ## Completing the Bundle Configuration
 
 No matter how you fixed the compilation problems, open `bnd.bnd`, go to tab "Contents"
-and add the bundle's activator. You can use content assist to enter the class name into the field (it's the only proposal). Save again, and in the Jar file viewer, you can see the `Bundle-Activator` header having been added to the generated `MANIFEST.MF`. You can also see it on the "Source" tab of `bnd.bnd`. The basic idea about the format of `bnd.bnd` is that entries that are to be copied to `MANIFEST.MF` look just like the headers in `MANIFEST.MF` (well, sometimes they are processed a bit). Entries that control the behavior of the bnd tool start with a dash[^cwp].
+and add the bundle's activator. You can use content assist to enter the class name into the field (it's the only proposal). Save again, and in the Jar file viewer, you can see the `Bundle-Activator` header having been added to the generated `MANIFEST.MF`. You can also see it on the "Source" tab of `bnd.bnd`, which should by now look like this:
+
+```properties
+-buildpath: osgi.core
+Private-Package: io.github.mnl.osgiGettingStarted.simpleBundle
+Bundle-Activator: io.github.mnl.osgiGettingStarted.simpleBundle.Activator
+```
+
+The basic idea about the format of `bnd.bnd` is that entries that are to be copied to `MANIFEST.MF` look just like the headers in `MANIFEST.MF` (well, sometimes they are processed a bit). Entries that control the behavior of the bnd tool start with a dash[^cwp].
 
 [^cwp]: Comparing this with PDE's approach as shown in the previous part, you could say that `bnd.bnd` combines the information maintained by PDE in `MANIFEST.MF` and `build.properties`.
 
-Add version "1.0.3" in the "Content" tab of `bnd.bnd`. Save, and you can immediately install and start the bundle (the jar) in felix as with our previous projects. If you want to have a build time stamp as with the PDE plugin, add `${tstamp}` to the version number ("1.0.3.${tstamp}"). This macro will be replaced with the build time by bnd.
+Add version "1.0.3" in the "Content" tab of `bnd.bnd`. Save, and you can immediately install and start the bundle (the jar) in felix as with our previous projects. If you want to have a build time stamp as with the PDE plugin, add `${tstamp}` to the version number ("`1.0.3.${tstamp}`"). This macro will be replaced with the build time by bnd.
 
 ## More about Bnd/Bndtools
 
