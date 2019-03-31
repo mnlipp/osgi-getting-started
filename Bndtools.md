@@ -46,7 +46,7 @@ more verbose than what we have written so far[^sb]:
 
 Copy our source package into the `src` folder of the new project. Open `Activator.java` and have a look at the error. Looks familiar. Regrettably, there's no quick fix this time.
 
-What we first have to do is to provide the bundle with the OSGi Core API (again).
+What we first have to do is to make the bundle with the OSGi Core API available (again).
 In the "plain Java" project, we simply added a jar to the project. In the Eclipse PDE 
 project, the wizard found the bundle because "it happened to be available" in 
 Eclipse. Bndtools can also search for bundles, but we first 
@@ -105,7 +105,7 @@ as part of the bndtools documentation[^astonishDoc].
 [^astonishDoc]: After following the development of bnd/bndtools for more than three
 	years by now, I find it a bit astonishing that the same people who write the precise,
     enterprise targeted, formal OSGi specifications make such a mess of their 
-    tooling documentation. IMHO the "Bndtools Workspace Conepts" (subtitled  
+    tooling documentation. IMHO the "Bndtools Workspace Conepts" (subtitled
     "Introduction to the basic bnd workspace model") should simply
     be a chapter in a (cleaned up) bnd documentation, instead of an independent
     part of an (otherwise rather sparse) bndtools documentation that can only
