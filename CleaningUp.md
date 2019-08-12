@@ -209,7 +209,7 @@ introduction.
 
 ## Services
 
-It has been mentioned before, that  
+It has been mentioned before, that
 [loose coupling](https://en.wikipedia.org/wiki/Loose_coupling) between the components
 is an important aspect of a modularized design.
 The functionalities made available (called "services" by OSGi) are defined by Java 
@@ -301,11 +301,13 @@ service specification -- I was a bit disappointed to find a
 [remark](https://stackoverflow.com/questions/10498846/how-do-you-properly-handle-logging-in-osgi-while-seperating-service-components) 
 by Peter Kriens that the OSGi alliance decided to not upgrade 
 the "14 years old" service because there are "already so (too) 
-many logging systems around"[^pax].
+many logging systems around"[^pax] [^revised].
 
 [^pax]: He points to [Pax Logging](https://ops4j1.jira.com/wiki/display/paxlogging/Pax+Logging) 
 	which build on and enhances the OSGi log service -- so at least 
 	my reading the specification wasn't completely in vain after all.
+
+[^revised]: Eventually, the OSGi alliance seems to have changed its mind. OSGi 7 includes a quite nice [enhanced version](https://osgi.org/specification/osgi.cmpn/7.0.0/service.log.html) of the log service. You can even put it (back) at the center of your logging using [bridges](https://github.com/mnlipp/de.mnl.osgi#logging-bridgesfacades).
 
 ## ... and more
 
