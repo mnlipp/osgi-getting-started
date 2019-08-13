@@ -164,7 +164,9 @@ osgi.wiring.package; (&(osgi.wiring.package=org.osgi.service.log)(version>=1.3.0
 (!(version>=2.0.0)))]
 ```
 
-Read the message carefully and try to understand it. You may encounter similar messages later when the cause is less obvious. Note how version constraints are translated to [filter](https://osgi.org/javadoc/r6/core/org/osgi/framework/Filter.html) expressions that can be easily evaluated by the framework. It's a quite intuitive prefix notation known from LDAP search filters.
+Read the message carefully and try to understand it. You may encounter similar messages later when the cause is less obvious. Note how the `Import-Package` statement with version constraint is translated to a namespace/[filter](https://osgi.org/javadoc/r6/core/org/osgi/framework/Filter.html) pair that can be evaluated easily by the framework. The filter uses the quite intuitive prefix notation known from LDAP search filters. What you see here is the general form of a requirement. Such a requirement can also be used to specify a dependency on a specific Java version or some other so called "capability"[^WhyTranslate].
+
+[^WhyTranslate]: Once, the `Import-Package` statement was the only kind of dependency. Others were added and finally a more general mechanism [was introduced](https://stackoverflow.com/questions/57414686/osgi-whats-the-difference-between-import-package-export-package-and-require-ca/57415720#57415720).
 
 What the message comes down to is that there is no logging service in the runtime environment. Go back to the "Run" tab of the `bnd.bnd` editor. Add `org.apache.felix.log` and debug again.
 
