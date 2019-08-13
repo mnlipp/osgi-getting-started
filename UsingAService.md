@@ -138,9 +138,17 @@ As you can see in the screenshot, the edit buttons are disabled. In previous ver
 
 After this change, go back to the "Run" tab of the project's `bnd.bnd` editor. Use the plus icon to add the bundles `de.mnl.osgi.osgi2jul` and `de.mnl.osgi.coreutils` to the "Run bundles".
 
-![Adding the fwd2jul bundle](images/Adding-fwd2jul.png){: width="450px" }
+![Adding the osgi2jul bundle](images/Adding-fwd2jul.png){: width="450px" }
 
-Run the project again with the augmented set of bundles and see the log messages being printed in the JUL format. List the bundles and stop and start the simple bundle once more and observe the messages.
+Run the project again with the augmented set of bundles and see the log messages being printed in the JUL format. List the bundles and stop and start the simple bundle once more and observe the messages. While you'll see a lot of messages from the framework, you'll not (yet) see the messages from our activator and Hello World classes. 
+
+The simple reason is that the OSGi log service uses a default threshold of `WARNING` to filter messages being logged. We can change this be specifying a runtime property for the log service bundle. On the "Run" tab of the project's `bnd.bnd` editor there is yet another field for defining such properties. Add the property `org.osgi.service.log.admin.loglevel` with value `INFO` and restart the framework.
+
+![Defining the property](images/Define-default-log-level-property.png){: width="375px" }
+ 
+Finally, here they are: our log messages[^moreSoph]!
+
+[^moreSoph]: We'll have a look at a more sophisticated way to change the default log level later.
 
 ---
 
