@@ -78,7 +78,21 @@ key `ROOT` with value `INFO`.
 Parties interested in configuration changes of a specific configuration object
 register services of type `ManagedService`. [The Javadoc](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ManagedService.html) describes the basic usage pattern. If a party is interested in changes of lots of configuration
 objects (e.&nbsp;g. objects with PIDs staring with a given prefix) is should register
-a service of type [`ConfigurationListener`](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ManagedService.html) instead.
+a service of type [`ConfigurationListener`](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ConfigurationListener.html) instead.
+
+The log service registers a `ConfigurationListener` because you cannot only configure
+the default log level as shown. There is a PID for each `LoggerContext` and the key/value
+pairs in each configuration object correspond to logger names and log levels. The details
+can be found in the [log specification](https://osgi.org/specification/osgi.cmpn/7.0.0/service.log.html#d0e2548).
+
+You can check the registration of a `ConfigurationListener` by the log service in the gogo shell:
+
+```
+g! each (allServiceReferences org.osgi.service.cm.ConfigurationListener null) { $it bundle }
+    1|Active     |    1|org.apache.felix.log (1.2.0)
+    8|Active     |    1|org.apache.felix.configadmin (1.9.16)
+```
+
 
 
 *To be continued*
