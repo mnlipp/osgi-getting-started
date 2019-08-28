@@ -59,7 +59,7 @@ in your project, you're bound to that library unless you change your code.
 There is no alternative implementation with the same API. 
 
 
-## From Modules to Services
+## From Modules to Services <a name="from-modules-to-services"></a>
 
 Encapsulating internals of a module and making only the public API available is a
 first step to achieve independency and interchangeability. For fully reaching
