@@ -391,8 +391,8 @@ of the service component) until the service is requested. This behavior can
 speed up the startup time considerably.
 
 If you want a service component to be created and activated immediately on
-startup, you have to specify `immediate = true` as element of the component
-annotation.
+startup, you have to set the `immediate` element of the component
+annotation to `true`.
 
 *To be continued*
 
