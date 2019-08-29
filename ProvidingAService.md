@@ -50,7 +50,7 @@ API bundle, i.&nbsp;e. "`some.package`".
 ## API Bundle
 
 This is the simple service API that I'll use as an example
-([here](https://github.com/mnlipp/osgi-getting-started/tree/master/io.github.mnl.osgiGettingStarted.calculator)'s the project):
+([here](https://github.com/mnlipp/osgi-getting-started/tree/master/io.github.mnl.osgiGettingStarted.calculator)'s the project).
 
 ```java
 package io.github.mnl.osgiGettingStarted.calculator;
@@ -62,7 +62,7 @@ public interface Calculator {
 }
 ```
 
-The `bnd.bnd` only has to define the version and the package to be exported: 
+The `bnd.bnd` only has to define the version and the package to be exported.
 
 ```properties
 Bundle-Version: 1.0.0
@@ -84,10 +84,17 @@ Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.7))"
 Tool: Bnd-4.2.0.201903051501
 ```
 
+By default, bnd uses the project name as `Bundle-SybolicName` (and `Bundle-Name`). It's
+therefore usually a good idea to use the desired bundle symbolic name as project
+name[^notDoneInitially].
+
+[^notDoneInitially]: I deliberately didn't follow this best practice in the
+	initial examples in order to keep things simple.
+
 ## Implementation Bundle
 
 The implementation class is obvious
-([here](https://github.com/mnlipp/osgi-getting-started/tree/master/io.github.mnl.osgiGettingStarted.calculator.provider) the complete project):
+([here](https://github.com/mnlipp/osgi-getting-started/tree/master/io.github.mnl.osgiGettingStarted.calculator.provider)'s the complete project).
 
 ```java
 package io.github.mnl.osgiGettingStarted.calculator.provider;
@@ -103,8 +110,9 @@ public class CalculatorImpl implements Calculator {
 
 }
 ```
-The bundle's activator creates an instance of the calculator implementation
-and registers it as a service:
+
+An instance of the calculator implementation is registered with the framework
+and thus made available as a service by the bundle's activator.
 
 ```java
 package io.github.mnl.osgiGettingStarted.calculator.provider;
@@ -133,7 +141,7 @@ public class Activator implements BundleActivator {
 }
 ```
 
-Finally the `bnd.bnd` (including a startup configuration):
+Finally here's the `bnd.bnd` (including a startup configuration).
 
 ```properties
 Bundle-Version: 1.0.0
@@ -157,7 +165,124 @@ Private-Package: io.github.mnl.osgiGettingStarted.calculator.provider
 
 ## Running the Service
 
-*To be continued*
+Now you could, as has been shown for the predefined log service, write a client
+that looks up the service and uses it. Just for fun, let's leverage the power
+of the GoGo shell and do it interactively.
+
+The GoGo shell lacks a good documentation. When you read the 
+[subproject's web page](https://felix.apache.org/documentation/subprojects/apache-felix-gogo.html) you learn about some built-in commands like `lb`, which by the way now outputs
+this:
+
+```
+g! lb
+START LEVEL 1
+   ID|State      |Level|Name
+    0|Active     |    0|System Bundle (6.0.3)|6.0.3
+    1|Active     |    1|Apache Felix Gogo Command (1.1.0)|1.1.0
+    2|Active     |    1|Apache Felix Gogo Runtime (1.1.2)|1.1.2
+    3|Active     |    1|Apache Felix Gogo Shell (1.1.2)|1.1.2
+    4|Active     |    1|io.github.mnl.osgiGettingStarted.calculator (1.0.0)|1.0.0
+    5|Active     |    1|io.github.mnl.osgiGettingStarted.calculator.provider (1.0.0)|1.0.0
+```
+
+But the most important information is hidden in a note at the bottom of the page:
+
+> Gogo is based on the OSGi RFC 147, which describes a standard shell for OSGi-based environments. See [RFC 147 Overview](https://felix.apache.org/documentation/subprojects/apache-felix-gogo/rfc-147-overview.html)
+> for more information. Unfortunately this RFC was never made a standard.
+
+Only when you read the referenced overview (and maybe the RFC), you find that 
+GoGo provides a lot more than just some commands.
+
+The basic idea is that you have a "current" object (or context) and that you can
+invoke any public method of that object (or context). The most important member of the
+default context is the [`BundleContext`](https://osgi.org/javadoc/osgi.core/7.0.0/index.html?org/osgi/framework/BundleContext.html) of the GoGo bundle. You can therefore
+simply type `getBundle` to invoke the `getBundle()` method, which yields:
+
+```
+g! getBundle
+LastModified         1567026091906
+Headers              [Bundle-License=https://www.apache.org/licenses/LICENSE-2.0.txt, Created-By=Apache Maven Bundle Plugin, Manifest-Version=1.0, Bnd-LastModified=1546558580748, Bundle-Name=Apache Felix Gogo Runtime, Build-Jdk=1.8.0_192, Bundle-Description=Apache Felix Gogo Subproject, Bundle-DocURL=https://www.apache.org/, Bundle-Vendor=The Apache Software Foundation, Import-Package=org.osgi.service.event;resolution:=optional;version="[1.3,2)",org.apache.felix.gogo.runtime;version="[1.1,2)",org.apache.felix.gogo.runtime.threadio;version="[1.1,2)",org.apache.felix.service.command;version="[1.0,2)",org.apache.felix.service.threadio;version="[1.0,2)",org.osgi.framework;version="[1.8,2)",org.osgi.util.tracker;version="[1.5,2)", Provide-Capability=org.apache.felix.gogo;org.apache.felix.gogo="runtime.implementation";version:Version="1.0.0",osgi.service;objectClass="org.apache.felix.service.command.CommandProcessor",osgi.service;objectClass="org.apache.felix.service.threadio.ThreadIO", Export-Package=org.apache.felix.gogo.runtime;version="1.1.2";uses:="org.apache.felix.service.command,org.apache.felix.service.threadio,org.osgi.framework",org.apache.felix.gogo.runtime.activator;version="1.1.2";uses:="org.apache.felix.gogo.runtime,org.apache.felix.service.command,org.apache.felix.service.threadio,org.osgi.framework",org.apache.felix.gogo.runtime.threadio;version="1.1.2";uses:="org.apache.felix.service.threadio",org.apache.felix.service.command;version="1.0.0",org.apache.felix.service.command.annotations;version="1.0.0",org.apache.felix.service.threadio;version="1.0.0", Bundle-ManifestVersion=2, Bundle-SymbolicName=org.apache.felix.gogo.runtime, Bundle-Version=1.1.2, Built-By=rotty, Bundle-Activator=org.apache.felix.gogo.runtime.activator.Activator, Require-Capability=org.apache.felix.gogo;filter:="(&(org.apache.felix.gogo=shell.implementation)(version>=1.0.0)(!(version>=2.0.0)))";effective:=active,osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))", Tool=Bnd-4.1.0.201810241949]
+Location             reference:file:/home/mnl/.m2/repository/org/apache/felix/org.apache.felix.gogo.runtime/1.1.2/org.apache.felix.gogo.runtime-1.1.2.jar
+State                32
+Version              1.1.2
+BundleContext        org.apache.felix.framework.BundleContextImpl@3ffc5af1
+SymbolicName         org.apache.felix.gogo.runtime
+BundleId             2
+RegisteredServices   [ThreadIO, CommandProcessor]
+ServicesInUse        [Converter, Shell, Procedural, Posix, Basic, Inspect]
+Bundle                   2|Active     |    1|org.apache.felix.gogo.runtime (1.1.2)
+Revisions            [org.apache.felix.gogo.runtime [2](R 2.0)]
+```
+
+As a convenience, `get` is prepended automatically if you specify a method that
+isn't found, so simply typing `bundle` results in the same output.
+
+By invoking method `getService` you can get a service reference to our new service.
+Using this, you can get the service itself and invoke it. Finally, being a good
+citizen, you should release the service.
+
+```
+g! calcRef = serviceReference io.github.mnl.osgiGettingStarted.calculator.Calculator
+Properties           [service.id=15, objectClass=[Ljava.lang.String;@1abfe77a, service.scope=singleton, service.bundleid=5]
+Attributes           []
+Bundle                   5|Active     |    1|io.github.mnl.osgiGettingStarted.calculator.provider (1.0.0)
+Namespace            service-reference
+Directives           []
+UsingBundles         null
+Uses                 []
+PropertyKeys         [objectClass, service.bundleid, service.id, service.scope]
+Resource             null
+Resource             null
+
+g! calcService = service $calcRef 
+io.github.mnl.osgiGettingStarted.calculator.provider.CalculatorImpl@4e6f0273
+g! $calcService add 1 2
+3.0
+g! ungetService $calcRef
+true
+```
+
+So, here it is: your first OSGi service, ready to be used.
+
+## More Ways to Provide Services
+
+What we have provided above is a service with so called "singleton scope".
+The service (object) exists exactly once and this single instance is
+returned when the service is looked up. OSGi offers two alternative 
+ways to provide services.
+
+### The Service Factory
+
+Instead of registering an object that implements the service's interface,
+you can [register](https://osgi.org/javadoc/osgi.core/7.0.0/org/osgi/framework/BundleContext.html#registerService-java.lang.Class-org.osgi.framework.ServiceFactory-java.util.Dictionary-)
+an instance of a [`ServiceFactory`](https://osgi.org/javadoc/osgi.core/7.0.0/index.html?org/osgi/framework/ServiceFactory.html) "as the service". 
+
+If you do this, the framework invokes the service factory's `getService` method every
+time a bundle gets the service *for the first time*. The implementation of `getService`
+must create a new instance of the requested service for each invocation, using the
+information about the requesting bundle (as passed to `getService`) to "customize"
+the created service (object). Subsequent invocations of `getService` by the
+same bundle result in the service object created by the first invocation
+(which is cached and returned by the framework). Because each bundle gets its 
+own instance of the service implementation, the service object is said to have 
+"bundle scope".
+
+The use case commonly referred to for using a service factory is the log service.
+Because each bundle gets its own instance of the log service implementation, it
+can be "customize" with the bundle id and when a log method is invoked, the
+service implementation can add this bundle id to the logged information.
+
+### The Prototype Service Factory
+
+If you register an object that implements the 
+[`PrototypeServiceFactory`](https://osgi.org/javadoc/osgi.core/7.0.0/index.html?org/osgi/framework/PrototypeServiceFactory.html), the framework invokes the prototype
+service factory's `getService` method each time the service is obtained by
+a call to `getService`. Each user of the service gets its own instance and the
+service object is said to have "prototype scope".
+
+This scope was added in OSGi 6. In general, it is used for service objects that
+maintain individual state. A commonly referred to use case is a service that
+provides an HTTP session context.
 
 ---
 
