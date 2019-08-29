@@ -26,10 +26,16 @@ service for maintaining and distributing configuration information as the
 
 ## Configuration Admin in Action
 
-Let's have a look at this service in action. Go back to the project from the part "[Using a Service](../UsingAService.html)" and remove the run property `org.osgi.service.log.admin.loglevel`, added as last step in order to actually get logging output. Then add `org.apache.felix.configadmin` and `de.dentrassi.osgi.net.luminis.cmc` to the run bundles (or checkout and import the [prepared project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-logging-admin)). The former bundle adds an implementation of the Configuration Admin service to our run environment, the latter adds some commands to the Felix GoGo shell. Unfortunately, the bundle with the GoGo shell extensions is implemented using Declarative Services (as presented in the previous part), so we have to also add
+Let's have a look at this service in action. Go back to the project from the part "[Using a Service](../UsingAService.html)" and remove the run property `org.osgi.service.log.admin.loglevel`, added as last step in order to actually get logging output. Then add `org.apache.felix.configadmin` and `de.dentrassi.osgi.net.luminis.cmc` to the run bundles (or checkout and import the [prepared project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-logging-admin)). The former bundle adds an implementation of the Configuration Admin service to our run environment, the latter adds some commands to the Felix GoGo shell[^cmAddOn]. Unfortunately, the bundle with the GoGo shell extensions is implemented using Declarative Services (as presented in the previous part), so we have to also add
 `org.apache.felix.scr`. And because the current implementation (2.1.16 as of this writing)
 uses OSGi promises and functions, we additionally have to add bundles `org.osgi.util.promise` 
 and `org.osgi.util.function`[^listOfBundles]. Now we can start the framework with our "Hello World" application.
+
+[^cmAddOn]: The commands that this GoGo extension provides aren't strictly necessary.
+	The Configuration Admin implementation adds the [`ConfigurationAdmin`](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ConfigurationAdmin.html)
+	service to the GoGo shell (with scope "cm", just like the extension). We could
+	therefore execute all actions using the service as a starting point. However,
+	the extension simplifies things.
 
 [^listOfBundles]: The complete list of bundles in the "Source" tab of `bnd.bnd` looks like this:
 	```properties
