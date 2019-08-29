@@ -233,7 +233,8 @@ If we want our component to be a declared service component, the file should loo
 </scr:component>
 ```
 
-You would probably not be able to write this file from scratch without further guidance, but when you read it, it's quite self-explanatory. The only thing that might be irritating is the reference to the log service, especially the `bind` and `unbind` attributes. Well, some things have to be approached a bit differently compared to Felix DM. Actually, I didn't write the file shown above. I used the annotations that have been added in release 4.3 of the specification and let `bnd` generate it[^dsbp]. The source code should clarify what happens with the reference to the log service.
+You would probably not be able to write this file from scratch without further guidance, but when you read it, it's quite self-explanatory. The only thing that might be irritating is the reference to the log service, especially the `bind` and `unbind` attributes. Well, some things have to be approached a bit differently compared to Felix DM. Actually, I didn't write the file shown above. I used the annotations that have been added in release 4.3 of the specification and let `bnd` generate it[^dsbp]. The source code should clarify what happens with the reference to the log service (the complete project is available
+[here](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-DM3)).
 
 [^dsbp]: With declared services, you only have to add `osgi.annotation` to the build path to make `bnd` generate this file. Handling the OSGi annotations is built-in and doesn't require the configuration of a plugin.
 
@@ -298,7 +299,11 @@ public class HelloWorld implements Runnable {
 
 The `@Component` annotation for the class looks similar the one in the Felix DM example. The parameter "`service`" serves the same purpose as the parameter "`provides`" of the DM annotation: it prevents our component from being registered as provider for service `java.lang.Runnable`.
 
-Declarative services doesn't support injection of values into fields. Referenced services are made known to the component by invoking a setter method. Considering our example, that's not too bad because we can make the field with the reference to the log service static again[^apDM]. In order to avoid keeping a reference to a log service implementation even if it disappears (and our component is stopped), we have to provide an "unset" method as well[^ofs]. It doesn't need an annotation. Rather, if there is a "`setXYZ`" method with the `@Reference` annotation, declarative services automatically assume an "`unsetXYZ`" method to implement the corresponding "undo" operation.
+Declarative services doesn't support injection of values into fields[^fieldInjection]. 
+Referenced services are made known to the component by invoking a setter method. Considering our example, that's not too bad because we can make the field with the reference to the log service static again[^apDM]. In order to avoid keeping a reference to a log service implementation even if it disappears (and our component is stopped), we have to provide an "unset" method as well[^ofs]. It doesn't need an annotation. Rather, if there is a "`setXYZ`" method with the `@Reference` annotation, declarative services automatically assume an "`unsetXYZ`" method to implement the corresponding "undo" operation.
+
+[^fieldInjection]: Field injection is supported as of OSGi 6 (Declarative Service
+	Specification 1.3).
 
 [^apDM]: You can make Felix DM invoke a method, too.
 
@@ -329,6 +334,65 @@ in a `bnd.bnd` that looks like this:
 	org.apache.felix.configadmin,\
 	org.apache.felix.scr
 ```
+
+### Defining a Declarative Service
+
+As its name suggests, Declarative Services is not mainly intended to simplify
+accessing services. It is used to define services (that may use other
+services). 
+
+Compared to using the OSGi Core API, Declarative Services makes providing
+a service a lot easier. A provider for the calculator service from chapter 
+[Providing a Service](../ProvidingAService.html) can simply be made available
+by annotating the implementation class as `Component`. We don't need an activator
+any more (you can find the complete project 
+[here](https://github.com/mnlipp/osgi-getting-started/tree/master/io.github.mnl.osgiGettingStarted.calculator.ds)).
+
+```java
+package io.github.mnl.osgiGettingStarted.calculator.ds;
+
+import org.osgi.service.component.annotations.Component;
+
+import io.github.mnl.osgiGettingStarted.calculator.Calculator;
+
+@Component
+public class CalculatorImpl implements Calculator {
+
+	@Override
+	public double add(double a, double b) {
+		return a + b;
+	}
+
+}
+```
+
+The [`Component`](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/component/annotations/Component.html) 
+annotation has a lot of optional elements that can be used to further specify
+the properties of the service that is provided.
+
+#### Service Scopes
+
+As for services that you register with the OSGi core API, a scope can be specified
+for a Declarative Service.
+The default scope is "singleton". If you specify `BUNDLE` or `PROTOTYPE` as scope, the
+component becomes a factory component. Using a factory component is, however, 
+not as easy as registering and using a service factory with bundle or prototype scope 
+using the OSGi core API[^notCovered].
+
+[^notCovered]: [Neil Bartlett](https://stackoverflow.com/users/318921/neil-bartlett)
+	wrote on [stackoverflow](https://stackoverflow.com/questions/33505593/differnce-between-service-factory-vs-component-factory-in-osgi):
+	> You almost certainly don't want to use ComponentFactory, so I recommend 
+	> ignoring it. 
+
+#### Delayed Services
+
+By default, the SCR delays the activation of a service (and thus the creation
+of the service component) until the service is requested. This behavior can 
+speed up the startup time considerably.
+
+If you want a service component to be created and activated immediately on
+startup, you have to specify `immediate = true` as element of the component
+annotation.
 
 *To be continued*
 
