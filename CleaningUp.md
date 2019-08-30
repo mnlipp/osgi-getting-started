@@ -273,6 +273,16 @@ The bad thing is that your application is rarely ever based on
 OSGi alone. Usually you'll have some OSGi based stack -- which 
 implies a steeper learning curve.
 
+Using the term "service" for this layer may be one of the worst
+decisions when defining OSGi. It directs your thoughts towards,
+well, services, i.&nbsp;e. something that assists you in achieving
+some goal. The OSGi service layer, however, provides a general
+means to manage *components*, some of which may provide some kind
+of service. Keep this in mind when you design your system's
+architecture. The OSGi service layer is perfectly well suited
+to manage an inventory of things, even if the only "service" that
+they provide is something like returning a name. 
+
 ## Service specifications
 
 The OSGi alliance didn't stop at defining a framework for modules 
