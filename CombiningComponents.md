@@ -86,7 +86,7 @@ something like the `ServiceLoader`. You may not directly instantiate an
 implementation class -- as you do when using a library --, because if 
 you did, you couldn't interchange the
 providing module without changing your code. In order to meet the special 
-possiblities and requirements that originate in being able to deploy bundles 
+possibilities and requirements that originate in being able to deploy bundles 
 dynamically, OSGi defines its own implementation of a service directory 
 and API as a service layer on top of the modules layer.
 
