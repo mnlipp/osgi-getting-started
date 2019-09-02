@@ -247,9 +247,24 @@ So, here it is: your first OSGi service, ready to be used.
 ## More Ways to Provide Services
 
 What we have provided above is a service with so called "singleton scope".
-The service (object) exists exactly once and this single instance is
-returned when the service is looked up. OSGi offers two alternative 
-ways to provide services.
+This does not mean that there can be only one instance of the service, it
+doesn't even mean that you can register only one instance of your implementation
+class as service[^registeringSeveral]. What singleton scope does imply is that 
+all consumers of the service get the same object for a particular service 
+registration&mdash;the one that you have registered[^wishConform]. In addition
+to this straight forward approach OSGi offers two alternative ways to provide 
+services.
+
+[^wishConform]: I often think that OSGi specifications would be much easier to
+    understand and would have been a much greater success if they had used terms
+    just like everybody else does.
+
+[^registeringSeveral]: Registering several instance of the implementation
+    class can make sense because services can have properties, i&nbsp;e. they
+    are configurable. The values of these properties can be taken into account
+	when looking up service instances. Thus it sometimes makes sense to
+	register more than one instance of an implementation class, provided that
+	the instances have different configurations.
 
 ### The Service Factory
 
@@ -269,7 +284,7 @@ own instance of the service implementation, the service object is said to have
 
 The use case commonly referred to for using a service factory is the log service.
 Because each bundle gets its own instance of the log service implementation, it
-can be "customize" with the bundle id and when a log method is invoked, the
+can be "customized" using the bundle id and when a log method is invoked, the
 service implementation can add this bundle id to the logged information.
 
 ### The Prototype Service Factory
