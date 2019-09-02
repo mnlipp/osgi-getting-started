@@ -217,7 +217,7 @@ Revisions            [org.apache.felix.gogo.runtime [2](R 2.0)]
 As a convenience, `get` is prepended automatically if you specify a method that
 isn't found, so simply typing `bundle` results in the same output.
 
-By invoking method `getService` you can get a service reference to our new service.
+By invoking method `getServiceReference` you can get a service reference to our new service.
 Using this, you can get the service itself and invoke it. Finally, being a good
 citizen, you should release the service.
 
