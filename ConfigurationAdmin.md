@@ -180,7 +180,7 @@ You have probably already figured it out, try:
 
 ```
 g! cm:create io.github.mnl.osgiGettingStarted.loggingBundle.HelloWorld
-g! cm:put -t l cm:create io.github.mnl.osgiGettingStarted.loggingBundle.HelloWorld waitTime 10000
+g! cm:put -t l io.github.mnl.osgiGettingStarted.loggingBundle.HelloWorld waitTime 10000
 ```
 
 
