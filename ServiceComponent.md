@@ -337,10 +337,6 @@ in a `bnd.bnd` that looks like this:
 
 ### Defining a Declarative Service
 
-As its name suggests, Declarative Services is not mainly intended to simplify
-accessing services. It is used to define services (that may use other
-services). 
-
 Compared to using the OSGi Core API, Declarative Services makes providing
 a service a lot easier. A provider for the calculator service from chapter 
 [Providing a Service](../ProvidingAService.html) can simply be made available
