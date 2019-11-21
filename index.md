@@ -18,4 +18,4 @@ If you want to comment on this introduction, please use the links at the bottom 
 
 ---
 
-[^nm]: No maven inside! I think maven is the worst thing that has ever happened to Java development. Neil Ford has [described the issue](https://nealford.com/memeagora/2013/01/22/why_everyone_eventually_hates_maven.html) very nicely (and far less emotionally than I ever could).
+[^nm]: No maven inside! I think maven is the worst thing that has ever happened to Java development. Neil Ford has [described the issue](https://web.archive.org/web/20190427072827/https://nealford.com/memeagora/2013/01/22/why_everyone_eventually_hates_maven.html) very nicely (and far less emotionally than I ever could).
