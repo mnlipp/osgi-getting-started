@@ -110,7 +110,7 @@ user of the API). A change of the first part indicates some major
 change of the API. Usually, modules programmed against version `1.a.b` 
 will not be able to use an implementation with version `2.y.z`. 
 This is the reason why Bndtools generated a version range `[1.6,2)` 
-when we [added the import](AccessingAService.html#version-range) 
+when we [added the import](./AccessingAService.html#version-range) 
 of the framework. (More on versioning in the 
 [part dedicated to versions](Versions.html).)
 

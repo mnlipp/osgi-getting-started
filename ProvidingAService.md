@@ -32,7 +32,7 @@ provides[^apiInProvider].
 It is, of course, perfectly okay to combine several APIs in one 
 API bundle. Else, you'd end up with an annoyingly large number of bundles.
 Remember the bundle `osgi.cmpn` that we added to the buildpath in chapter
-"[Accessing a Service](../AccessingAService.html)"? It simply contains the collection
+"[Accessing a Service](./AccessingAService.html)"? It simply contains the collection
 of all the interfaces from the OSGi specification with the respective version.
 This example gives you a hint about the granularity of an API bundle. The interfaces
 defined in such a bundle should all "move at the same pace". If you publish

@@ -32,7 +32,7 @@ specific interface or feature.
 
 A special form of specifying a dependency the "OSGi way" is the 
 `Import-Package` Header in the `MANIFEST.MF` that we have seen before. Let's re-use the
-header from the part ["Accessing a Service"](AccessingAService.html#version-range):
+header from the part ["Accessing a Service"](./AccessingAService.html#version-range):
 
 ```properties
 Import-Package: org.osgi.framework;version="[1.6,2)"

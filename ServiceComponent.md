@@ -339,7 +339,7 @@ in a `bnd.bnd` that looks like this:
 
 Compared to using the OSGi Core API, Declarative Services makes providing
 a service a lot easier. A provider for the calculator service from chapter 
-[Providing a Service](../ProvidingAService.html) can simply be made available
+[Providing a Service](./ProvidingAService.html) can simply be made available
 by annotating the implementation class as `Component`. We don't need an activator
 any more (you can find the complete project 
 [here](https://github.com/mnlipp/osgi-getting-started/tree/master/io.github.mnl.osgiGettingStarted.calculator.ds)).
