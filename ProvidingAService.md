@@ -12,7 +12,7 @@ Programmatically, providing a service is as simple as registering a class using
 a method from [`BundleContext`](https://osgi.org/javadoc/osgi.core/7.0.0/org/osgi/framework/BundleContext.html#registerService-java.lang.Class-S-java.util.Dictionary-).
 The tricky part is bundling the service.
 
-As outlined in a [previous chapter](../CombiningComponents.html#from-modules-to-services),
+As outlined in a [previous chapter](./CombiningComponents.html#from-modules-to-services),
 a service should be defined by a public API and provided by one or more
 (alternative) implementations. In order to properly support this concept, the
 API must be made available by a bundle that is independent of any bundle that implements
