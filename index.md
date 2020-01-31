@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Why?
-description: Describes why this introduction was written.
+description: Describes why this introduction to OSGi was written.
 date: 2019-03-29 12:00:00
 commentIssue: 2
 ---

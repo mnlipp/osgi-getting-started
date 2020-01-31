@@ -6,8 +6,13 @@ kramdown:
   syntax_highlighter: rouge
   auto_ids: true
 
-description:
-  A tutorial that shows JavaSE developers how to get started with OSGi.
+author: Michael N. Lipp
+
+logo: favicon-96x96.png
+
+tagline: Introduction to OSGi
+
+description: A tutorial that shows JavaSE developers how to get started with OSGi.
 
 sass:
     style: compressed  
