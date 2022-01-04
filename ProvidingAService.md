@@ -190,8 +190,9 @@ But the most important information is hidden in a note at the bottom of the page
 > Gogo is based on the OSGi RFC 147, which describes a standard shell for OSGi-based environments. See [RFC 147 Overview](https://felix.apache.org/documentation/subprojects/apache-felix-gogo/rfc-147-overview.html)
 > for more information. Unfortunately this RFC was never made a standard.
 
-Only when you read the referenced overview (and maybe the RFC), you find that 
-GoGo provides a lot more than just some commands.
+Only when you read the referenced overview (and maybe the section in the
+[specification draft](https://web.archive.org/web/20160606172521/https://osgi.org/download/osgi-4.2-early-draft.pdf)), 
+you find that GoGo provides a lot more than just some commands.
 
 The basic idea is that you have a "current" object (or context) and that you can
 invoke any public method of that object (or context). The most important member of the
