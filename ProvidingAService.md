@@ -192,7 +192,9 @@ But the most important information is hidden in a note at the bottom of the page
 
 Only when you read the referenced overview (and maybe the section in the
 [specification draft](https://web.archive.org/web/20160606172521/https://osgi.org/download/osgi-4.2-early-draft.pdf)), 
-you find that GoGo provides a lot more than just some commands.
+you find that GoGo provides a lot more than just some commands[^PKGoGo].
+
+[^PKGoGo]: Peter Kriens has a quite [exhaustive section](https://bndtools.org/workspace/osgi-starter.html#_gogo) about the GoGo shell in his "OSGi Starter" document.
 
 The basic idea is that you have a "current" object (or context) and that you can
 invoke any public method of that object (or context). The most important member of the
