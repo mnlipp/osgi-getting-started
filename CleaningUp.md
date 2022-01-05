@@ -166,7 +166,7 @@ There are two reasons why you would want to remove a module from a
 running system. The first is resource consumption. When OSGi started 
 in 1999, hardware wasn't as cheap as it is today. I found a 
 [post](https://aqute.biz/pipermail/osgi_aqute.biz/2005-September/000004.html) 
-by Peter Kriens[^PK] from 2005 where he wanted to evaluate OSGi on a 
+by Peter Kriens from 2005 where he wanted to evaluate OSGi on a 
 device with 32-64MB RAM and 2-8MB Flash, USB and Ethernet costing less 
 than $100. Compare these requirements with what you get nowadays for $30 
 ([Raspberry Pi B+](https://www.raspberrypi.org/blog/price-cut-raspberry-pi-model-b-now-only-25/), 
@@ -177,8 +177,6 @@ however, oftem leads to solving the problem on a different level. Take Android a
 an example. The apps aren't installed as modules into a single virtual machine. 
 Rather, you have the "old fashioned pattern" of an operating systems that runs 
 the apps as independent process.
-
-[^PK]: One of the drivers behind OSGi.
 
 The other reason why you'd want to remove a module is the desire to replace 
 it with an improved (often bug-fixed) version without shutting down the 
