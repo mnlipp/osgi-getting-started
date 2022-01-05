@@ -1,3 +1,4 @@
 _site/
 /index.md~
 /Gemfile.lock
+/vendor/
