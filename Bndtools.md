@@ -10,7 +10,7 @@ commentIssue: 7
 
 [Bndtools](https://bndtools.org/) is an Eclipse plugin that integrates the (command line) tool [bnd](https://bnd.bndtools.org/) in Eclipse and provides "continuous build" for bundles. [Install](https://bndtools.org/installation.html) it now[^bndtools-version].
 
-[^bndtools-version]: This chapter was originally written using bndtools 3.2.0. However, the current version has been updated to comply with bndtools 4.2.0 and Eclipse 2019-03.
+[^bndtools-version]: This chapter was originally written using bndtools 3.2.0. However, the current version has been updated to comply with bndtools 6.1.0 and Eclipse 2021-12.
 
 The tool bnd takes a different perspective on defining bundles. From bnd's point of view, `MANIFEST.MF` is the source of information about the bundle at runtime only. While developing the bundle, you need closely related, but sometimes slightly different information and  *additional* information. So, to bnd, `MANIFEST.MF` is an artifact that is generated during build time from information contained in a file called `bnd.bnd`. The eclipse plugin bndtools provides a GUI for editing `bnd.bnd` (again with the possibility to edit the source directly) and components that make the information from `bnd.bnd` available to Eclipse's continuous build. 
 
@@ -32,7 +32,9 @@ and restart Eclipse[^templDefault].
 
 Now use the wizard to create a "Bndtools OSGi Workspace" (File/New/Other/Bndtools).
 Choose the "Minimal workspace", everything else is outdated.
-You'll see a project `cnf` having been created in your workspace. Ignore it for the time being. Use the wizard again and create a new "Bndtools OSGi Project". Choose the Bndtools/Empty template and use `SimpleBundle-bnd` as project name.
+You'll see a project `cnf` having been created in your workspace. Ignore it for the time being. Use the wizard again and create a new "Bndtools OSGi Project". Choose the Bndtools/Empty template and use `SimpleBundle-bnd` as project name. If you're using JavaSE-9 or later, skip the creation of `module-info.java` and when the dialogue closes refresh the newly created project (right click on it and choose "refresh")[^notNecessary].
+
+[^notNecessary]: This shouldn't be necessary and is most likely an Eclipse bug.
 
 Have a look at the `generated` folder in `SimpleBundle-bnd`. Double-click on `SimpleBundle-bnd.jar` (ignore the error dialog) and then&mdash;in the "Jar File Viewer" that 
 appears&mdash;double-click on `MANIFEST.MF`. Looks a bit familiar but much 
@@ -123,13 +125,13 @@ we didn't get the required files for a gradle build automatically. The other tem
 would have generated these files. However, 
 at the time I write this, they create files that are outdated with respect 
 to the current version of the bnd/bndtools gradle plugin. This isn't a big
-problem, because by now (version 4.2.0) gradle support has become very easy to 
+problem, because gradle support has become very easy to 
 configure. You find all required information on the 
-[gradle plugin's documentation page](https://github.com/bndtools/bnd/blob/master/biz.aQute.bnd.gradle/README.md#gradle-plugin-for-workspace-builds). 
+[gradle plugin's documentation page](https://github.com/bndtools/bnd/blob/master/gradle-plugins/README.md). 
 
 If you want
 to use the gradle build in parallel with the bndtools Eclipse plugin, you
-should configure a "[Bnd Workspace build](https://github.com/bndtools/bnd/blob/master/biz.aQute.bnd.gradle/README.md#gradle-plugins-for-bnd-workspace-builds)"[^misnomer].
+should configure a "[Bnd Workspace build](https://github.com/bndtools/bnd/blob/master/gradle-plugins/README.md#gradle-plugins-for-bnd-workspace-builds)"[^misnomer].
 Because an OSGi based project consists more often than not of several bundles,
 bundle projects are typically sub projects in a gradle project layout[^restructure].
 In order to support a gradle build of the projects that we have created so far,
