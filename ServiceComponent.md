@@ -234,7 +234,7 @@ If we want our component to be a declared service component, the file should loo
 ```
 
 You would probably not be able to write this file from scratch without further guidance, but when you read it, it's quite self-explanatory. The only thing that might be irritating is the reference to the log service, especially the `bind` and `unbind` attributes. Well, some things have to be approached a bit differently compared to Felix DM. Actually, I didn't write the file shown above. I used the annotations that have been added in release 4.3 of the specification and let `bnd` generate it[^dsbp]. The source code should clarify what happens with the reference to the log service (the complete project is available
-[here](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-DM3)).
+[here](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-DS)).
 
 [^dsbp]: With declared services, you only have to add `osgi.annotation` to the build path to make `bnd` generate this file. Handling the OSGi annotations is built-in and doesn't require the configuration of a plugin.
 
