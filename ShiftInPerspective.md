@@ -2,7 +2,7 @@
 layout: default
 title: Shift in Perspective
 description: Introduces OSGi as a lightweight framework. 
-date: 2019-03-30 12:00:00
+date: 2022-01-06 12:00:00
 commentIssue: 8
 ---
 
@@ -20,24 +20,26 @@ To simplify this task, Bndtools provides support for assembling an application t
 
 ![Bndtools Run tab](images/Bndtools-run.svg){: width="600px" }
 
-We'll stick to using Felix here. Choose `org.apache.felix.framework;version='[6.0.2,6.0.2]'` as OSGi framework and JavaSE-1.8 as execution environment ①. The bundle under development is automatically added to the "Run bundles" ②. Use the button "Export" at the top right ③ to create the application. Test the created jar by running it with ``jar -jar your.jar``.
+We'll stick to using Felix here. Choose `org.apache.felix.framework;version='[7.0.3,7.0.3]'` as OSGi framework and JavaSE-11 as execution environment ①. The bundle under development is automatically added to the "Run bundles" ②. Use the button "Export" at the top right ③ to create the application. Test the created jar by running it with ``jar -jar your.jar``.
 
-Looking at the content of the created jar, we find something like this (empty directory entries removed):
+Looking at the content of the created jar, we find something like this (empty directory entries and source files removed):
 
 ```
-  1135 Sat Mar 30 16:26:40 CET 2019 META-INF/MANIFEST.MF
-  9932 Sat Mar 30 16:26:40 CET 2019 aQute/launcher/pre/EmbeddedLauncher.class
-  4831 Sat Mar 30 16:26:32 CET 2019 jar/SimpleBundle-bnd.jar
-232468 Sun Mar 10 11:46:48 CET 2019 jar/biz.aQute.launcher-4.2.0.jar
-726279 Mon Jan 28 14:04:06 CET 2019 jar/org.apache.felix.framework-6.0.2.jar
-  1604 Sat Mar 30 16:26:40 CET 2019 launcher.properties
-    57 Sat Mar 30 16:26:40 CET 2019 start
-    48 Sat Mar 30 16:26:40 CET 2019 start.bat
+   335 Thu Jan 06 17:26:24 CET 2022 META-INF/MANIFEST.MF
+   722 Fri Feb 01 00:00:00 CET 1980 aQute/launcher/agent/LauncherAgent.class
+   675 Fri Feb 01 00:00:00 CET 1980 aQute/launcher/pre/EmbeddedLauncher$Loader.class
+ 12939 Fri Feb 01 00:00:00 CET 1980 aQute/launcher/pre/EmbeddedLauncher.class
+  4836 Thu Jan 06 17:26:24 CET 2022 jar/SimpleBundle-bnd.jar
+378246 Mon Nov 22 15:55:00 CET 2021 jar/biz.aQute.launcher-6.1.0.jar
+773807 Fri Dec 03 15:59:50 CET 2021 jar/org.apache.felix.framework-7.0.3.jar
+  3352 Thu Jan 06 17:35:30 CET 2022 launcher.properties
+    57 Thu Jan 06 17:35:30 CET 2022 start
+    48 Thu Jan 06 17:35:30 CET 2022 start.bat
 ```
 
 Basically, the content appears as expected. There is the Felix framework jar and our bundle. The ``EmbeddedLauncher.class``[^st] and the ``bit.aQute.launcher`` provide the startup code that is configured&mdash;from the settings on the "Run" tab&mdash;by the ``launcher.properties``.
 
-Looking at the sizes, you find that the core of the OSGI framework is about 720k, the "basic offset" for using OSGi. The size of ``SimpleBundle.jar`` appears to be a bit high, considering its simple content. Unpacking it reveals that it contains the source code of our classes in addition to the bytecode (the same applies to ``biz.aQute.launcher-4.2.0.jar``). Including the source code is the default behavior when bnd builds a jar. The source is put into the jar under ``OSGI-OPT/src`` where "OSGi-aware" IDEs will find it in a debugging session.
+Looking at the sizes, you find that the core of the OSGI framework is about 770k, the "basic offset" for using OSGi. The size of ``SimpleBundle-bnd.jar`` appears to be a bit high, considering its simple content. Unpacking it reveals that it contains the source code of our classes in addition to the bytecode (the same applies to ``biz.aQute.launcher-6.1.0.jar``). Including the source code is the default behavior when bnd builds a jar. The source is put into the jar under ``OSGI-OPT/src`` where "OSGi-aware" IDEs will find it in a debugging session.
 
 If you want the command shell to be part of your application again, add the bundles ``org.apache.felix.gogo.shell``, ``org.apache.felix.gogo.runtime`` and ``org.apache.felix.gogo.command`` in the "Run Bundles" field. Start the application with the augmented set of bundles and you can e.g. check the running bundles with ``felix:lb`` as you did before. To simplify application launch during development, Bndtools provides the "Run" button on the "Run" tab. It immediately starts the environment that you found in the exported bundle in the previous part.
 
