@@ -167,7 +167,7 @@ facility[^osgi-support].
 	for a Maven repository. However, this does not seem to be enabled on their
 	[most popular installation](https://oss.sonatype.org/#welcome). And it doesn't
 	look as if it is planned to support it in 
-	[version 3](https://help.sonatype.com/repomanager3/repository-manager-feature-matrix)
+	[version 3](https://help.sonatype.com/repomanager3/product-information/repository-manager-feature-matrix)
 	any more.
 	  
 
