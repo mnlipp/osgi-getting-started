@@ -2,7 +2,7 @@
 layout: default
 title: Bndtools
 description: Describes the Eclipse Bndtools feature and its basic usage.
-date: 2019-03-29 12:00:00
+date: 2022-01-06 12:00:00
 commentIssue: 7
 ---
 
@@ -10,7 +10,7 @@ commentIssue: 7
 
 [Bndtools](https://bndtools.org/) is an Eclipse plugin that integrates the (command line) tool [bnd](https://bnd.bndtools.org/) in Eclipse and provides "continuous build" for bundles. [Install](https://bndtools.org/installation.html) it now[^bndtools-version].
 
-[^bndtools-version]: This chapter was originally written using bndtools 3.2.0. However, the current version has been updated to comply with bndtools 6.1.0 and Eclipse 2021-12.
+[^bndtools-version]: This chapter was originally written in 2016 using bndtools 3.2.0. However, the current version has been updated to comply with bndtools 6.1.0 and Eclipse 2021-12.
 
 The tool bnd takes a different perspective on defining bundles. From bnd's point of view, `MANIFEST.MF` is the source of information about the bundle at runtime only. While developing the bundle, you need closely related, but sometimes slightly different information and  *additional* information. So, to bnd, `MANIFEST.MF` is an artifact that is generated during build time from information contained in a file called `bnd.bnd`. The eclipse plugin bndtools provides a GUI for editing `bnd.bnd` (again with the possibility to edit the source directly) and components that make the information from `bnd.bnd` available to Eclipse's continuous build. 
 
