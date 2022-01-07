@@ -10,7 +10,7 @@ commentIssue: 10
 
 A major benefit of using a framework is that you can reuse existing components in an architecturally well defined way. In this part I'm going to use the OSGi logging service to improve the logging behavior of our simple bundle.
 
-The OSGi framework manages the available services and makes them available via the [BundleContext](https://osgi.org/javadoc/r6/core/org/osgi/framework/BundleContext.html) interface[^snbt]. An implementation of the `BundleContext` is passed to the `start` method of the `BundleActivator`. Maybe you had noticed this parameter already in our activator implementation:
+The OSGi framework manages the available services and makes them available via the [BundleContext](https://docs.osgi.org/javadoc/osgi.core/7.0.0/index.html?org/osgi/framework/BundleContext.html) interface[^snbt]. An implementation of the `BundleContext` is passed to the `start` method of the `BundleActivator`. Maybe you had noticed this parameter already in our activator implementation:
 
 [^snbt]: Note that according to an OSGi 
     [blog entry](https://blog.osgi.org/2013/07/real-men-dont-use-ds.html), this part and 
@@ -40,7 +40,7 @@ public class Activator implements BundleActivator {
 
 ```
 
-The obvious choice for accessing a service is the `BundleContext.getService` method. It needs a `ServiceReference` parameter. Luckily, we can find a method `getServiceReference` right below the `getService` in the documentation. `ServiceReference` comes in two flavors. One takes the class as Java type, the other as a string. In both cases the class is presumably the main interface of the service that we want to use. The log service is part of all OSGi specifications, no matter whether they target residential or enterprise environments. [Download](https://www.osgi.org/developer/specifications/) either specification and have a look at the service description.
+The obvious choice for accessing a service is the `BundleContext.getService` method. It needs a `ServiceReference` parameter. Luckily, we can find a method `getServiceReference` right below the `getService` in the documentation. `ServiceReference` comes in two flavors. One takes the class as Java type, the other as a string. In both cases the class is presumably the main interface of the service that we want to use. The log service is part of all OSGi specifications, no matter whether they target residential or enterprise environments. [Download](http://docs.osgi.org/specification/) either specification and have a look at the service description.
 
 The full name of the log service interface is `org.osgi.service.log.LogService`. So let's try this code:
 
