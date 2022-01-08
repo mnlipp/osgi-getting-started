@@ -185,7 +185,7 @@ g!
 
 The required code is quite complex because it has to handle some conditions that aren't obvious if you come from most other Java component models[^po]. The basic approach is to grab the service object in `addingService` and start the `HelloWorld` thread, and then stop this thread again in `serviceRemoved`. This should allow the thread to reliably use the log service, because with respect to its life cycle, a service object is guaranteed to be usable between the invocations of `addingService` and `serviceRemoved` for that service object.
 
-[^po]: As has been pointed out to me in a [discussion](https://mail.osgi.org/pipermail/osgi-dev/2016-April/005149.html) on the osgi-dev list.
+[^po]: As has been pointed out to me in a [discussion](https://www.mail-archive.com/osgi-dev@mail.osgi.org/msg04026.html) on the osgi-dev list.
 
 As an additional complexity besides the dynamic appearance and disappearance of services, there can also be more than one service with the same service interface at the same time. As an example, it's possible to have two persistence services with different back ends installed and running in parallel[^mti]. A special case -- that makes more sense in the context of the log service -- is having a service twice after installing (and starting) a newer version in a running system[^av].
 
