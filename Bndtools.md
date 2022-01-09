@@ -58,20 +58,36 @@ going to need the repository in several projects, so we add it in the
 configuration project's `cnf/build.bnd`.
 
 We'll have a detailed look at repositories later. For now you should simply
-copy the files `build.bnd` and `pom.xml` from the 
-[sample project](https://github.com/mnlipp/osgi-getting-started/tree/master/cnf) 
-into the `cnf/` directory, switch to the Bndtools perspective and choose 
-"Bndtools/Refresh Repositories" from the menu (or click on the refresh button
-at the top of the "Repositories" view). 
+add the following lines:
+
+```properties
+-plugin.3.OSGIGettingStarted: \
+-plugin.3.OSGIGettingStarted: \
+	aQute.bnd.repository.osgi.OSGiRepository;\
+		name="OSGi-Getting-Started";\
+		locations=https://raw.githubusercontent.com/mnlipp/osgi-getting-started/master/cnf/indexed-maven/index.xml
+```
+
+Switch to the Bndtools perspective and choose "Bndtools/Refresh Repositories" 
+from the menu (or click on the refresh button at the top of the 
+"Repositories" view). 
+
+![Updated Repositories](images/Initial-Repositories.png){: width="300px" }
+
+The top entry has the name of your Eclipse workspace and may vary. There must 
+be a lot of entries in "OSGI-Getting-Started". I found that sometimes the refresh
+is not sufficient and that it is necessary to restart Eclipse once more to get the
+full list of entries.
+
 When you go back to `Activator.java` and look at the quick fix proposals for the
-error at the import statement, it offers to "Add bundle 'osgi.core' to Bnd
-build path'. Do this. It will fix all errors. 
+error at the import statement, it offers to "Add osgi.core to -buildpath 
+(found org.osgi.framework.BundleActivator)". Do this. It will fix all errors. 
 
 As an alternative to using the quick fix, open `bnd.bnd` and 
 select the "Build" tab. In the "Build Path sub-window use "+" to add `osgi.core`
 (use the search field to find the bundle in the repositories). 
 
-![Add from Repository](images/AddFromRepoQuery.png){: width="370px" }
+![Add from Repository](images/AddFromRepoQuery.png){: width="400px" }
 
 Click "Finish" and the osgi.core bundle shows up in the "Build Path" 
 section of `bnd.bnd`'s "Build Tab".

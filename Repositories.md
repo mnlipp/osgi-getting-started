@@ -2,7 +2,7 @@
 layout: default
 title: Repositories
 description: Describes how the OSGi tools make use of repositories and why this is not really compatible with the "Maven way".
-date: 2019-03-28 12:00:00
+date: 2022-01-09 12:00:00
 commentIssue: 15
 ---
 
@@ -82,19 +82,19 @@ repositories: `local`, `release` and `templates`. They are made known to bnd
 in `cnf/build.bnd` by these statements:
 
 ```properties
--plugin.2.Local: \
+-plugin.1.Local: \
 	aQute.bnd.deployer.repository.LocalIndexedRepo; \
 		name = Local; \
 		pretty = true; \
 		local = ${build}/local
 
--plugin.3.Templates: \
+-plugin.2.Templates: \
 	aQute.bnd.deployer.repository.LocalIndexedRepo; \
 		name = Templates; \
 		pretty = true; \
 		local = ${build}/templates
 
--plugin.4.Release: \
+-plugin.3.Release: \
 	aQute.bnd.deployer.repository.LocalIndexedRepo; \
 		name = Release; \
 		pretty = true; \
@@ -111,53 +111,42 @@ can be found in the
 [bndtools documentation](https://bndtools.org/repositories.html#local-indexed-repository).
 
 Another implementation of an OSGi repository that uses an index file is the
-`aQute.bnd.deployer.repository.FixedIndexedRepo`. Bndtools makes no attempt to modify the 
+`aQute.bnd.deployer.repository.osgi.OSGiRepository`. Bndtools makes no attempt to modify the 
 content of such a repository. The index file is specified by a URL, i.e. the data 
 can be kept on a remote server. Again, the configuration options can be found in the 
 [bndtools documentation](https://bndtools.org/repositories.html#fixed-index-repositories).
-We made use of this kind of repository in the following three cases:
+Until 2020 you could make use of such a repository to access the Apache Felix bundles:
 
 ```properties
--plugin.5.de.mnl.osgi: \
-	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=de.mnl.osgi; \
-		locations=https://raw.githubusercontent.com/mnlipp/de.mnl.osgi/master/cnf/release/index.xml; \
-		readonly=true
-
--plugin.6.Felix: \
-	aQute.bnd.deployer.repository.FixedIndexedRepo; \
+-plugin.5.Felix: \
+	aQute.bnd.deployer.repository.osgi.OSGiRepository; \
 		name=Felix; \
 		cache=${workspace}/cnf/cache; \
 		locations=https://felix.apache.org/obr/releases.xml
-
--plugin.7.bndtoolshub: \
-	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=Bndtools Hub; \
-		locations=https://raw.githubusercontent.com/bndtools/bundle-hub/master/index.xml.gz
 ```
 
 In an ideal world (from OSGi's point of view) all freely available bundles would be
 maintained in a "native" repository. Not necessarily using the simple persistence,
 because this could result in a very large index file. Rather, a server would provide
 some remotely accessible implementation of the `Repository` API. In reality, however,
-we only have a few "vendor" maintained[^badly] repositories (such as the "Felix" 
-repository) and some repositories maintained by individual projects (such as my 
-"de.mnl.osgi" repository and -- with a broader scope, but no longer maintained, 
-the "Bndtools Hub").
+there have never been more than a few "vendor" maintained[^badly] repositories 
+(such as the "Felix" repository) and some special purpose repositories maintained by
+individual projects (such as the 
+["Bndtools Hub"](https://github.com/bndtools/bundle-hub)).
 
 [^badly]: Sometimes badly maintained, as you can see 
-	[here](https://github.com/mnlipp/osgi-getting-started/issues/1).
+	[here](https://github.com/mnlipp/osgi-getting-started/issues/1)
+	and [here](https://www.mail-archive.com/users@felix.apache.org/msg18533.html).
 
 ## OSGi views on Maven repositories
 
 Today's Java development is Maven Central centric[^sorry]. No matter whether
 a project uses Maven or some other tool like Gradle for project management,
 (almost) everybody makes Java Open Source Software artifacts available on
-Maven Central (or [jCenter](https://bintray.com/bintray/jcenter)) and downloads
-required libraries from there using their Maven coordinates. As mentioned 
-before, the deficiency from an OSGi's point of view is that Maven repositories 
-do not provide the requirements and capabilities based search 
-facility[^osgi-support]. 
+Maven Central and downloads required libraries from there using their Maven 
+coordinates. As mentioned before, the deficiency from an OSGi's point of view 
+is that Maven repositories do not provide the requirements and capabilities 
+based search facility[^osgi-support]. 
 
 [^sorry]: Sorry, couldn't resist.
 
@@ -169,7 +158,7 @@ facility[^osgi-support].
 	look as if it is planned to support it in 
 	[version 3](https://help.sonatype.com/repomanager3/product-information/repository-manager-feature-matrix)
 	any more.
-	  
+
 
 [^relation]: I have no relations with this company except for an account
 	on oss.sonatype.org. It just happens that I found the feature description
@@ -219,7 +208,7 @@ to setup. Here is a sample configuration (details can be found in the
 [bnd documentation](https://bnd.bndtools.org/plugins/maven.html)):
 
 ```properties
--plugin.1.CentralMvn: \
+-plugin.CentralMvn: \
 	aQute.bnd.deployer.repository.wrapper.Plugin; \
 		location = "${build}/cache/wrapper"; \
 		reindex = true, \
@@ -264,7 +253,7 @@ As an example, we can get all Apache Felix artifacts and the artifacts that they
 depend on with a Bnd POM Repository configured like this:
 
 ```properties
--plugin.6.Felix: \
+-plugin.Felix: \
     aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
         name=Felix; \
     	snapshotUrls=https://oss.sonatype.org/content/repositories/snapshots/; \
@@ -277,7 +266,7 @@ have changed the group id in later versions, so in order to get everything, we
 have to query using the artifact id.
 
 ```properties
--plugin.7.Equinox = \
+-plugin.Equinox = \
     aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
         name=Equinox; \
     	snapshotUrls=https://oss.sonatype.org/content/repositories/snapshots/; \
@@ -285,13 +274,14 @@ have to query using the artifact id.
         query='q=a:%22org.eclipse.osgi%22&rows=10000'
 ```
 
-I have personally experienced two problems with this plugin. The first is that
-it doesn't refresh properly. I'm not sure about the state of the 
-[related issue](https://github.com/bndtools/bnd/pull/2114), but at least in
-3.5.0 this hasn't been fixed yet.
-
-The second problem is that the search works only with Maven Central, which means
+I have personally experienced two problems with this plugin. The first is 
+that the search works only with Maven Central, which means
 that it won't include snapshots of artifacts.
+
+The second problem (I found out about that at the beginning of 2022) 
+is that maven central doesn't support a `rows` parameter 
+greater 200 any more (and the plugin doesn't support pagination). So for
+the example queries above it has become useless.
 
 ### Indexed Maven Repository Plugin
 

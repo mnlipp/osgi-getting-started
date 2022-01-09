@@ -85,7 +85,7 @@ Focusing on the Eclipse GUI (Bndtools), an easy way is outlined in its [FAQ](htt
 
 [^ws]: Not to be confused with the Eclipse workspace. The default layout puts `cnf` as a top level project in your Eclipse workspace. However, the only real restriction is that `cnf` must be a sibling of the (bnd) OSGi projects under development. The layout for this introduction uses a [top level](https://github.com/mnlipp/osgi-getting-started) (gradle nature only) project, with `cnf` and the sample bundle projects as children. 
 
-Provided that the bundles that you want to add are maintained in some remote repository<a name="add-repo"></a>, a better approach is to add this (remote) repository to the list of repositories that are searched for bundles. Such a list is maintained in `build.bnd` (in the `cnf` project). When introducing the bndtools plugin for Eclipse, you copied the `build.bnd` that I prepared for this tutorial into your project. It defines several remote repositories.
+Provided that the bundles that you want to add are maintained in some remote repository<a name="add-repo"></a>, a better approach is to add this (remote) repository to the list of repositories that are searched for bundles. Such a list is maintained in `build.bnd` (in the `cnf` project). When introducing the bndtools plugin for Eclipse, an initial version of  `build.bnd` was created and you added an additional entry.
 
 ```properties
 -plugin.1.Local: \
@@ -94,49 +94,38 @@ Provided that the bundles that you want to add are maintained in some remote rep
 		local=${workspace}/cnf/localrepo; \
 		pretty=true
 
--plugin.2.Templates: \
-	aQute.bnd.deployer.repository.LocalIndexedRepo; \
-		name = Templates; \
-		pretty = true; \
-		local = ${build}/templates
-
--plugin.3.Release: \
+-plugin.2.Release: \
 	aQute.bnd.deployer.repository.LocalIndexedRepo; \
 		name=Release; \
 		local=${workspace}/cnf/release; \
 		pretty=true
 
--plugin.4.Central:  \
-	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
-		releaseUrls=https://repo1.maven.org/maven2/; \
-		pom=${.}/pom.xml; \
-		name=Central
-
--plugin.5.Felix = \
-	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
-		name=Felix; \
-		readOnly=true; \
-		snapshotUrls=https://oss.sonatype.org/content/repositories/snapshots/; \
-		releaseUrls=https://repo1.maven.org/maven2; \
-		query='q=g:%22org.apache.felix%22&rows=10000'
+-plugin.3.OSGIGettingStarted: \
+	aQute.bnd.repository.osgi.OSGiRepository;\
+		name="OSGi-Getting-Started";\
+		locations=https://raw.githubusercontent.com/mnlipp/osgi-getting-started/master/cnf/indexed-maven/index.xml
 ```
 
-There is also a repository GUI view that reflects this configuration.
+There is also the repository GUI view that reflects this configuration.
 
-![Adding a repository](images/Repository-view.png){: width="350px" }
+![Adding a repository](images/Initial-Repositories.png){: width="350px" }
 
 As you can see in the screenshot, the edit buttons are disabled. In previous versions of Bndtools (before 3.2.0) you could use them to add a repository. Currently, you have to edit `build.bnd` in the source view and add:
 
 ```properties
--plugin.6.de.mnl.osgi: \
+-plugin.4.de.mnl.osgi: \
 	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
 		name=de.mnl.osgi; \
 		readOnly=true; \
 		releaseUrls=https://repo1.maven.org/maven2; \
-		query='q=g:%22de.mnl.osgi%22&rows=10000'
+		query='q=g:%22de.mnl.osgi%22&rows=200'
 ```
 
-After this change, go back to the "Run" tab of the project's `bnd.bnd` editor. Use the plus icon to add the bundles `de.mnl.osgi.osgi2jul` and `de.mnl.osgi.coreutils` to the "Run bundles".
+After this change[^notNeeded], go back to the "Run" tab of the project's `bnd.bnd` editor. Use the plus icon to add the bundles `de.mnl.osgi.osgi2jul` and `de.mnl.osgi.coreutils` to the "Run bundles".
+
+[^notNeeded]: To be honest, adding this repository isn't necessary because the
+	bundles are already also in the "OSGi-Getting-Started" repository. But this was
+	a good opportunity to demonstrate how these things are done.
 
 ![Adding the osgi2jul bundle](images/Adding-fwd2jul.png){: width="450px" }
 
