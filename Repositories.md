@@ -77,62 +77,69 @@ consists of a directory with bundles and an index file that describes the capabi
 (and requirements) of the bundles in the repository. The information in the index
 file is extracted from the manifests of the bundles in the repository.
 
-The `cnf` directory of our sample bnd workspace contains three such local 
-repositories: `local`, `release` and `templates`. They are made known to bnd
-in `cnf/build.bnd` by these statements:
+If you have followed this tutorial step-by-step, the `cnf` directory of your 
+sample bnd workspace contains three such repositories: `local`, `release` 
+and `OSGi-Getting-Started`. They are made known to bnd in `cnf/build.bnd` by 
+these statements:
 
 ```properties
 -plugin.1.Local: \
 	aQute.bnd.deployer.repository.LocalIndexedRepo; \
-		name = Local; \
-		pretty = true; \
-		local = ${build}/local
+		name=Local; \
+		local=${workspace}/cnf/localrepo; \
+		pretty=true
 
--plugin.2.Templates: \
+-plugin.2.Release: \
 	aQute.bnd.deployer.repository.LocalIndexedRepo; \
-		name = Templates; \
-		pretty = true; \
-		local = ${build}/templates
+		name=Release; \
+		local=${workspace}/cnf/release; \
+		pretty=true
 
--plugin.3.Release: \
-	aQute.bnd.deployer.repository.LocalIndexedRepo; \
-		name = Release; \
-		pretty = true; \
-		local = ${build}/release
+-plugin.3.OSGIGettingStarted: \
+	aQute.bnd.repository.osgi.OSGiRepository;\
+		name="OSGi-Getting-Started";\
+		locations=https://raw.githubusercontent.com/mnlipp/osgi-getting-started/master/cnf/indexed-maven/index.xml
 ```
 
-The `local` and `release` repositories are empty, but if you have a look at the file
-`cnf/templates/index.xml`, you get an idea how the information about capabilities and
-requirements is represented. The plugin type 
-`aQute.bnd.deployer.repository.LocalIndexedRepo` provides an editable repository in the
-local file system. "Editable" means that you can deploy bundles to it and the index 
-is regenerated automatically by bndtools. Details about the configuration properties
-can be found in the 
+The `local` and `release` repositories have been created by the workspace template 
+and are empty. Their plugin type `aQute.bnd.deployer.repository.LocalIndexedRepo` provides 
+an editable repository in the local file system. "Editable" means that you can 
+deploy bundles to the repository and the index is regenerated automatically by 
+bndtools. Details about the configuration properties can be found in the 
 [bndtools documentation](https://bndtools.org/repositories.html#local-indexed-repository).
 
-Another implementation of an OSGi repository that uses an index file is the
-`aQute.bnd.deployer.repository.osgi.OSGiRepository`. Bndtools makes no attempt to modify the 
-content of such a repository. The index file is specified by a URL, i.e. the data 
-can be kept on a remote server. Again, the configuration options can be found in the 
-[bndtools documentation](https://bndtools.org/repositories.html#fixed-index-repositories).
-Until 2020 you could make use of such a repository to access the Apache Felix bundles:
+Another implementation of an OSGi repository that uses the standardized index
+file format by default is the
+`aQute.bnd.deployer.repository.osgi.OSGiRepository`. This type of repository is "fixed", 
+i.&nbsp;e. bndtools makes no attempt to modify the content of the repository. 
+The index file is specified by a URL, which usually references data 
+on a remote server. Again, the configuration options can be found in the 
+[bndtools documentation](https://bndtools.org/repositories.html#osgirepositories--fixed-index-repositories).
 
-```properties
--plugin.5.Felix: \
-	aQute.bnd.deployer.repository.osgi.OSGiRepository; \
-		name=Felix; \
-		cache=${workspace}/cnf/cache; \
-		locations=https://felix.apache.org/obr/releases.xml
-```
+The configuration for the "OSGI-Getting-Started" repository above references an index
+file that is maintained together with the sample projects. The repository described
+by the index file contains all bundles required for the samples (and some more).
 
 In an ideal world (from OSGi's point of view) all freely available bundles would be
 maintained in a "native" repository. Not necessarily using the simple persistence,
 because this could result in a very large index file. Rather, a server would provide
 some remotely accessible implementation of the `Repository` API. In reality, however,
-there have never been more than a few "vendor" maintained[^badly] repositories 
-(such as the "Felix" repository) and some special purpose repositories maintained by
-individual projects (such as the 
+there have never been more than a few "vendor" maintained repositories 
+(such as the "Felix" repository[^FelixRepo])[^badly] and some special purpose 
+repositories maintained by individual projects (such as the 
 ["Bndtools Hub"](https://github.com/bndtools/bundle-hub)).
+
+[^FelixRepo]:
+    Until 2020 you could make use of an OBR repository to access the Apache Felix 
+    bundles like this:
+
+    ```properties
+    -plugin.5.Felix: \
+        aQute.bnd.deployer.repository.osgi.OSGiRepository; \
+        name=Felix; \
+        locations=https://felix.apache.org/obr/releases.xml
+    ```
+
 
 [^badly]: Sometimes badly maintained, as you can see 
 	[here](https://github.com/mnlipp/osgi-getting-started/issues/1)
