@@ -108,17 +108,18 @@ deploy bundles to the repository and the index is regenerated automatically by
 bndtools. Details about the configuration properties can be found in the 
 [bndtools documentation](https://bndtools.org/repositories.html#local-indexed-repository).
 
-Another implementation of an OSGi repository that uses the standardized index
-file format by default is the
-`aQute.bnd.deployer.repository.osgi.OSGiRepository`. This type of repository is "fixed", 
-i.&nbsp;e. bndtools makes no attempt to modify the content of the repository. 
+Another implementation of an OSGi repository is the
+`aQute.bnd.deployer.repository.osgi.OSGiRepository`. This type of repository uses the 
+standardized index file format and is "fixed", i.&nbsp;e. bndtools provides no
+functions to modify the content of the repository. 
 The index file is specified by a URL, which usually references data 
 on a remote server. Again, the configuration options can be found in the 
 [bndtools documentation](https://bndtools.org/repositories.html#osgirepositories--fixed-index-repositories).
 
 The configuration for the "OSGI-Getting-Started" repository above references an index
 file that is maintained together with the sample projects. The repository described
-by the index file contains all bundles required for the samples (and some more).
+by the index file contains all bundles required for the examples (and some more) in
+this introduction.
 
 In an ideal world (from OSGi's point of view) all freely available bundles would be
 maintained in a "native" repository. Not necessarily using the simple persistence,
@@ -216,9 +217,6 @@ to setup. Here is a sample configuration (details can be found in the
 
 ```properties
 -plugin.CentralMvn: \
-	aQute.bnd.deployer.repository.wrapper.Plugin; \
-		location = "${build}/cache/wrapper"; \
-		reindex = true, \
 	aQute.bnd.repository.maven.provider.MavenBndRepository; \
 		name="Central (Maven)"; \
 		snapshotUrl=https://oss.sonatype.org/content/repositories/snapshots/; \
@@ -226,19 +224,15 @@ to setup. Here is a sample configuration (details can be found in the
 		index=${.}/central.mvn
 ```
 
-The plugin uses the file configured with the
-`index` property[^idx-nc] which specifies the Maven artifacts to be downloaded
-and to be included in the repository (view) provided by the plugin. 
+The plugin downloads and includes into the repository the artifacts specified
+in the file configured with the `index` property[^idx-nc]. The artifacts are
+specified as a list of maven coordinates, one per line. If you have the
+Repositories view open in Eclipse (usually when you are in the bndtools 
+perspective), you can even drag and drop the URL of a POM file (e.g. found 
+by searching Maven Central) into a Maven Bnd Repository and the Maven 
+coordinates will be added to the index file. 
 
 [^idx-nc]: Not to be confused with an OBR index file.
-
-The Maven Bnd Repository plugin uses
-a simple list of Maven coordinates to specify the artifacts to be included in
-the configured repository. If you have the Repositories view open in Eclipse
-(usually when you are in the bndtools perspective), you can even drag and drop
-the URL of a POM file (e.g. found by searching Maven Central) into a
-Maven Bnd Repository and the Maven coordinates will be added to the
-index file. 
 
 This sounds like a nice way to get the artifacts that your project depends on,
 until you notice that the plugins don't support transitive dependencies. You
@@ -251,13 +245,43 @@ This is where the `aQute.bnd.repository.maven.pom.provider.BndPomRepository` plu
 comes in (details can, again, be found in the 
 [bnd documentation](https://bnd.bndtools.org/plugins/pomrepo.html)). This plugin
 is kind of a strange beast, because it allows you to configure an initial
-set of artifacts to retrieve in very different ways, including the possiblity
-to use Maven Central's search facility. No matter how you obtain the initial
-set of artifacts, the plugin's default behavior is to also include the transitive
-dependencies, i.e. the dependencies specified in the POM files of the artifacts.
+set of artifacts to retrieve in very different ways. No matter how you obtain 
+the initial set of artifacts, the plugin's default behavior is to also include 
+the transitive dependencies, i.e. the dependencies specified in the POM files 
+of the artifacts.
 
-As an example, we can get all Apache Felix artifacts and the artifacts that they
-depend on with a Bnd POM Repository configured like this:
+The preferred usage seems to be to maintain a `pom.xml` with all (direct) 
+dependencies[^PomEx] of your project. This works, but it means that you
+have to maintain all these dependencies in this file in addition to your
+build configuration -- again a quite arduous task. And it doesn't allow you
+to use the repositories view to browse for newer versions of an artifact
+because only the versions specified explicitly are included into the 
+repository.
+
+[^PomEx]: I found the example in the documentation to be incomplete. You need
+    a full fledged `pom.xml` such as:
+    
+    ```xml
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+        <groupId>local</groupId>
+        <artifactId>central</artifactId>
+        <version>0.0.0</version>
+        <packaging>pom</packaging>
+        <dependencies>
+            <dependency>
+                <groupId>...</groupId>
+                <artifactId>...</artifactId>
+                <version>...</version>
+            </dependency>
+        </dependencies>
+    </project>
+    ```
+
+Using the search feature seems more promising. As an example, we should be
+able to get all Apache Felix artifacts and the artifacts that they depend 
+on with a Bnd POM Repository configured like this:
 
 ```properties
 -plugin.Felix: \
@@ -268,9 +292,9 @@ depend on with a Bnd POM Repository configured like this:
         query='q=g:%22org.apache.felix%22&rows=10000'
 ```
 
-Here's the query for [Equinox](https://www.eclipse.org/equinox/). Note that they 
-have changed the group id in later versions, so in order to get everything, we
-have to query using the artifact id.
+Here's a similar query for [Equinox](https://www.eclipse.org/equinox/). Note 
+that they have changed the group id in later versions, so in order to get 
+everything, we have to query using the artifact id.
 
 ```properties
 -plugin.Equinox = \
@@ -281,14 +305,14 @@ have to query using the artifact id.
         query='q=a:%22org.eclipse.osgi%22&rows=10000'
 ```
 
-I have personally experienced two problems with this plugin. The first is 
-that the search works only with Maven Central, which means
-that it won't include snapshots of artifacts.
+I have personally experienced two problems with the search feature of this 
+plugin. The first is that the search works only with Maven Central, which 
+means that it won't include snapshots of artifacts.
 
 The second problem (I found out about that at the beginning of 2022) 
-is that maven central doesn't support a `rows` parameter 
-greater 200 any more (and the plugin doesn't support pagination). So for
-the example queries above it has become useless.
+is that maven central doesn't support a `rows` parameter greater 200 in 
+the query any more (and the plugin doesn't support pagination). So for
+the example queries above it has become useless. 
 
 ### Indexed Maven Repository Plugin
 
@@ -297,7 +321,12 @@ maven repositories using a configuration that is aligned with maven
 group ids. It makes use of the maven dependency information both for
 adding artifacts to the index and for filtering artifacts. For more
 details, have a look at the plugin's 
-[documentation](https://mnlipp.github.io/de.mnl.osgi/IndexedMavenRepository.html)
+[documentation](https://mnlipp.github.io/de.mnl.osgi/IndexedMavenRepository.html).
+
+This plugin is used in the workspace with the examples used in this
+introductions. The OBR index that it produces as a side effect is the
+one that you have used in your workspace for the "OSGi-Getting-Started"
+repository, if you have followed the introduction step-by-step.
 
 ### Nexus Search Repository Plugin
 
