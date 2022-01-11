@@ -137,7 +137,7 @@ The use case for removing classes from a running system is less common.
 It's not easy to do this because it requires that there are no more 
 instances of the class that you want to remove. Enforcing this is 
 effectively impossible. Our simple bundle is an example of the 
-omplexity of the problem[^mixms]. We cannot simply establish a 
+complexity of the problem[^mixms]. We cannot simply establish a 
 reference to the log service at startup and then use it for the 
 rest of the program. Rather, we have to provide a significant 
 amount of code[^less-complex] to handle the case that the log service 
@@ -189,7 +189,7 @@ on a secondary system and switch over. Consider the (additional) testing
 that has to be performed for bringing a new module into a running productive 
 system. Keep in mind that "No matter how clean the framework, administrators 
 will always prefer a freshly booted machine." 
-([Caucho Blog](https://blog.caucho.com/2009/06/15/why-osgi-is-cool-but-not-for-most-enterprise-apps/)) And, of course, consider that being able to replace a module does not mean that you have an uninterrupted service. Other modules may depend on the module being replaced and may go down until the substitute becomes available, just like our simple bundle will, when you replace the log service[^uwa].
+([Caucho Blog](https://blog.caucho.com/2009/06/15/why-osgi-is-cool-but-not-for-most-enterprise-apps/)). And, of course, consider that being able to replace a module does not mean that you have an uninterrupted service. Other modules may depend on the module being replaced and may go down until the substitute becomes available, just like our simple bundle will, when you replace the log service[^uwa].
 
 [^uwa]: If there is a dependency between the modules on the service 
 	level only (and you have put the interface in a bundle of its own),  
@@ -275,8 +275,8 @@ Using the term "service" for this layer may be one of the worst
 decisions when defining OSGi. It directs your thoughts towards,
 well, services, i.&nbsp;e. something that assists you in achieving
 some goal. The OSGi service layer, however, provides a general
-means to manage *components*, some of which may provide some kind
-of service. Keep this in mind when you design your system's
+means to manage deployment units, some of which may provide some 
+kind of service. Keep this in mind when you design your system's
 architecture. The OSGi service layer is perfectly well suited
 to manage an inventory of things, even if the only "service" that
 they provide is something like returning a name. 
