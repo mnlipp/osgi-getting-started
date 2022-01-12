@@ -16,7 +16,7 @@ sense if we can have several components that build on each other and interact.
 Having several components is easy, we simply write several bundles. But how
 about the interaction? Can classes from one component simply be used by another 
 component? Well, they cannot. As I mentioned in a footnote earlier, OSGi is on its
-basic layer not a component framework. Rather, its a framework for managing
+basic layer not a component framework. Rather, it's a framework for managing
 modules -- which sometimes happen to be components[^several]. 
 
 [^several]: OSGi, with its various specifications, addresses several, 
