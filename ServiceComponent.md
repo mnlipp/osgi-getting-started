@@ -1,22 +1,44 @@
 ---
 layout: default
 title: Service Components
-description: Introduces service components as a simpler form of services.
-date: 2016-05-06 12:00:00
+description: Introduces service components as a simpler form of services and OSGi Declarative Services.
+date: 2022-01-12 12:00:00
 commentIssue: 14
 ---
 
 # From Services to Service Components
 
-As we have seen in the previous parts, the service registry provides a a very simple and flexible mechanism to establish the relationships between the components of a software system (provided as bundles). The drawback of its simplicity is that it requires a relatively large effort for individual components to manage their service dependencies.
+As we have seen in the previous parts, the service registry provides a very simple and flexible mechanism to establish the relationships between the modules of a software system (provided as bundles). The drawback of its simplicity is that it requires a relatively large effort for individual modules to manage their service dependencies.
 
-A somewhat different approach to managing services is the use of "service components". The OSGi specification defines a service component as a component that "[...] contains a description that is interpreted at run time to create and dispose objects depending on the availability of other services, the need for such an object, and available configuration data. Such objects can optionally provide a service." Have a look at the [article](https://web.archive.org/web/20061123212733/www-adele.imag.fr/Les.Publications/intConferences/CBSE2003Cer.pdf) cited in the specification, which provides a nice introduction into the topic.
+A somewhat different approach to managing services is the use of "service components". 
+The basic ideas have been described in the article "[Automating Service Dependency 
+Management in a Service-Oriented Component Model](https://web.archive.org/web/20061123212733/www-adele.imag.fr/Les.Publications/intConferences/CBSE2003Cer.pdf)".
+Read it now. It's a very good introduction into the topic.
 
-Service components supply the information required for managing the service dependencies. The management functions that evaluate this information are implemented in an independent component (the "dependency manager" or "service component runtime") that is deployed in the OSGi framework in addition to the service components. All dependency managers work according to the same basic pattern. They watch for bundle state changes, either by monitoring the framework or by requiring a bundle to notify the manager about its start explicitly in its bundle activator. Once the bundle has been started, the dependency information is retrieved. When all the required (i.e. non-optional) services are available, some startup-method of the service component is invoked. (And, of course, there is a shutdown-method, which is invoked if one of the required services goes away.)
+Service components supply the information required for managing the service 
+dependencies. The management functions that evaluate this information are 
+implemented in an independent component (the "dependency manager" or "service 
+component runtime") that is deployed in an OSGi framework in addition to the 
+service components. All dependency managers work according to the same basic 
+pattern. They watch for bundle state changes, either by monitoring the 
+framework or by requiring a bundle to notify the manager about its start 
+explicitly in its bundle activator. Once the bundle has been started, the 
+dependency information is retrieved. When all the required (i.e. non-optional) 
+services are available, some startup-method of the service component is invoked. 
+(And, of course, there is a shutdown-method, which is invoked if one of the 
+required services goes away.)
 
 ## Felix Dependency Manager (DM)
 
-One of the oldest and at the same time very recent solutions to dependency management is the [Felix Dependency Manager (DM)](https://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager.html). It has its origins in 2004, but has recently undergone a major [overhaul](https://web.archive.org/web/20190121195410/https://www.planetmarrs.net/dependency-manager-4/). The DM supports two mechanism for supplying the dependency information: programmatically or by using annotations.
+One of the oldest and at the same time still recent solutions to dependency 
+management is the 
+[Felix Dependency Manager (DM)](https://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager.html). 
+It has its origins in 2004, but has undergone a major 
+[overhaul](https://web.archive.org/web/20190121195410/https://www.planetmarrs.net/dependency-manager-4/)
+in 2019. The DM supports two mechanism for supplying the dependency information:
+programmatically or by using annotations. This provides a good entry point
+into the topic and that's why I'll show you the basics in the next sub-sections,
+although "OSGi Declarative Services" (see below) is the predominantly used solution.
 
 ### Using DM programmatically
 
@@ -86,31 +108,24 @@ with are entries in the `bnd.bnd` similar to this:
         org.apache.felix.metatype
 ```
 
-Regrettably, the Felix DM is in none of the Bndtools "standard repositories".
-We can add the Apache Felix Repository (https://felix.apache.org/obr/releases.xml) 
-in the same way as we added the "de.mnl.osgi" repository 
-[before](UsingAService.html#add-repo). If you have checked out the 
-[companion project](https://github.com/mnlipp/osgi-getting-started) for this tutorial, 
-it's already there, of course.
-
-```properties
--plugin.6.Felix: \
-	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=Felix; \
-		cache=${workspace}/cnf/cache; \
-		locations=http://felix.apache.org/obr/releases.xml
-```
-
-Run the modified bundle with the enhanced configuration and -- it works, i.e. we get the "Hello World!" and the log messages. This is nice to see, but where's the magic, I mean, what started our thread? As it happens, the methods invoked by the DM on a service component are 
+Run the modified bundle with the enhanced configuration and -- it works, i.e. 
+we get the "Hello World!" and the log messages. This is nice to see, but 
+where's the magic, I mean, what started our thread? As it happens, the 
+methods invoked by the DM on a service component are 
 
 * `init`,
 * `start`,
 * `stop` and
 * `destroy`.
 
-Except for the first, these methods are all defined by the `Thread` class, which our component inherits from, and this is why our component works. Of course, since the `stop` and `destroy` methods are deprecated (and for good reasons), we should override them with proper implementations for anything beyond this simple example[^overstop].
+Except for the first, these methods are all defined by the `Thread` class, 
+which our component inherits from, and this is why our component works. 
+Of course, since the `stop` and `destroy` methods are deprecated (and for 
+good reasons), we should override them with proper implementations for 
+anything beyond this simple example[^overstop].
 
-[^overstop]: Unfortunately, `stop` is final and cannot be overridden. I'll improve the solution in the second part.
+[^overstop]: Unfortunately, `stop` is final and cannot be overridden. I'll improve the
+    solution in the second part.
 
 The log service has been made available by the DM in the attribute `logService` by [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection). The details can all be found in the DM [documentation](https://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/components.html).
 
@@ -193,8 +208,8 @@ single project only, you can add the lines
 
 ```
 -pluginpath:\
-	${workspace}/cnf/cache/org.apache.dependencymanager.annotation-4.2.0.jar;\
-	url=http://repo1.maven.org/maven2/org/apache/felix/org.apache.felix.dependencymanager.annotation/4.2.0/org.apache.felix.dependencymanager.annotation-4.2.0.jar	
+	${workspace}/cnf/cache/org.apache.dependencymanager.annotation-5.0.0.jar;\
+	url=http://repo1.maven.org/maven2/org/apache/felix/org.apache.felix.dependencymanager.annotation/4.2.0/org.apache.felix.dependencymanager.annotation-5.0.0.jar	
 -plugin: org.apache.felix.dm.annotation.plugin.bnd.AnnotationPlugin;log=debug
 ```
 
@@ -212,15 +227,49 @@ Add it to the run bundles and start it again.
 
 ## OSGi Declarative Services
 
-The OSGi alliance has added support for service components as "Declarative Services" in Release 4 of the service specification (2005). As the name suggests, there is no API as in Felix DM. Rather, services are declared using a header in `MANIFEST.MF`, e.g.:
+An important sentence in the article "Automating Service Dependency Management 
+in a Service-Oriented Component Model" mentioned at the beginning is: *The 
+prototype platform for our research is implemented using the Open Services 
+Gateway Initiative (OSGi) [...] framework, but the ideas are general enough 
+for use in other service platforms.* This basically still holds true after
+the adoption of the concepts outlined in the article as an OSGi specification.
+
+The OSGi alliance has added support for service components as 
+"[Declarative Services](https://docs.osgi.org/specification/osgi.cmpn/7.0.0/service.component.html)", initially
+in Release 4 of the service specification (2005). "Declarative Services"
+as specified introduce a new layer of abstraction, which implies that you 
+don't need to know about some parts of the Core OSGi APIs any more in order
+to use OSGi as a service based component framework. Some OSGi enthusiasts 
+therefore consider "Declarative Services" to be a kind of "fresh start" for 
+OSGi and tell you to more or less forget about the service layer (API). 
+I could follow this line of thought easily, if they had made "Declarative
+Services" the core of an "OSGi NG" and had dropped the no longer
+needed low level APIs[^newSpec]. As it is, I find that you still have to 
+understand the basics in order to fully understand the (debug) outputs 
+and solve some problems that you may encounter[^mem].
+
+[^newSpec]: And IMHO if they had also switched to an easier to read style 
+	for the specifications, this might have been a successful new 
+	beginning for OSGi as well.
+
+[^mem]: Not knowing about the underlying mechanisms is a bit like teaching
+    programmers nothing about memory management because "Java does it
+    automatically". And then somebody (a few days before the deadline)
+    says: "Does anybody know what this OutOfMemory exception means that
+    I keep getting from time to time?"
+
+As the name "Declarative Services" suggests, there is no API as in Felix DM. 
+Rather, services are declared using a header in `MANIFEST.MF`, e.g.:
 
 ```props
 Service-Component: OSGI-INF/io.github.mnl.osgiGettingStarted.simpleBundle.HelloWorld.xml
 ```
 
-The file name pattern "`OSGI-INF/<fully qualified class name>.xml`" isn't mandatory but recommended. 
+The file name pattern "`OSGI-INF/<fully qualified class name>.xml`" isn't mandatory 
+but recommended. 
 
-If we want our component to be a declared service component, the file should look like this:
+If we want our component to be a declared service component, the file should 
+look like this:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -233,10 +282,19 @@ If we want our component to be a declared service component, the file should loo
 </scr:component>
 ```
 
-You would probably not be able to write this file from scratch without further guidance, but when you read it, it's quite self-explanatory. The only thing that might be irritating is the reference to the log service, especially the `bind` and `unbind` attributes. Well, some things have to be approached a bit differently compared to Felix DM. Actually, I didn't write the file shown above. I used the annotations that have been added in release 4.3 of the specification and let `bnd` generate it[^dsbp]. The source code should clarify what happens with the reference to the log service (the complete project is available
+You would probably not be able to write this file from scratch without further 
+guidance, but when you read it, it's quite self-explanatory. The only thing 
+that might be irritating is the reference to the log service, especially the 
+`bind` and `unbind` attributes. Well, some things have to be approached a bit 
+differently compared to Felix DM. Actually, I didn't write the file shown above. 
+I used the annotations that have been added in release 4.3 of the specification 
+and let `bnd` generate it[^dsbp]. The source code should clarify what happens 
+with the reference to the log service (the complete project is available
 [here](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-DS)).
 
-[^dsbp]: With declared services, you only have to add `osgi.annotation` to the build path to make `bnd` generate this file. Handling the OSGi annotations is built-in and doesn't require the configuration of a plugin.
+[^dsbp]: With declared services, you only have to add `osgi.annotation` to the 
+    build path to make `bnd` generate this file. Handling the OSGi annotations is 
+    built-in and doesn't require the configuration of a plugin.
 
 ```java
 package io.github.mnl.osgiGettingStarted.simpleBundle;
@@ -297,19 +355,32 @@ public class HelloWorld implements Runnable {
 }
 ```
 
-The `@Component` annotation for the class looks similar the one in the Felix DM example. The parameter "`service`" serves the same purpose as the parameter "`provides`" of the DM annotation: it prevents our component from being registered as provider for service `java.lang.Runnable`.
+The `@Component` annotation for the class looks similar the one in the Felix DM 
+example. The parameter "`service`" serves the same purpose as the parameter 
+"`provides`" of the DM annotation: it prevents our component from being 
+registered as provider for service `java.lang.Runnable`.
 
 Declarative services doesn't support injection of values into fields[^fieldInjection]. 
-Referenced services are made known to the component by invoking a setter method. Considering our example, that's not too bad because we can make the field with the reference to the log service static again[^apDM]. In order to avoid keeping a reference to a log service implementation even if it disappears (and our component is stopped), we have to provide an "unset" method as well[^ofs]. It doesn't need an annotation. Rather, if there is a "`setXYZ`" method with the `@Reference` annotation, declarative services automatically assume an "`unsetXYZ`" method to implement the corresponding "undo" operation.
+Referenced services are made known to the component by invoking a setter method. 
+Considering our example, that's not too bad because we can make the field with 
+the reference to the log service static again[^apDM]. In order to avoid keeping 
+a reference to a log service implementation even if it disappears (and our 
+component is stopped), we have to provide an "unset" method as well[^ofs]. 
+It doesn't need an annotation. Rather, if there is a "`setXYZ`" method with 
+the `@Reference` annotation, declarative services automatically assume an 
+"`unsetXYZ`" method to implement the corresponding "undo" operation.
 
 [^fieldInjection]: Field injection is supported as of OSGi 6 (Declarative Service
 	Specification 1.3).
 
 [^apDM]: You can make Felix DM invoke a method, too.
 
-[^ofs]: You don't need an "unset" method for ordinary (non-static) attributes because the instance of the service component itself is discarded when a component is deactivated.
+[^ofs]: You don't need an "unset" method for ordinary (non-static) attributes 
+    because the instance of the service component itself is discarded when a 
+    component is deactivated.
 
-As with Felix DM, you need a "Service Component Runtime" (as the OSGi specification calls it) 
+As with Felix DM, you need a "Service Component Runtime" (as the OSGi 
+specification calls it) 
 to start up the service components. The SCR looks for `Service-Component` headers 
 in all deployed bundles and creates service components, registers their 
 services and activates the components according to the directives in the XML 
@@ -368,17 +439,9 @@ the properties of the service that is provided.
 
 #### Service Scopes
 
-As for services that you register with the OSGi core API, a scope can be specified
-for a Declarative Service.
-The default scope is "singleton". If you specify `BUNDLE` or `PROTOTYPE` as scope, the
-component becomes a factory component. Using a factory component is, however, 
-not as easy as registering and using a service factory with bundle or prototype scope 
-using the OSGi core API[^notCovered].
-
-[^notCovered]: [Neil Bartlett](https://stackoverflow.com/users/318921/neil-bartlett)
-	wrote on [stackoverflow](https://stackoverflow.com/questions/33505593/differnce-between-service-factory-vs-component-factory-in-osgi):
-	> You almost certainly don't want to use ComponentFactory, so I recommend 
-	> ignoring it. 
+Similar to registering services using the OSGi core API, you can specify a scope 
+for the service provided by a component.
+The default scope is `SINGLETON` (with `BUNDLE` or `PROTOTYPE` as alternatives). 
 
 #### Delayed Services
 
@@ -389,6 +452,26 @@ speed up the startup time considerably.
 If you want a service component to be created and activated immediately on
 startup, you have to set the `immediate` element of the component
 annotation to `true`.
+
+#### Factory Component
+
+Usually, a single component instance is created (and any provided service is
+registered) when all referenced services have become available.
+Sometimes, however, you may want to create one or more instances of a
+component (and register its provided services) dynamically at runtime.
+
+This is made possible by specifying a `factory` attribute with an identifier.
+If defined, SCR registers a (factory) service with this identifier that 
+provides a single method `newInstance`. This service can then be used to 
+dynamically create component instances[^notCovered].
+
+[^notCovered]: [Neil Bartlett](https://stackoverflow.com/users/318921/neil-bartlett)
+	wrote on [stackoverflow](https://stackoverflow.com/questions/33505593/differnce-between-service-factory-vs-component-factory-in-osgi):
+	> You almost certainly don't want to use ComponentFactory, so I recommend 
+	> ignoring it. 
+    
+    I'm not sure if this comment is correct, the example for using a factory component in the
+    specification looks convincing.
 
 *To be continued*
 
