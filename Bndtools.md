@@ -62,7 +62,6 @@ add the following lines:
 
 ```properties
 -plugin.3.OSGIGettingStarted: \
--plugin.3.OSGIGettingStarted: \
 	aQute.bnd.repository.osgi.OSGiRepository;\
 		name="OSGi-Getting-Started";\
 		locations=https://raw.githubusercontent.com/mnlipp/osgi-getting-started/master/cnf/indexed-maven/index.xml
