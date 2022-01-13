@@ -31,11 +31,15 @@ Let's have a look at this service in action. Go back to the project from the par
 uses OSGi promises and functions, we additionally have to add bundles `org.osgi.util.promise` 
 and `org.osgi.util.function`[^listOfBundles]. Now we can start the framework with our "Hello World" application.
 
-[^cmAddOn]: The commands that this GoGo extension provides aren't strictly necessary.
+[^cmAddOn]: The commands that this GoGo extension provides aren't 
+	strictly necessary[^cmAlt].
 	The Configuration Admin implementation adds the [`ConfigurationAdmin`](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ConfigurationAdmin.html)
 	service to the GoGo shell (with scope "cm", just like the extension). We could
 	therefore execute all actions using the service as a starting point. However,
 	the extension simplifies things.
+
+[^cmAlt]: [Here](https://web.archive.org/web/20220113102917/https://rotty3000.doublebite.com/Introspect-Configuration-Admin-from-Gogo-Shell/)
+    is an alternative approach.
 
 [^listOfBundles]: The complete list of bundles in the "Source" tab of `bnd.bnd` looks like this:
 	```properties
@@ -125,7 +129,8 @@ Each configuration object has a unique PID (Persistent IDentity). The first comm
 adds (to the just created configuration object with PID `org.osgi.service.log.admin`) the 
 key `ROOT` with value `INFO`.
 
-[^ConfObjAPI]: There's a bit more, configuration objects implement [this interface](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ManagedService.html).
+[^ConfObjAPI]: There's a bit more to it, configuration objects implement 
+    [this interface](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ManagedService.html).
 
 Parties interested in configuration changes of a specific configuration object
 register services of type `ManagedService`. If a party is interested in changes 
