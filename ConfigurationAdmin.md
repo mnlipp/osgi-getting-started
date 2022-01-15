@@ -2,21 +2,21 @@
 layout: default
 title: Configuration Admin
 description: Introduction to the Configuration Admin service.
-date: 2019-08-13 12:00:00
+date: 2022-01-15 12:00:00
 commentIssue: 17
 ---
 
 # The Configuration Admin Service
 
-*Work in progress*
+An important issue in a component framework is the configuration of the 
+components. Components might be usable out-of-the-box, but usually they 
+must be adapted to the context. A common simple example is some component 
+that listens on a network port that must, of course, be configurable.
 
-An important issue in a component framework is the configuration of the components.
-Components might be usable out-of-the-box, but usually they must be adapted to the context. A common simple example is some component that listens on a network port which must, of course, be configurable.
-
-The configuration information should be persistent, i.&nbsp;e. it must be preserved 
-across restarts. It should also be modifiable during runtime and modifications should
-be effective without restart. OSGi defines such a
-service for maintaining and distributing configuration information as the 
+The configuration information should be persistent, i.&nbsp;e. it must 
+be preserved across restarts. It should also be modifiable during runtime 
+and modifications should be effective without restart. OSGi defines a
+service for maintaining and applying configuration information as the 
 "[Configuration Admin](https://osgi.org/specification/osgi.cmpn/7.0.0/service.cm.html)" service[^name].
 
 [^name]: The name has always seemed a bit strange to me. The major task of this
@@ -26,17 +26,29 @@ service for maintaining and distributing configuration information as the
 
 ## Configuration Admin in Action
 
-Let's have a look at this service in action. Go back to the project from the part "[Using a Service](./UsingAService.html)" and remove the run property `org.osgi.service.log.admin.loglevel`, added as last step in order to actually get logging output. Then add `org.apache.felix.configadmin` and `de.dentrassi.osgi.net.luminis.cmc` to the run bundles (or checkout and import the [prepared project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-logging-admin)). The former bundle adds an implementation of the Configuration Admin service to our run environment, the latter adds some commands to the Felix GoGo shell[^cmAddOn]. Unfortunately, the bundle with the GoGo shell extensions is implemented using Declarative Services (as presented in the previous part), so we have to also add
-`org.apache.felix.scr`. And because the current implementation (2.1.16 as of this writing)
-uses OSGi promises and functions, we additionally have to add bundles `org.osgi.util.promise` 
-and `org.osgi.util.function`[^listOfBundles]. Now we can start the framework with our "Hello World" application.
+Let's have a look at this service in action. Go back to the project from 
+the part "[Using a Service](./UsingAService.html)" and remove the run 
+property `org.osgi.service.log.admin.loglevel`, added as last step in order to 
+actually get logging output. Then add `org.apache.felix.configadmin` and 
+`de.dentrassi.osgi.net.luminis.cmc` to the run bundles (or checkout and import 
+the [prepared project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-logging-admin)). 
+The former bundle adds an implementation of the Configuration Admin service 
+to our run environment, the latter adds some commands to the Felix 
+GoGo shell[^cmAddOn]. Unfortunately, the bundle with the GoGo shell 
+extensions is implemented using Declarative Services (as presented 
+in the next part), so we have to also add `org.apache.felix.scr`. And because 
+the current implementation (2.2.0 as of this writing)
+uses OSGi promises and functions, we additionally have to add 
+bundles `org.osgi.util.promise` and `org.osgi.util.function`[^listOfBundles]. 
+Now we can start the framework with our "Hello World" application.
 
 [^cmAddOn]: The commands that this GoGo extension provides aren't 
-	strictly necessary[^cmAlt].
-	The Configuration Admin implementation adds the [`ConfigurationAdmin`](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ConfigurationAdmin.html)
-	service to the GoGo shell (with scope "cm", just like the extension). We could
-	therefore execute all actions using the service as a starting point. However,
-	the extension simplifies things.
+	strictly necessary. The Configuration Admin implementation 
+	adds the [`ConfigurationAdmin`](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ConfigurationAdmin.html)
+	service to the GoGo shell (with scope "cm", just like the extension). 
+	We could therefore execute all actions using the commands provided
+	by the service as a starting point[^cmAlt]. However,
+	the additional extension simplifies things.
 
 [^cmAlt]: [Here](https://web.archive.org/web/20220113102917/https://rotty3000.doublebite.com/Introspect-Configuration-Admin-from-Gogo-Shell/)
     is an alternative approach.
@@ -48,8 +60,8 @@ and `org.osgi.util.function`[^listOfBundles]. Now we can start the framework wit
 		org.apache.felix.gogo.command,\
 		org.apache.felix.gogo.runtime,\
 		org.apache.felix.gogo.shell,\
-		de.mnl.osgi.osgi2jul;version=1.1.3,\
-		de.mnl.osgi.coreutils;version=1.0.3,\
+		de.mnl.osgi.osgi2jul;version=1.1.6,\
+		de.mnl.osgi.coreutils;version=2.0.0,\
 		de.dentrassi.osgi.net.luminis.cmc;version=0.6.0,\
 		org.apache.felix.configadmin,\
 		org.apache.felix.scr,\
@@ -57,8 +69,13 @@ and `org.osgi.util.function`[^listOfBundles]. Now we can start the framework wit
 		org.osgi.util.function
 	```
 
-As you know from "Using a Service" we do not see any log messages from our bundle's classes
-because they are logged with level `INFO` and the default threshold of OSGi loggers is `WARNING`. In "Using a Service" we fixed this with a bundle property that configured the OSGI log service. However, if a Configuration Admin service is available, OSGi loggers can also be configured using this service. Enter the following commands in the Felix console:
+As you know from "Using a Service" we do not see any log messages from 
+our bundle's classes because they are logged with level `INFO` and the 
+default threshold of OSGi loggers is `WARNING`. In "Using a Service" we 
+fixed this with a bundle property that configured the OSGI log service. 
+However, if a Configuration Admin service is available, OSGi loggers 
+can also be configured using this service. Enter the following commands 
+in the Felix console:
 
 ```
 g! cm:create org.osgi.service.log.admin
@@ -69,14 +86,17 @@ Aug 13, 2019 6:39:15 PM LogService
 INFORMATION: Hello Word sleeping
 ```
 
-And the log messages are back again. Before you restart the framework in order to check the persistence of the configuration, make sure to un-check the "Clean storage area before launch" flag in the Eclipse run configuration generated by Bndtools[^uncheckTooLate]:
+And the log messages are back again. Before you restart the framework in 
+order to check the persistence of the configuration, make sure to 
+un-check the "Clean storage area before launch" flag in the Eclipse 
+run configuration generated by Bndtools[^uncheckTooLate]:
 
 ![Uncheck clear storage area](images/Uncheck-Clean-storage-area.png){: width="600px" }
 
-[^uncheckTooLate]: To be honest&mdash;I didn't test this systematically&mdash;it 
-	probably is too late. My impression is that the flag must be unchecked *before* you
-	start the program. It's real meaning seems to be "use a temporary storage
-	location for the next launch".
+[^uncheckTooLate]: Using bndtools 6.1.0, this 
+    [doesn't work](https://github.com/bndtools/bnd/issues/5061) any more.
+    Instead, you have to add a line with `-runkeep: true` to the project's
+    `bnd.bnd`.
 
 Of course you can also query the information just entered:
 
@@ -156,16 +176,19 @@ The system that we have configured looks like this:
 ![Component relationships](images/logging-admin-1.svg){: width="450px" }
 
 As you may have guessed, the GoGo shell commands make use of the
-[ConfigurationAdmin](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ConfigurationAdmin.html) service provided by the Config Admin implementation. This
-is the interface that you'd also use to manipulate configurations in your
-program.
+[ConfigurationAdmin](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ConfigurationAdmin.html) 
+service provided by the Config Admin implementation. This
+is the interface that you'd also use to manipulate configurations 
+from within your program.
 
 
 ## A Configurable Component
 
-The obvious next step is to make our own component configurable in some way, i.&nbsp;e.
-it has to register an implementation of `ManagedService`. 
-[The Javadoc](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ManagedService.html) describes the basic usage pattern pretty well. I've applied it 
+The obvious next step is to make our own component configurable in 
+some way, which means that it has to register an implementation of
+`ManagedService`. 
+[The Javadoc](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ManagedService.html) 
+describes the basic usage pattern pretty well. I've applied it 
 to the "Hello World" sample application and made the message frequency 
 configurable. You can find the resulting code in the 
 [companion project](https://github.com/mnlipp/osgi-getting-started/tree/master/SimpleBundle-logging-admin2).
@@ -188,8 +211,39 @@ g! cm:create io.github.mnl.osgiGettingStarted.loggingBundle.HelloWorld
 g! cm:put -t l io.github.mnl.osgiGettingStarted.loggingBundle.HelloWorld waitTime 10000
 ```
 
+## Manufactured with Configuration Admin
 
-*To be continued*
+In addition to configuring existing components, Configuration Admin
+can be used to manage the creation and destruction of (service) 
+components. This is achieved by registering a 
+[`ManagedServiceFactory`](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ManagedServiceFactory.html)
+with a factory PID.
+
+After [creating a factory configuration](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ConfigurationAdmin.html#createFactoryConfiguration-java.lang.String-java.lang.String-),
+you can 
+[get configurations](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ConfigurationAdmin.html#getFactoryConfiguration-java.lang.String-java.lang.String-java.lang.String-)
+for components to be created by the registered factory service. Whenever
+you [update](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/Configuration.html#update--)
+the configuration, the service factory's method 
+[`updated`](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ManagedServiceFactory.html#updated-java.lang.String-java.util.Dictionary-)
+called. This method must then create an instance if a component with the
+(instance) PID passed to this method does not exist yet, or update an
+existing component -- whatever the meaning of an "update" means with respect
+to the components managed[^usuallyForward].
+
+[^usuallyForward]: Usually you'll forward the properties to the existing
+	component, but this isn't specified and thus completely up to the
+	factory.
+
+I've prepared a simple 
+[sample project](https://github.com/mnlipp/osgi-getting-started/tree/master/Greeter) 
+that you can use for some experimentation.
+
+```
+g! config = cm:getFactoryConfiguration GreeterFactory Test "?"
+g! $config update (new java.util.Hashtable [text="Hello"])
+New Greeter "GreeterFactory~Test" says: Hello
+```
 
 
 ---
