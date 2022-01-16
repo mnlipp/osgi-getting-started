@@ -9,10 +9,12 @@ commentIssue: 18
 # Providing a Service
 
 Programmatically, providing a service is as simple as registering a class using 
-a method from [`BundleContext`](https://osgi.org/javadoc/osgi.core/7.0.0/org/osgi/framework/BundleContext.html#registerService-java.lang.Class-S-java.util.Dictionary-).
+a method from 
+[`BundleContext`](https://osgi.org/javadoc/osgi.core/7.0.0/org/osgi/framework/BundleContext.html#registerService-java.lang.Class-S-java.util.Dictionary-).
 The tricky part is bundling the service.
 
-As outlined in a [previous chapter](./CombiningComponents.html#from-modules-to-services),
+As outlined in a 
+[previous chapter](./CombiningComponents.html#from-modules-to-services),
 a service should be defined by a public API and provided by one or more
 (alternative) implementations. In order to properly support this concept, the
 API must be made available by a bundle that is independent of any bundle that implements
@@ -27,7 +29,7 @@ provides[^apiInProvider].
 	Up to today, the Felix implementations of the OSGi services in general include the API
 	classes from the OSGi API bundle. Nevertheless, several sources suggest that
 	having the API classes in the API bundle only is considered best
-	practice (e.&nbsp;g. [here, Slide 21](https://de.slideshare.net/mfrancis/os-gi-best-practices-tim-ward)).
+	practice (e.&nbsp;g. [here, Slide 20](https://de.slideshare.net/mfrancis/os-gi-best-practices-tim-ward)).
 
 It is, of course, perfectly okay to combine several APIs in one 
 API bundle. Else, you'd end up with an annoyingly large number of bundles.
@@ -112,7 +114,11 @@ public class CalculatorImpl implements Calculator {
 ```
 
 An instance of the calculator implementation is registered with the framework
-and thus made available as a service by the bundle's activator.
+and thus made available as a service by the bundle's activator. When
+registering the service, you can optionally specify additional 
+[service properties](https://docs.osgi.org/specification/osgi.core/7.0.0/framework.service.html#framework.service.serviceproperties)
+that can later be used to e.&nbsp;g. choose 
+among different implementations of the service.
 
 ```java
 package io.github.mnl.osgiGettingStarted.calculator.provider;
@@ -130,7 +136,8 @@ public class Activator implements BundleActivator {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		publishedService = context.registerService(
-				Calculator.class, new CalculatorImpl(), null);
+			Calculator.class, new CalculatorImpl(),
+			new Hashtable<>(Map.of(Constants.SERVICE_VENDOR, "Michael N. Lipp")));
 	}
 
 	@Override
@@ -163,15 +170,16 @@ Private-Package: io.github.mnl.osgiGettingStarted.calculator.provider
 	io.github.mnl.osgiGettingStarted.calculator.provider;version=latest
 ```
 
-## Running the Service
+## Using the Service
 
-Now you could, as has been shown for the predefined log service, write a client
-that looks up the service and uses it. Just for fun, let's leverage the power
-of the GoGo shell and do it interactively.
+Now you could, as has been shown for the predefined log service, write 
+a client that looks up the service and uses it. Just for fun, let's 
+leverage the power of the GoGo shell and do it interactively.
 
 The GoGo shell lacks a good documentation. When you read the 
-[subproject's web page](https://felix.apache.org/documentation/subprojects/apache-felix-gogo.html) you learn about some built-in commands like `lb`, which by the way now outputs
-this:
+[subproject's web page](https://felix.apache.org/documentation/subprojects/apache-felix-gogo.html) 
+you learn about some built-in commands like `lb`, which by the way 
+now outputs this:
 
 ```
 g! lb
@@ -185,21 +193,28 @@ START LEVEL 1
     5|Active     |    1|io.github.mnl.osgiGettingStarted.calculator.provider (1.0.0)|1.0.0
 ```
 
-But the most important information is hidden in a note at the bottom of the page:
+But the most important information is hidden in a note at the 
+bottom of the page:
 
-> Gogo is based on the OSGi RFC 147, which describes a standard shell for OSGi-based environments. See [RFC 147 Overview](https://felix.apache.org/documentation/subprojects/apache-felix-gogo/rfc-147-overview.html)
-> for more information. Unfortunately this RFC was never made a standard.
+> Gogo is based on the OSGi RFC 147, which describes a standard shell 
+	for OSGi-based environments. See 
+	[RFC 147 Overview](https://web.archive.org/web/20210518064235/http://felix.apache.org/documentation/subprojects/apache-felix-gogo/rfc-147-overview.html)
+	for more information. Unfortunately this RFC was never made a standard.
 
-Only when you read the referenced overview (and maybe the section in the
-[specification draft](https://web.archive.org/web/20160606172521/https://osgi.org/download/osgi-4.2-early-draft.pdf)), 
+Only when you read the referenced overview (skip the first sections
+and start with 
+"[Easy to use interactively - no unnecessary syntax](https://web.archive.org/web/20210518064235/http://felix.apache.org/documentation/subprojects/apache-felix-gogo/rfc-147-overview.html#easy-to-use-interactively-no-unnecessary-syntax)") and then maybe the section in the
+[specification draft](https://web.archive.org/web/20160606172521/https://osgi.org/download/osgi-4.2-early-draft.pdf), 
 you find that GoGo provides a lot more than just some commands[^PKGoGo].
 
 [^PKGoGo]: Peter Kriens has a quite [exhaustive section](https://bndtools.org/workspace/osgi-starter.html#_gogo) about the GoGo shell in his "OSGi Starter" document.
 
-The basic idea is that you have a "current" object (or context) and that you can
-invoke any public method of that object (or context). The most important member of the
-default context is the [`BundleContext`](https://osgi.org/javadoc/osgi.core/7.0.0/index.html?org/osgi/framework/BundleContext.html) of the GoGo bundle. You can therefore
-simply type `getBundle` to invoke the `getBundle()` method, which yields:
+The basic idea is that you have a "current" object (or context) and 
+that you can invoke any public method of that object (or context). 
+The most important member of the default context is the 
+[`BundleContext`](https://osgi.org/javadoc/osgi.core/7.0.0/index.html?org/osgi/framework/BundleContext.html)
+of the GoGo bundle. You can therefore simply type `getBundle` to 
+invoke the `getBundle()` method, which yields:
 
 ```
 g! getBundle
@@ -217,23 +232,28 @@ Bundle                   2|Active     |    1|org.apache.felix.gogo.runtime (1.1.
 Revisions            [org.apache.felix.gogo.runtime [2](R 2.0)]
 ```
 
-As a convenience, `get` is prepended automatically if you specify a method that
-isn't found, so simply typing `bundle` results in the same output.
+As a convenience, `get` is prepended automatically if you specify 
+a method that isn't found, so simply typing `bundle` results in 
+the same output.
 
-By invoking method `getServiceReference` you can get a service reference to our new service.
-Using this, you can get the service itself and invoke it. Finally, being a good
+By invoking method `getServiceReference` you can get a service 
+reference to our new service. Note that the "properties"
+include some values provided by the framework as well as
+the additional information provided when registering the 
+service[^CalcCmd]. Using the service reference, you can now 
+get the service itself and invoke it. Finally, being a good
 citizen, you should release the service.
 
 ```
 g! calcRef = serviceReference io.github.mnl.osgiGettingStarted.calculator.Calculator
-Properties           [service.id=15, objectClass=[Ljava.lang.String;@1abfe77a, service.scope=singleton, service.bundleid=5]
+Properties           [service.vendor=Michael N. Lipp, service.id=17, objectClass=[Ljava.lang.String;@6b75d21b, service.scope=singleton, service.bundleid=5]
 Attributes           []
 Bundle                   5|Active     |    1|io.github.mnl.osgiGettingStarted.calculator.provider (1.0.0)
 Namespace            service-reference
 Directives           []
 UsingBundles         null
 Uses                 []
-PropertyKeys         [objectClass, service.bundleid, service.id, service.scope]
+PropertyKeys         [objectClass, service.bundleid, service.id, service.scope, service.vendor]
 Resource             null
 Resource             null
 
@@ -246,6 +266,27 @@ true
 ```
 
 So, here it is: your first OSGi service, ready to be used.
+
+[^CalcCmd]: As described in the 
+	[overview](https://web.archive.org/web/20210518064235/http://felix.apache.org/documentation/subprojects/apache-felix-gogo/rfc-147-overview.html#standard-way-to-implement-and-run-commands-for-any-osgi-42-framework)
+	mentioned above, the GoGo shell makes use of a service's properties
+	in a very interesting way. It monitors registered services and when
+	a service with the properties "osgi.command.function" and (optionally)
+	"osgi.command.scope" is found, it registers new commands as
+	specified by those properties. As a simple exercise, you can
+	add "calc:add" as a command that invokes the method `add` of
+	our calculator implementation. 
+	
+	Note that with respect to the intended usage of properties as 
+	[specified by OSGI](https://docs.osgi.org/specification/osgi.core/7.0.0/framework.service.html#framework.service.serviceproperties)
+	this usage of properties might be considered an "edge case" because
+	> The service properties are intended to provide information about the service. 
+		The properties should not be used to participate in the actual 
+		function of the service.
+
+	The GoGo shell related attributes do not participate in the actual function
+	of the service, but they *do* participate in the functionality of the
+	environment.
 
 ## More Ways to Provide Services
 
