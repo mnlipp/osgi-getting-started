@@ -2,7 +2,7 @@
 layout: default
 title: Service Components
 description: Introduces service components as a simpler form of services and OSGi Declarative Services.
-date: 2022-01-12 12:00:00
+date: 2022-01-16 12:00:00
 commentIssue: 14
 ---
 
@@ -127,9 +127,30 @@ anything beyond this simple example[^overstop].
 [^overstop]: Unfortunately, `stop` is final and cannot be overridden. I'll improve the
     solution in the second part.
 
-The log service has been made available by the DM in the attribute `logService` by [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection). The details can all be found in the DM [documentation](https://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/components.html).
+The log service has been made available by the DM in the attribute `logService` 
+by [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection).
+The details can all be found in the DM 
+[documentation](https://felix.apache.org/documentation/subprojects/apache-felix-dependency-manager/reference/components.html).
 
-When it comes to optional services, DM supports a nifty feature known as "[Null Object](https://en.wikipedia.org/wiki/Null_Object_pattern)". Try it out: change the parameter of `setRequired` in the activator's `init`-method to `false` and remove the log service bundle from the set of run bundles. Our component continues to work, despite the fact that we should get a `NullPointerException` when trying to invoke the `log`-method (`logService.log(...)`), since there cannot possibly be a log service available. If an optional dependency is not available, DM injects an instance of class [Proxy](https://docs.oracle.com/javase/7/docs/api/index.html?java/lang/reflect/Proxy.html) that simply handles all method invocations by doing nothing (except for returning a "zero" value matching the method's return type). Of course, it's not guaranteed that this "dummy service implementation" won't cause trouble in the invoking code. But (as in the case of the log service) this feature can sometimes simplify the code because you don't have to check whether an optional service is actually available.
+When it comes to optional services, DM supports a nifty feature known as 
+"[Null Object](https://en.wikipedia.org/wiki/Null_Object_pattern)". Try 
+it out: change the parameter of `setRequired` in the activator's `init`-method 
+to `false` and remove the log service bundle from the set of run bundles. 
+Our component continues to work, despite the fact that we should get a 
+`NullPointerException` when trying to invoke the `log`-method 
+(`logService.log(...)`), since there cannot possibly be a log service available. 
+If an optional dependency is not available, DM injects an instance of class 
+[Proxy](https://docs.oracle.com/javase/7/docs/api/index.html?java/lang/reflect/Proxy.html)
+that simply handles all method invocations by doing nothing (except 
+for returning a "zero" value matching the method's return type). 
+Of course, it's not guaranteed that this "dummy service implementation" 
+won't cause trouble in the invoking code[^veryDan]. But (as in the case of 
+the log service) this feature can sometimes simplify the code because you 
+don't have to check whether an optional service is actually available.
+
+[^veryDan]: It can be outright dangerous. Imagine that the calculator
+	service from "Providing a service" is missing and all invocations
+	of `add` simply return 0 as result.
 
 ### Using DM with annotations
 
@@ -235,8 +256,8 @@ for use in other service platforms.* This basically still holds true after
 the adoption of the concepts outlined in the article as an OSGi specification.
 
 The OSGi alliance has added support for service components as 
-"[Declarative Services](https://docs.osgi.org/specification/osgi.cmpn/7.0.0/service.component.html)", initially
-in Release 4 of the service specification (2005). "Declarative Services"
+"Declarative Services", initially in Release 4 of the service 
+specification (2005)[^dsVersions]. "Declarative Services"
 as specified introduce a new layer of abstraction, which implies that you 
 don't need to know about some parts of the Core OSGi APIs any more in order
 to use OSGi as a service based component framework. Some OSGi enthusiasts 
@@ -247,6 +268,15 @@ Services" the core of an "OSGi NG" and had dropped the no longer
 needed low level APIs[^newSpec]. As it is, I find that you still have to 
 understand the basics in order to fully understand the (debug) outputs 
 and solve some problems that you may encounter[^mem].
+
+[^dsVersions]: I recommend to first have a look at the 
+	[initial version](http://docs.osgi.org/download/r4v43/osgi.cmpn-4.3.0.pdf)
+	of the specification. It is easier to read because it focuses on
+	the core functions. And it uses event based explanations of the
+	internal workings, which is close to the
+	specification of the service layer. Starting with 
+	[version 7](https://docs.osgi.org/specification/osgi.cmpn/7.0.0/service.component.html),
+	the specifications use the more abstract concept of dependency injection.
 
 [^newSpec]: And IMHO if they had also switched to an easier to read style 
 	for the specifications, this might have been a successful new 
@@ -360,8 +390,9 @@ example. The parameter "`service`" serves the same purpose as the parameter
 "`provides`" of the DM annotation: it prevents our component from being 
 registered as provider for service `java.lang.Runnable`.
 
-Declarative services doesn't support injection of values into fields[^fieldInjection]. 
-Referenced services are made known to the component by invoking a setter method. 
+Declarative services supports setting the values of fields
+starting with version 1.3 (OSGi version 6). Before this,
+referenced services are made known to the component by invoking a setter method. 
 Considering our example, that's not too bad because we can make the field with 
 the reference to the log service static again[^apDM]. In order to avoid keeping 
 a reference to a log service implementation even if it disappears (and our 
@@ -369,9 +400,6 @@ component is stopped), we have to provide an "unset" method as well[^ofs].
 It doesn't need an annotation. Rather, if there is a "`setXYZ`" method with 
 the `@Reference` annotation, declarative services automatically assume an 
 "`unsetXYZ`" method to implement the corresponding "undo" operation.
-
-[^fieldInjection]: Field injection is supported as of OSGi 6 (Declarative Service
-	Specification 1.3).
 
 [^apDM]: You can make Felix DM invoke a method, too.
 
@@ -422,7 +450,7 @@ import org.osgi.service.component.annotations.Component;
 
 import io.github.mnl.osgiGettingStarted.calculator.Calculator;
 
-@Component
+@Component(property = Constants.SERVICE_VENDOR + "=Michael N. Lipp")
 public class CalculatorImpl implements Calculator {
 
 	@Override
@@ -436,6 +464,12 @@ public class CalculatorImpl implements Calculator {
 The [`Component`](https://osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/component/annotations/Component.html) 
 annotation has a lot of optional elements that can be used to further specify
 the properties of the service that is provided.
+
+#### Properties
+
+A `property` element can be used to specify properties that
+are added when the service is registered (as explained in 
+"[Providing a Service](./ProvidingAService.html)").
 
 #### Service Scopes
 
@@ -463,16 +497,111 @@ component (and register its provided services) dynamically at runtime.
 This is made possible by specifying a `factory` attribute with an identifier.
 If defined, SCR registers a (factory) service with this identifier that 
 provides a single method `newInstance`. This service can then be used to 
-dynamically create component instances[^notCovered].
+dynamically create component instances.
 
-[^notCovered]: [Neil Bartlett](https://stackoverflow.com/users/318921/neil-bartlett)
+Note that this approach is different from creating components using
+a `ManagedServiceFactory` as presented in 
+"[Configuration Admin](./ConfigurationAdmin.html)". More on the
+differences will be explained in the next section.
+
+### Integration with Configuration Admin
+
+The SCR is closely coupled with Configuration Admin. Every component
+has a configuration PID. If not specified explicitly, it defaults
+to the component's name which in turn defaults to the name of the
+implementation class.
+
+#### Configuring components
+
+By default, values stored in Configuration Admin are merged with the 
+values specified in the component annotation, with the former taking
+precedence over the latter. To demonstrate this behavior, run the 
+project that implements the calculator service using
+Declarative Services and execute the following commands in the GoGo shell
+(output partially shortened or omitted):
+
+```
+g! serviceReference io.github.mnl.osgiGettingStarted.calculator.Calculator
+Properties           [service.vendor=Michael N. Lipp, component.id=0, component.name=io.github.mnl.osgiGettingStarted.calculator.ds.CalculatorImpl, ...
+
+g! conf = cm:getConfiguration io.github.mnl.osgiGettingStarted.calculator.ds.CalculatorImpl "?"
+g! $conf update (new java.util.Hashtable ["service.vendor"="Nobody"])
+g! serviceReference io.github.mnl.osgiGettingStarted.calculator.Calculator
+Properties           [service.vendor=Nobody, ...]
+...
+```
+
+If the log level is set to "information", you can observe that updating
+the properties in Configuration Admin causes SCR to unregister the 
+service and re-register it. This means that changing properties this
+way may be a costly operation.
+
+#### Creating components
+
+How the information from Configuration Admin is handled by SCR 
+can be configured for each component individually by specifying
+a `configurationPolicy` element. The default value is `OPTIONAL` which
+results in the behavior demonstrated above.
+
+An interesting alternative is the value `REQUIRE`. Add 
+`configurationPolicy = ConfigurationPolicy.REQUIRE` to the parameters of
+the `@Component` annotation and restart the framework. Try to find our
+calculator service in the GoGo shell.
+
+```
+g! serviceReference io.github.mnl.osgiGettingStarted.calculator.Calculator
+```
+
+It's no longer there. `REQUIRED` means that SCR won't create an
+instance of the component unless there is a configuration with the
+component's PID. Try:
+
+```
+g! conf = cm:getConfiguration io.github.mnl.osgiGettingStarted.calculator.ds.CalculatorImpl "?"
+g! $conf update null
+g! serviceReference io.github.mnl.osgiGettingStarted.calculator.Calculator
+Properties           [service.vendor=Michael N. Lipp, component.id=0, ...]
+...
+```
+
+... and the service is back again. Effectively this means that 
+a component won't be created with its default properties. It will
+only be created when it has been configured explicitly. Of course, 
+if you make sure that the configuration isn't deleted, the 
+configuration and thus the service will be immediately available 
+after a restart. 
+
+Maybe one of the most curious characteristics of this policy is that
+the component's PID can -- without any further change -- also be used 
+as a factory PID in Configuration Admin. Let's create two instances
+of the calculator:
+
+```
+g! conf = cm:getFactoryConfiguration io.github.mnl.osgiGettingStarted.calculator.ds.CalculatorImpl Test1 "?"
+g! $conf update null
+g! conf = cm:getFactoryConfiguration io.github.mnl.osgiGettingStarted.calculator.ds.CalculatorImpl Test2 "?"
+g! $conf update null
+g! getAllServiceReferences io.github.mnl.osgiGettingStarted.calculator.Calculator null
+000032  12 Calculator    io.github.mnl.osgiGettingStarted.calculator.ds.CalculatorImpl~Test2
+000031  12 Calculator    io.github.mnl.osgiGettingStarted.calculator.ds.CalculatorImpl~Test1
+```
+
+Of course, a real use case will pass different sets of properties when
+calling the `update` method, thus configuring different instances of
+a service (e.&nbsp;g. two instances of a network client each connecting
+to a different server).
+
+There are thus two types of dynamically created components. Components
+created by invoking the `newInstance` method of a factory service provided
+by SCR for a component factory (as described in the previous section),
+and components created by providing a factory configuration. 
+The former are transient, the latter persist across restarts[^notCovered].
+
+[^notCovered]: [Neil Bartlett](http://njbartlett.github.io/allposts.html)
 	wrote on [stackoverflow](https://stackoverflow.com/questions/33505593/differnce-between-service-factory-vs-component-factory-in-osgi):
 	> You almost certainly don't want to use ComponentFactory, so I recommend 
 	> ignoring it. 
     
-    I'm not sure if this comment is correct, the example for using a factory component in the
-    specification looks convincing.
-
-*To be continued*
+    I'm not sure if this comment is correct, I can imagine use cases for both.
 
 ---
