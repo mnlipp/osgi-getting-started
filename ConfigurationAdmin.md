@@ -227,7 +227,7 @@ the configuration, the service factory's method
 [`updated`](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ManagedServiceFactory.html#updated-java.lang.String-java.util.Dictionary-)
 called. This method must then create an instance if a component with the
 (instance) PID passed to this method does not exist yet, or update an
-existing component -- whatever the meaning of an "update" means with respect
+existing component -- whatever "update" means with respect
 to the components managed[^usuallyForward].
 
 [^misnomer]: To me, this sounds like a misnomer. What you get here is
