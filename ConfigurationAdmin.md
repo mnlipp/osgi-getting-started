@@ -219,17 +219,21 @@ components. This is achieved by registering a
 [`ManagedServiceFactory`](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/index.html?org/osgi/service/cm/ManagedServiceFactory.html)
 with a factory PID.
 
-After [creating a factory configuration](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ConfigurationAdmin.html#createFactoryConfiguration-java.lang.String-java.lang.String-),
-you can 
-[get configurations](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ConfigurationAdmin.html#getFactoryConfiguration-java.lang.String-java.lang.String-java.lang.String-)
-for components to be created by the registered factory service. Whenever
-you [update](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/Configuration.html#update--)
+You create a new component configuration simply by
+[getting](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ConfigurationAdmin.html#getFactoryConfiguration-java.lang.String-java.lang.String-java.lang.String-)
+it[^misnomer]. Whenever you subsequently
+[update](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/Configuration.html#update--)
 the configuration, the service factory's method 
 [`updated`](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ManagedServiceFactory.html#updated-java.lang.String-java.util.Dictionary-)
 called. This method must then create an instance if a component with the
 (instance) PID passed to this method does not exist yet, or update an
 existing component -- whatever the meaning of an "update" means with respect
 to the components managed[^usuallyForward].
+
+[^misnomer]: To me, this sounds like a misnomer. What you get here is
+    not a factory configuration, it's a configuration for something
+    created or to be created by a factory. IMHO something like
+    `getInstanceConfiguration` would have been more appropriate.
 
 [^usuallyForward]: Usually you'll forward the properties to the existing
 	component, but this isn't specified and thus completely up to the
