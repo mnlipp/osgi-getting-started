@@ -225,7 +225,7 @@ it[^misnomer]. Whenever you subsequently
 [update](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/Configuration.html#update--)
 the configuration, the service factory's method 
 [`updated`](https://docs.osgi.org/javadoc/osgi.cmpn/7.0.0/org/osgi/service/cm/ManagedServiceFactory.html#updated-java.lang.String-java.util.Dictionary-)
-called. This method must then create an instance if a component with the
+is called. This method must then create an instance if a component with the
 (instance) PID passed to this method does not exist yet, or update an
 existing component -- whatever "update" means with respect
 to the components managed[^usuallyForward].
