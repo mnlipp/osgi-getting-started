@@ -13,7 +13,12 @@ As we have seen in the previous parts, the service registry provides a very simp
 A somewhat different approach to managing services is the use of "service components". 
 The basic ideas have been described in the article "[Automating Service Dependency 
 Management in a Service-Oriented Component Model](https://web.archive.org/web/20061123212733/www-adele.imag.fr/Les.Publications/intConferences/CBSE2003Cer.pdf)".
-Read it now. It's a very good introduction into the topic.
+Read it now. It's a very good introduction into the topic[^compFormal].
+
+[^compFormal]: Note that this is the point where the term "component"
+	is formally introduced in OSGi. I have sometimes referred to the
+	`HelloWorld` class as a component, but up to now, this has been
+	my conceptual view on this class, nothing formalized. 
 
 Service components supply the information required for managing the service 
 dependencies. The management functions that evaluate this information are 
