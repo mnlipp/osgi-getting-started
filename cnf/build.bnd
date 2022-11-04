@@ -20,7 +20,7 @@
     de.mnl.osgi.bnd.repository.maven.provider.IndexedMavenRepositoryProvider; \
         name=IndexedMaven; \
         location=cnf/indexed-maven; \
-        releaseUrls="https://repo.maven.apache.org/maven2/"; \
+        releaseUrls="https://repo1.maven.org/maven2/"; \
         logIndexing=true
 
 -pluginpath.IndexedMaved: \
