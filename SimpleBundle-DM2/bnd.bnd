@@ -20,5 +20,5 @@ Private-Package: io.github.mnl.osgiGettingStarted.simpleBundle
 	org.apache.felix.dependencymanager.runtime
 -pluginpath:\
 	${workspace}/cnf/cache/org.apache.dependencymanager.annotation-5.0.0.jar;\
-	url=https://repo1.maven.org/maven2/org/apache/felix/org.apache.felix.dependencymanager.annotation/4.2.0/org.apache.felix.dependencymanager.annotation-5.0.0.jar	
+	url=https://repo1.maven.org/maven2/org/apache/felix/org.apache.felix.dependencymanager.annotation/5.0.0/org.apache.felix.dependencymanager.annotation-5.0.0.jar	
 -plugin: org.apache.felix.dm.annotation.plugin.bnd.AnnotationPlugin;log=debug
