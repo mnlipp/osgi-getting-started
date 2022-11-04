@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<repository increment="1641986469710" name="IndexedMaven" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
-    <referral url="dependencies/org.ops4j.base/index.xml"/>
-    <referral url="dependencies/org.slf4j/index.xml"/>
+<repository increment="1667550199642" name="IndexedMaven" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
     <referral url="de.dentrassi.osgi/index.xml"/>
-    <referral url="org.osgi/index.xml"/>
-    <referral url="de.mnl.osgi/index.xml"/>
+    <referral url="dependencies/org.ops4j.base/index.xml"/>
     <referral url="dependencies/org.apache.logging.log4j/index.xml"/>
+    <referral url="dependencies/org.slf4j/index.xml"/>
+    <referral url="de.mnl.osgi/index.xml"/>
     <referral url="dependencies/org.codehaus.mojo/index.xml"/>
+    <referral url="org.osgi/index.xml"/>
     <referral url="org.apache.felix/index.xml"/>
     <referral url="dependencies/net.sf.kxml/index.xml"/>
 </repository>

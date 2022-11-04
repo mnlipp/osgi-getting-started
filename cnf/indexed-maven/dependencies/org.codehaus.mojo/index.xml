@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="IndexedMaven" increment="1641763001628">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="IndexedMaven" increment="1667550199635">
   <resource>
     <capability namespace="bnd.info">
       <attribute name="name" value="org.codehaus.mojo:animal-sniffer-annotations"/>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="IndexedMaven" increment="1641763001627">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="IndexedMaven" increment="1667550199625">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="license" value="https://opensource.org/licenses/BSD-3-Clause"/>
@@ -22,7 +22,7 @@
       <attribute name="version" value="0.5.0" type="Version"/>
     </capability>
     <capability namespace="maven.dependencies.info">
-      <attribute name="provided" value="org.osgi:org.osgi.service.cm:1.5.0;org.apache.felix:org.apache.felix.gogo.runtime:0.10.0;org.osgi:org.osgi.service.component.annotations:1.3.0;org.osgi:org.osgi.core:6.0.0"/>
+      <attribute name="provided" value="org.apache.felix:org.apache.felix.gogo.runtime:0.10.0;org.osgi:org.osgi.service.cm:1.5.0;org.osgi:org.osgi.service.component.annotations:1.3.0;org.osgi:org.osgi.core:6.0.0"/>
     </capability>
     <capability namespace="osgi.content">
       <attribute name="size" value="20349" type="Long"/>
@@ -93,7 +93,7 @@
       <attribute name="version" value="0.6.0" type="Version"/>
     </capability>
     <capability namespace="maven.dependencies.info">
-      <attribute name="provided" value="org.osgi:org.osgi.service.component.annotations:1.3.0;org.osgi:org.osgi.core:6.0.0;org.apache.felix:org.apache.felix.gogo.runtime:1.0.0;org.osgi:org.osgi.service.cm:1.5.0"/>
+      <attribute name="provided" value="org.osgi:org.osgi.service.component.annotations:1.3.0;org.osgi:org.osgi.service.cm:1.5.0;org.apache.felix:org.apache.felix.gogo.runtime:1.0.0;org.osgi:org.osgi.core:6.0.0"/>
     </capability>
     <capability namespace="osgi.content">
       <attribute name="size" value="20935" type="Long"/>
