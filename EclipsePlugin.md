@@ -44,8 +44,10 @@ Finally, the bundle activator is still missing. You could simply copy the line f
 
 On the bottom right of the "Overview" window, there is a section "Exporting". Choose option 4 ("*Export the plug-in in a format suitable for deployment using the Export Wizard*"). Choose our plugin and "Directory" in the next dialog. Note that the plug-in will be created in a subdirectory ("`plugins/`") of your chosen directory. Install and start the created bundle in felix. 
 
-This is the Eclipse "built-in" way of handling bundles. Although it works, it uses its own terminology and focuses on writing bundles (sorry, plug-ins) for the Eclipse environment. So unless you wanted to know about OSGi only as background for writing an Eclipse plug-in, Let's have a look at a more "pure OSGi" alternative.
+This is the Eclipse "built-in" way of handling bundles. Although it works, it uses its own terminology and focuses on writing bundles (sorry, plug-ins) for the Eclipse environment. So unless you wanted to know about OSGi only as background for writing an Eclipse plug-in, Let's have a look at a more "pure OSGi" alternative[^BPC].
 
 ---
 
 [^ESWI]: You should know how to do this. If not look it up in the [Manual](https://help.eclipse.org/mars/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-124.htm).
+
+[^BPC]: Starting late 2023, there is an initiative to bring the "Eclipse way" and the "OSGi way" [closer together](https://bnd.discourse.group/t/announcement-bnd-and-pde-cooperation/372).
