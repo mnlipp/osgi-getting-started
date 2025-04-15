@@ -53,7 +53,7 @@ jobs:
         uses: cicirello/generate-sitemap@v1
         with:
           path-to-root: _site
-          base-url-path: https://jdrupes.org
+          base-url-path: https://mnlipp.github.io/osgi-getting-started
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
